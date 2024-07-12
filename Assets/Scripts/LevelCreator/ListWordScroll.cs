@@ -9,6 +9,7 @@ public class ListWordScroll : MonoBehaviour
 
     [Header("this List Word Scroll")]
     public Transform thisContentTransform;
+    public List<string> wordList;
 
     [Header("other List Word Scroll")]
     public ListWordScroll other;
@@ -36,12 +37,33 @@ public class ListWordScroll : MonoBehaviour
             }
         }
     }
-    
+
+    //Delete List
+    public void RemoveList()
+    {
+        wordList.Clear();
+        while(thisContentTransform.childCount > 0)
+        {
+            thisContentTransform.GetChild(0).transform.SetParent(otherContentTransform, false);
+        }
+        CreatorManager.Instance.UpdateListLetter();
+    }
+
+    // Add Word
+    public void AddWord(GameObject wordbtn)
+    {
+        var wordText = wordbtn.GetComponent<TextMeshProUGUI>().text;
+        wordList.Add(wordText);
+        wordbtn.transform.SetParent(thisContentTransform, false);
+    }
+
     //Remove Word
     public void RemoveWord(GameObject wordbtn) 
     {
         var wordText = wordbtn.GetComponent<TextMeshProUGUI>().text;
-        wordbtn.transform.SetParent(otherContentTransform, false);
+        wordList.Remove(wordText);
+
+        other.AddWord(wordbtn);
         CreatorManager.Instance.UpdateListLetter();
     }
 }

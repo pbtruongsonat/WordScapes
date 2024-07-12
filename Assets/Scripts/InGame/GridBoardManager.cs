@@ -2,6 +2,7 @@ using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,7 +14,6 @@ public class GridBoardManager : MonoBehaviour
     public GameObject gridCellPrefab;
 
     [Header("Properties")]
-    public float cellOffset;
     public Vector3 firstPosition;
     private List<GameObject> _cellList = new List<GameObject>();
 
@@ -45,22 +45,41 @@ public class GridBoardManager : MonoBehaviour
     {
         if (levelData != null)
         {
+            ResetGridBoard();
             firstPosition = GetFirstPosition();
             SpawnGridCell();
             ScaleGridBoard();
         }
     }
 
+    public void ResetGridBoard()
+    {
+        for (int i = 0; i < gameObject.transform.childCount; i++)
+        {
+            gameObject.transform.GetChild(i).gameObject.SetActive(false);
+        }
+        gameObject.transform.localScale = Vector3.one;
+        _cellList.Clear();
+    }
+
     private void SpawnGridCell()
     {
+        int totalCell = levelData.numCol * levelData.numRow;
+        while (gameObject.transform.childCount < totalCell)
+        {
+            Instantiate(gridCellPrefab, gameObject.transform);
+        }
+
         for (int r = 0; r < levelData.numRow; r++)
         {
             for(int c = 0;  c < levelData.numCol; c++)
             {
-                var cell = Instantiate(gridCellPrefab, gameObject.transform);
-                cell.transform.position = GetCellPosition(r, c);
+                int index = r * levelData.numCol + c;
+                _cellList.Add(gameObject.transform.GetChild(index).gameObject);
+
+                var cell = _cellList[index];
+                cell.transform.localPosition = GetCellPosition(r, c);
                 cell.SetActive(false);
-                _cellList.Add(cell);
             }
         }
         SetGridCell();
@@ -114,9 +133,8 @@ public class GridBoardManager : MonoBehaviour
     private Vector3 GetFirstPosition()
     {
         Vector3 firstPos = Vector3.zero;
-        firstPos.x = -(1.5f * (levelData.numCol - 1))/ 2f;
+        firstPos.x = (-1.5f * (levelData.numCol - 1))/ 2f;
         firstPos.y = (1.5f * (levelData.numRow - 1))/ 2f;
-
         return firstPos;
     }
     private Vector3 GetCellPosition(int r, int c)
