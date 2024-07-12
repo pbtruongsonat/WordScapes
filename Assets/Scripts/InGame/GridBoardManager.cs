@@ -20,7 +20,7 @@ public class GridBoardManager : MonoBehaviour
     [Header("Data")]
     public LevelData levelData;
 
-    public GridBoardManager Instance { get { return _instance; } }
+    public static GridBoardManager Instance { get { return _instance; } }
 
     private void Awake()
     {
@@ -39,7 +39,11 @@ public class GridBoardManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if(levelData != null)
+        LoadLevelGrid();
+    }
+    public void LoadLevelGrid()
+    {
+        if (levelData != null)
         {
             firstPosition = GetFirstPosition();
             SpawnGridCell();
@@ -92,7 +96,7 @@ public class GridBoardManager : MonoBehaviour
     private void SetCell(int index, char letter)
     {
         var cell = _cellList[index];
-        if (!cell.active)
+        if (!cell.activeSelf)
         {
             cell.GetComponent<GridCell>().SetLetter(letter.ToString());
             cell.GetComponent<GridCell>().OnSloved();
