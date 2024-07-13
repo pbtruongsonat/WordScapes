@@ -1,4 +1,5 @@
 using JetBrains.Annotations;
+using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -51,6 +52,15 @@ public class GridBoardManager : MonoBehaviour
             ScaleGridBoard();
         }
     }
+    public void LoadNewLevel(LevelDataDTO newlevelData)
+    {
+        if(levelData == null) levelData = ScriptableObject.CreateInstance<LevelData>();
+        levelData.numCol = newlevelData.numCol;
+        levelData.numRow = newlevelData.numRow;
+        levelData.letters = newlevelData.letters;
+        levelData.words = newlevelData.words;
+        LoadLevelGrid();
+    }
 
     public void ResetGridBoard()
     {
@@ -67,7 +77,8 @@ public class GridBoardManager : MonoBehaviour
         int totalCell = levelData.numCol * levelData.numRow;
         while (gameObject.transform.childCount < totalCell)
         {
-            Instantiate(gridCellPrefab, gameObject.transform);
+            GameObject cell = Instantiate(gridCellPrefab, gameObject.transform);
+            cell.SetActive(false );
         }
 
         for (int r = 0; r < levelData.numRow; r++)
@@ -147,7 +158,7 @@ public class GridBoardManager : MonoBehaviour
 
     private void ScaleGridBoard()
     {
-        float scaleOffet = 3.3f / (levelData.numCol);
+        float scaleOffet = Mathf.Min(3.3f / (levelData.numCol), 3.3f/ (levelData.numRow));
         gameObject.transform.localScale = new Vector3(scaleOffet, scaleOffet, 1f);
     }
 }

@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,11 +15,11 @@ public class CreatorManager : MonoBehaviour
     public static CreatorManager Instance {  get { return _instance; } }
 
     [Header("Data For Level")]
+    public LevelDataDTO levelData;
     public int numRows;
     public int numCols;
     public string listLetter;
     public GameObject objListLetter;
-    public LevelData levelData;
 
     [Header("Input Field")]
     public TMP_InputField inputNumRows;
@@ -29,6 +30,7 @@ public class CreatorManager : MonoBehaviour
     [Header("Button")]
     public Button searchWordButton;
     public Button resetButton;
+    public Button sortGridButton;
 
     [Header("List Words")]
     public List<string> selectedWords;
@@ -51,8 +53,10 @@ public class CreatorManager : MonoBehaviour
     }
     public void Start()
     {
+        levelData = new LevelDataDTO();
         searchWordButton.onClick.AddListener(() => SearchWord());
         resetButton.onClick.AddListener(() => { objSelectedWords.RemoveList(); });
+        sortGridButton.onClick.AddListener(() => SortGird());
     }
 
     // Choose the word with the appropriate number of letters
@@ -126,7 +130,7 @@ public class CreatorManager : MonoBehaviour
 
         for (int i = 0; i < availabelWords.Count; i++)
         {
-            int randIndex = UnityEngine.Random.Range(0, availabelWords.Count - 1);
+            int randIndex = UnityEngine.Random.Range(0, availabelWords.Count);
             string tmp = availabelWords[randIndex];
             availabelWords[randIndex] = availabelWords[i];
             availabelWords[i] = tmp;
@@ -177,13 +181,12 @@ public class CreatorManager : MonoBehaviour
 
     public void SortGird()
     {
-        Dictionary<string, Word> dicWords; // Save Word Struct (word, firstPos, direction) by key is string word
-        Dictionary<char, List<Tuple<int, int>>> posChar; // Save List Position of char
-        
-        
-
-
-        levelData = CreateNewLevel();
+        SortGrid sort = gameObject.GetComponent<SortGrid>();
+        if (sort.SortGridWords())
+        {
+            levelData.letters = listLetter;
+            GridBoardManager.Instance.LoadNewLevel(levelData);
+        }
     }
 
     private LevelData CreateNewLevel()
@@ -200,6 +203,6 @@ public class CreatorManager : MonoBehaviour
         } else levelDataTmp.numCol = 8;
 
         levelDataTmp.letters = listLetter;
-        return levelData;
+        return levelDataTmp;
     }
 }
