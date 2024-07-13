@@ -46,9 +46,9 @@ public class SortGrid : MonoBehaviour
             if (PlaceListWord())
             {
                 FomatGrid();
-                CreatorManager.Instance.levelData.numCol = numCols;
-                CreatorManager.Instance.levelData.numRow = numRows;
-                CreatorManager.Instance.levelData.words = words;
+                CreatorManager.Instance.numCols = numCols;
+                CreatorManager.Instance.numRows = numRows;
+                CreatorManager.Instance.words = words;
                 return true;
             }
             Debug.LogWarning("No have solution for this list word, please click SortGrid Button Again");
@@ -253,8 +253,7 @@ public class SortGrid : MonoBehaviour
             string word = listWord[UnityEngine.Random.Range(0, listWord.Count)];
             if (!PlaceWord(word)){
                 counter++;
-                Debug.Log($"list word: {listWord.Count}    couter: {counter}");
-                if (counter >= listWord.Count - 1)
+                if (counter >= listWord.Count)
                 {
                     return false;
                 }

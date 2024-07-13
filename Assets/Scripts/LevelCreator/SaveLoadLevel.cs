@@ -12,12 +12,17 @@ public class SaveLoadLevel : MonoBehaviour
     // Save Level From Creator
     public void SaveFileLevel()
     {
-        //LevelData levelData = GridBoardManager.Instance.levelData; //Test saveload
-        LevelData levelData = GetLevelDataFromCreator();
+        if(GridBoardManager.Instance.levelData == null)
+        {
+            Debug.LogWarning("Dont have valid data level");
+            return;
+        }
+        LevelData levelData = GridBoardManager.Instance.levelData;
         var extensions = new[] { new ExtensionFilter("Json File", "json") };
         try
         {
-            var path = StandaloneFileBrowser.SaveFilePanel("Save File", "", "level1", extensions);
+            string nameFile = CreatorManager.Instance.nameLevel.text;
+            var path = StandaloneFileBrowser.SaveFilePanel("Save File", "", nameFile, extensions);
             string json = JsonConvert.SerializeObject(levelData, Formatting.Indented);
             File.WriteAllText(path, json);
         }
