@@ -15,11 +15,12 @@ public class CreatorManager : MonoBehaviour
     public static CreatorManager Instance {  get { return _instance; } }
 
     [Header("Data For Level")]
+    public TMP_InputField nameLevel;
     public LevelDataDTO levelData;
     public int numRows;
     public int numCols;
     public string listLetter;
-    public GameObject objListLetter;
+    public List<Word> words;
 
     [Header("Input Field")]
     public TMP_InputField inputNumRows;
@@ -33,6 +34,7 @@ public class CreatorManager : MonoBehaviour
     public Button sortGridButton;
 
     [Header("List Words")]
+    public GameObject objListLetter;
     public List<string> selectedWords;
     public List<string> availabelWords;
     public ListWordScroll objSelectedWords;
@@ -54,6 +56,8 @@ public class CreatorManager : MonoBehaviour
     public void Start()
     {
         levelData = new LevelDataDTO();
+        words = new List<Word>();
+
         searchWordButton.onClick.AddListener(() => SearchWord());
         resetButton.onClick.AddListener(() => { objSelectedWords.RemoveList(); });
         sortGridButton.onClick.AddListener(() => SortGird());
@@ -184,7 +188,13 @@ public class CreatorManager : MonoBehaviour
         SortGrid sort = gameObject.GetComponent<SortGrid>();
         if (sort.SortGridWords())
         {
+            inputNumCols.text = numCols.ToString();
+            inputNumRows.text = numRows.ToString();
+
+            levelData.numCol = numCols;
+            levelData.numRow = numRows;
             levelData.letters = listLetter;
+            levelData.words = words;
             GridBoardManager.Instance.LoadNewLevel(levelData);
         }
     }
