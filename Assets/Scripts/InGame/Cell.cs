@@ -13,4 +13,8 @@ public class Cell : MonoBehaviour
     {
 
     }
+    public void Destroy()
+    {
+        Destroy(gameObject);
+    }
 }

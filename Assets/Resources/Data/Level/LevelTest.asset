@@ -14,5 +14,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   numRow: 20
   numCol: 20
-  letters: 
-  words: []
+  letters: HEEHEHEH
+  words:
+  - word: HELLO
+    startColIndex: 5
+    startRowIndex: 3
+    dir: 1
+  - word: HELLLOS
+    startColIndex: 9
+    startRowIndex: 12
+    dir: 0
+  - word: NOOOO
+    startColIndex: 1
+    startRowIndex: 1
+    dir: 1
+  - word: HELLE
+    startColIndex: 3
+    startRowIndex: 3
+    dir: 0

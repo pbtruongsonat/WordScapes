@@ -718,7 +718,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Option A
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8238cff26e71d2448a276e4f20d1b8eb, type: 2}
   m_sharedMaterial: {fileID: 8670072636242875393, guid: 8238cff26e71d2448a276e4f20d1b8eb, type: 2}
@@ -1045,7 +1045,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Enter text...
+  m_text: 8
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8238cff26e71d2448a276e4f20d1b8eb, type: 2}
   m_sharedMaterial: {fileID: 8670072636242875393, guid: 8238cff26e71d2448a276e4f20d1b8eb, type: 2}
@@ -1078,7 +1078,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 2
+  m_fontStyle: 3
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -1971,6 +1971,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefabWordButton: {fileID: 85052287294557713, guid: 3d34dfb04da1b894bb38f95969f23a9a, type: 3}
   thisContentTransform: {fileID: 448993318}
+  wordList: []
   other: {fileID: 1322392076}
   otherContentTransform: {fileID: 747271519}
 --- !u!1 &474817566
@@ -2004,8 +2005,7 @@ RectTransform:
   - {fileID: 1405403656}
   - {fileID: 797690830}
   - {fileID: 1372999912}
-  - {fileID: 618729503}
-  - {fileID: 1584555053}
+  - {fileID: 1535047287}
   m_Father: {fileID: 1031124451}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2792,7 +2792,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Enter text...
+  m_text: 8
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8238cff26e71d2448a276e4f20d1b8eb, type: 2}
   m_sharedMaterial: {fileID: 8670072636242875393, guid: 8238cff26e71d2448a276e4f20d1b8eb, type: 2}
@@ -2825,7 +2825,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 2
+  m_fontStyle: 3
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -2895,7 +2895,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 618729502}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2904,7 +2904,7 @@ RectTransform:
   - {fileID: 169841294}
   - {fileID: 1492476840}
   - {fileID: 1152366130}
-  m_Father: {fileID: 474817567}
+  m_Father: {fileID: 1535047287}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2960,13 +2960,7 @@ MonoBehaviour:
   m_ItemImage: {fileID: 0}
   m_Value: 0
   m_Options:
-    m_Options:
-    - m_Text: Option A
-      m_Image: {fileID: 0}
-    - m_Text: Option B
-      m_Image: {fileID: 0}
-    - m_Text: Option C
-      m_Image: {fileID: 0}
+    m_Options: []
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -3338,8 +3332,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20
-  m_fontSizeBase: 20
+  m_fontSize: 24
+  m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -4288,8 +4282,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20
-  m_fontSizeBase: 20
+  m_fontSize: 28
+  m_fontSizeBase: 28
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -4859,7 +4853,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Option A
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8238cff26e71d2448a276e4f20d1b8eb, type: 2}
   m_sharedMaterial: {fileID: 8670072636242875393, guid: 8238cff26e71d2448a276e4f20d1b8eb, type: 2}
@@ -5128,8 +5122,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20
-  m_fontSizeBase: 20
+  m_fontSize: 24
+  m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -5694,7 +5688,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 783b4e62fa88f884f841e0217980133f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelData: {fileID: 0}
 --- !u!1 &1322392071
 GameObject:
   m_ObjectHideFlags: 0
@@ -5819,6 +5812,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefabWordButton: {fileID: 85052287294557713, guid: 3d34dfb04da1b894bb38f95969f23a9a, type: 3}
   thisContentTransform: {fileID: 747271519}
+  wordList: []
   other: {fileID: 464875370}
   otherContentTransform: {fileID: 448993318}
 --- !u!1 &1339848696
@@ -6969,6 +6963,59 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1503114265}
   m_CullTransparentMesh: 1
+--- !u!1 &1535047286
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1535047287}
+  - component: {fileID: 1535047288}
+  m_Layer: 5
+  m_Name: Category
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1535047287
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1535047286}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 618729503}
+  - {fileID: 1584555053}
+  m_Father: {fileID: 474817567}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1535047288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1535047286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffa303ccd46f47348a534e9a5efe880d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parentCategory: {fileID: 618729504}
+  childCategory: {fileID: 1584555054}
+  listParentCategory: []
 --- !u!1 &1551143065
 GameObject:
   m_ObjectHideFlags: 0
@@ -7129,7 +7176,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1584555052}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -7138,7 +7185,7 @@ RectTransform:
   - {fileID: 1117083169}
   - {fileID: 161058157}
   - {fileID: 1908241190}
-  m_Father: {fileID: 474817567}
+  m_Father: {fileID: 1535047287}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -7194,13 +7241,7 @@ MonoBehaviour:
   m_ItemImage: {fileID: 0}
   m_Value: 0
   m_Options:
-    m_Options:
-    - m_Text: Option A
-      m_Image: {fileID: 0}
-    - m_Text: Option B
-      m_Image: {fileID: 0}
-    - m_Text: Option C
-      m_Image: {fileID: 0}
+    m_Options: []
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -7717,6 +7758,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1742194513}
   - component: {fileID: 1742194514}
+  - component: {fileID: 1742194515}
   m_Layer: 5
   m_Name: CreatorLevel
   m_TagString: Untagged
@@ -7756,20 +7798,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea7e20930ce48ed4c8380c1da5c0d8d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelData:
+    numRow: 0
+    numCol: 0
+    letters: 
+    words: []
   numRows: 0
   numCols: 0
   listLetter: 
-  objListLetter: {fileID: 1405403655}
+  objListLetter: {fileID: 1934639183}
   inputNumRows: {fileID: 1372999913}
   inputNumCols: {fileID: 797690831}
   inputMaxLetter: {fileID: 501998175}
   inputKeyword: {fileID: 864135711}
   searchWordButton: {fileID: 11121367}
+  resetButton: {fileID: 2033049884}
+  sortGridButton: {fileID: 1719264407}
   selectedWords: []
   availabelWords: []
-  objSelectedWords: {fileID: 464875365}
-  objAvailabelWords: {fileID: 1322392071}
+  objSelectedWords: {fileID: 464875370}
+  objAvailabelWords: {fileID: 1322392076}
   extraWordData: {fileID: 11400000, guid: c556823526d4f374bb3126b25c417aaf, type: 2}
+--- !u!114 &1742194515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1742194512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 166574f53bd09ee4985cb85a70a54992, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1745406723
 GameObject:
   m_ObjectHideFlags: 0
@@ -8581,7 +8642,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8238cff26e71d2448a276e4f20d1b8eb, type: 2}
   m_sharedMaterial: {fileID: 8670072636242875393, guid: 8238cff26e71d2448a276e4f20d1b8eb, type: 2}
@@ -9104,7 +9165,7 @@ GameObject:
   - component: {fileID: 2033049885}
   - component: {fileID: 2033049884}
   m_Layer: 5
-  m_Name: Reset Selected
+  m_Name: Reset Selected Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9669,11 +9730,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2146287486548766516, guid: 9017afed157a0504390efb56b696ff18, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -8.92
+      value: -4.41
       objectReference: {fileID: 0}
     - target: {fileID: 2146287486548766516, guid: 9017afed157a0504390efb56b696ff18, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.03
+      value: -0.03
       objectReference: {fileID: 0}
     - target: {fileID: 2146287486548766516, guid: 9017afed157a0504390efb56b696ff18, type: 3}
       propertyPath: m_LocalPosition.z
@@ -9710,7 +9771,7 @@ PrefabInstance:
     - target: {fileID: 3415629464659732451, guid: 9017afed157a0504390efb56b696ff18, type: 3}
       propertyPath: levelData
       value: 
-      objectReference: {fileID: 11400000, guid: 227314a86fb51f94e83487b383388a43, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 3971514571714344985, guid: 9017afed157a0504390efb56b696ff18, type: 3}
       propertyPath: m_Name
       value: GridBoard

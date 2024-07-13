@@ -9,7 +9,7 @@ public enum DirectionType
 public class Word
 {
     public string word;
-    public int startColIndex;
     public int startRowIndex;
+    public int startColIndex;
     public DirectionType dir;
 }

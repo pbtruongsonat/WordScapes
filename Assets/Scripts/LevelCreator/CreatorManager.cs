@@ -1,6 +1,8 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using Unity.Mathematics;
 using Unity.VisualScripting;
@@ -13,6 +15,7 @@ public class CreatorManager : MonoBehaviour
     public static CreatorManager Instance {  get { return _instance; } }
 
     [Header("Data For Level")]
+    public LevelDataDTO levelData;
     public int numRows;
     public int numCols;
     public string listLetter;
@@ -26,12 +29,14 @@ public class CreatorManager : MonoBehaviour
 
     [Header("Button")]
     public Button searchWordButton;
+    public Button resetButton;
+    public Button sortGridButton;
 
     [Header("List Words")]
     public List<string> selectedWords;
     public List<string> availabelWords;
-    public GameObject objSelectedWords;
-    public GameObject objAvailabelWords;
+    public ListWordScroll objSelectedWords;
+    public ListWordScroll objAvailabelWords;
 
     [Header("Data")]
     public ExtraWordData extraWordData;
@@ -48,9 +53,13 @@ public class CreatorManager : MonoBehaviour
     }
     public void Start()
     {
+        levelData = new LevelDataDTO();
         searchWordButton.onClick.AddListener(() => SearchWord());
+        resetButton.onClick.AddListener(() => { objSelectedWords.RemoveList(); });
+        sortGridButton.onClick.AddListener(() => SortGird());
     }
 
+    // Choose the word with the appropriate number of letters
     public void Search()
     {
         int maxLetter;
@@ -64,11 +73,43 @@ public class CreatorManager : MonoBehaviour
         }
         availabelWords.Clear();
 
+        Dictionary<char, int> letterCount = new Dictionary<char, int>();
+        foreach(char c in listLetter)
+        {
+            if (letterCount.ContainsKey(c))
+            {
+                letterCount[c]++;
+            }else
+            {
+                letterCount[c] = 1;
+            }
+        }
+
+        Dictionary<char, int> tmp = new Dictionary<char, int>();
         foreach (string word in extraWordData.listWords)
         {
-            if (word.Length <= maxLetter)
+            if (word.Length <= maxLetter && !selectedWords.Contains(word))
             {
-                availabelWords.Add(word);
+                foreach(var k in letterCount)
+                {
+                    tmp[k.Key] = k.Value;
+                }
+                int numLetterMiss = 0;
+                foreach (char c in word)
+                {
+                    if (tmp.ContainsKey(c) && tmp[c] > 0)
+                    {
+                        tmp[c]--;
+                    }
+                    else
+                    {
+                        numLetterMiss++;
+                    }
+                }
+                if (numLetterMiss <= maxLetter - listLetter.Length)
+                {
+                    availabelWords.Add(word);
+                }
             }
         }
     }
@@ -89,21 +130,79 @@ public class CreatorManager : MonoBehaviour
 
         for (int i = 0; i < availabelWords.Count; i++)
         {
-            int randIndex = UnityEngine.Random.Range(0, availabelWords.Count - 1);
+            int randIndex = UnityEngine.Random.Range(0, availabelWords.Count);
             string tmp = availabelWords[randIndex];
             availabelWords[randIndex] = availabelWords[i];
             availabelWords[i] = tmp;
         }
 
-        UpdateAvailabelWordView();
+        objAvailabelWords.UpdateList();
     }
 
     public void UpdateListLetter()
     {
+        selectedWords = objSelectedWords.wordList; //Update Selected Word
 
+        Dictionary<char, int> letterCount = new Dictionary<char, int>();
+        foreach (string word in selectedWords)
+        {
+            Dictionary<char, int> curLetterCount = new Dictionary<char, int>();
+            foreach (char letter in word)
+            {
+                if(curLetterCount.ContainsKey(letter)){
+                    curLetterCount[letter]++;
+                } else
+                {
+                    curLetterCount[letter] = 1;
+                }
+            }
+            foreach (var k in curLetterCount)
+            {
+                if (letterCount.ContainsKey(k.Key))
+                {
+                    letterCount[k.Key] = Math.Max(letterCount[k.Key], k.Value);
+                } else
+                {
+                    letterCount[k.Key] = k.Value;
+                }
+            }
+        }
+        listLetter = "";
+        foreach(var k in letterCount)
+        {
+            for(int i = 0; i < k.Value; i++)
+            {
+                listLetter += k.Key;
+            }
+        }
+        objListLetter.GetComponent<TextMeshProUGUI>().text = listLetter;
+        SearchWord();
     }
-    public void UpdateAvailabelWordView()
+
+    public void SortGird()
     {
-        objAvailabelWords.GetComponent<ListWordScroll>().UpdateList();
+        SortGrid sort = gameObject.GetComponent<SortGrid>();
+        if (sort.SortGridWords())
+        {
+            levelData.letters = listLetter;
+            GridBoardManager.Instance.LoadNewLevel(levelData);
+        }
+    }
+
+    private LevelData CreateNewLevel()
+    {
+        LevelData levelDataTmp = ScriptableObject.CreateInstance<LevelData>();
+        if (inputNumRows.text != "")
+        {
+            levelDataTmp.numRow = numRows;
+        }
+        else levelDataTmp.numRow = 8;
+        if (inputNumCols.text != "")
+        {
+            levelDataTmp.numCol = numCols;
+        } else levelDataTmp.numCol = 8;
+
+        levelDataTmp.letters = listLetter;
+        return levelDataTmp;
     }
 }

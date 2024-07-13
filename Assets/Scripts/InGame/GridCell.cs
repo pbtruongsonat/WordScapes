@@ -9,11 +9,6 @@ public class GridCell : Cell
     public GameObject squarePink;
     public GameObject squareWhite;
     public GameObject letterWhite;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
     
     public void SetLetter(string _letter)
     {
