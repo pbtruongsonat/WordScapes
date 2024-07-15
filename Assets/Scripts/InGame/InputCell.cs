@@ -9,21 +9,20 @@ public class InputCell : Cell
     public GameObject squarePink;
     public GameObject letterWhite;
     public GameObject letterPurple;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public string letter;
+
     public void SetLetter(string _letter)
     {
+        letter = _letter;
         letterWhite.GetComponent<TextMeshProUGUI>().text = _letter;
         letterPurple.GetComponent<TextMeshProUGUI>().text = _letter;
     }
 
+    public void SelectedLetter(bool selected)
+    {
+
+        squarePink.SetActive(selected);
+        letterPurple.SetActive(!selected);
+    }
 }

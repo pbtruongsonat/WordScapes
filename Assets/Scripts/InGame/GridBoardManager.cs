@@ -129,7 +129,6 @@ public class GridBoardManager : MonoBehaviour
         if (!cell.activeSelf)
         {
             cell.GetComponent<GridCell>().SetLetter(letter.ToString());
-            cell.GetComponent<GridCell>().OnSloved();
             cell.SetActive(true);
         }
     }
@@ -160,5 +159,17 @@ public class GridBoardManager : MonoBehaviour
     {
         float scaleOffet = Mathf.Min(3.3f / (levelData.numCol), 3.3f/ (levelData.numRow));
         gameObject.transform.localScale = new Vector3(scaleOffet, scaleOffet, 1f);
+    }
+    // --------------------- Sloved New Word ------------------
+
+    public void SlovedNewWord(Word word)
+    {
+        int startIndexWord = word.startRowIndex * levelData.numCol + word.startColIndex;
+        int indexIncrease = (word.dir == DirectionType.H) ? 1 : levelData.numCol;
+
+        for (int i = 0; i < word.word.Length; i++)
+        {
+            _cellList[startIndexWord + indexIncrease * i].GetComponent<GridCell>()?.OnSloved();
+        }
     }
 }

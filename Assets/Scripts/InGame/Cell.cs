@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Cell : MonoBehaviour
 {
-
     public void SetSizeCell(Vector3 size)
     {
 
