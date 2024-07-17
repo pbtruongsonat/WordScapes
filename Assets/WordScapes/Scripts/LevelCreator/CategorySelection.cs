@@ -14,6 +14,9 @@ public class Category : MonoBehaviour
     public Dictionary<string, ParentCategory> dicParent;
     public List<string> listNameParent;
 
+    public GameObject levelButtonPrefabs;
+    public GameObject levelContainer;
+
     private void Start()
     {
         parentCategory.onValueChanged.AddListener(delegate { UpdateChildList(); });
