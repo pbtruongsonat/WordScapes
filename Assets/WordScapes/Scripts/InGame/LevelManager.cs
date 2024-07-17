@@ -1,4 +1,7 @@
+using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.IO;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class LevelManager : SingletonBase<LevelManager>
@@ -10,12 +13,40 @@ public class LevelManager : SingletonBase<LevelManager>
     public GameObject background;
 
     [Header("Level")]
+    public int curLevel;
     public Dictionary<string, Word> wordList;
     public List<string> slovedWordList;
 
     public void Start()
     {
+        levelData = new LevelData();
+        LoadLevelData(1, 2, 0);
         extraWordList = new List<string>(extraWordData.listWords);
+    }
+
+    public void LoadLevelData(int parentIndex, int childIndex, int levelIndex)
+    {
+        string path = $"Data/Level/Level_{parentIndex}_{childIndex}_{levelIndex}";
+        TextAsset fileLevel = Resources.Load<TextAsset>(path);
+        if (fileLevel == null) return;
+
+        levelData = JsonConvert.DeserializeObject<LevelData>(fileLevel.text);
+        wordList = new Dictionary<string, Word>();
+        foreach (var word in levelData.words)
+        {
+            wordList.Add(word.word, word);
+        }
+        GridBoardManager.Instance.LoadNewLevel(levelData);
+        LetterManager.Instance.LoadNewLevel();
+    }
+
+    public void LoadLevelData(int levelIndex)
+    {
+        string path = $"Data/Level/Level_{levelIndex}";
+        TextAsset fileLevel = Resources.Load<TextAsset>(path);
+        if (fileLevel == null) return;
+
+        levelData = JsonConvert.DeserializeObject<LevelData>(fileLevel.text);
         wordList = new Dictionary<string, Word>();
         foreach (var word in levelData.words)
         {

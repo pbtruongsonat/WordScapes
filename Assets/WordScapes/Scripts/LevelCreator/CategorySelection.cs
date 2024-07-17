@@ -1,9 +1,7 @@
-using JetBrains.Annotations;
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Category : MonoBehaviour
 {
@@ -48,6 +46,7 @@ public class Category : MonoBehaviour
         }
         UpdateLevelName();
     }
+
     private void UpdateLevelName()
     {
         int levelCount = 0;
@@ -60,7 +59,14 @@ public class Category : MonoBehaviour
             {
                 if(child.name == nameChild)
                 {
-                    levelCount = child.listLevel.Count;
+                    if(child.listLevel == null)
+                    {
+                        child.listLevel = new List<LevelData>();
+                    }
+                    else
+                    {
+                        levelCount = child.listLevel.Count;
+                    }
                     break;
                 }
             }
