@@ -1,0 +1,33 @@
+{
+  "numRow": 4,
+  "numCol": 6,
+  "letters": "TTENH",
+  "words": [
+    {
+      "word": "TENTH",
+      "startRowIndex": 0,
+      "startColIndex": 0,
+      "dir": 0
+    },
+    {
+      "word": "THEN",
+      "startRowIndex": 0,
+      "startColIndex": 0,
+      "dir": 1
+    },
+    {
+      "word": "NET",
+      "startRowIndex": 0,
+      "startColIndex": 2,
+      "dir": 1
+    },
+    {
+      "word": "TENT",
+      "startRowIndex": 2,
+      "startColIndex": 2,
+      "dir": 0
+    }
+  ],
+  "name": "",
+  "hideFlags": 0
+}

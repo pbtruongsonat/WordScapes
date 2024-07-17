@@ -20,6 +20,7 @@ public class SaveLoadLevel : MonoBehaviour
         {
             string nameFile = CreatorManager.Instance.nameLevel.text;
             var path = StandaloneFileBrowser.SaveFilePanel("Save File", "", nameFile, extensions);
+            //var path = Application.dataPath + "/" + nameFile;
             string json = JsonConvert.SerializeObject(levelData, Formatting.Indented);
             File.WriteAllText(path, json);
         }
@@ -28,43 +29,19 @@ public class SaveLoadLevel : MonoBehaviour
         }
     }
 
-    public LevelData GetLevelDataFromCreator()
-    {
-        LevelData levelData = ScriptableObject.CreateInstance<LevelData>();
-
-        // Get values of the attributes
-
-
-        return levelData;
-    }
-
-
-
 
     // Load Level To Creator
     public void OpenFileLevel()
     {
         var extensions = new[] { new ExtensionFilter("Json File", "json") };
         var path = StandaloneFileBrowser.OpenFilePanel("Open File", "", extensions, true);
+        //var path = Application.dataPath + "/" + "Level_0_0_0";
         if (path.Length>0 && File.Exists(path[0]))
         {
             string json = File.ReadAllText(path[0]);
-            GridBoardManager.Instance.levelData = LevelDataFromJson(json);
+            GridBoardManager.Instance.levelData = JsonConvert.DeserializeObject<LevelData>(json);
             GridBoardManager.Instance.LoadLevelGrid();
+            GridBoardManager.Instance.DisplaySloved();
         }
     }
-
-    public LevelData LevelDataFromJson(string json)
-    {
-        LevelData levelDTO = JsonConvert.DeserializeObject<LevelData>(json);
-
-        LevelData levelData = ScriptableObject.CreateInstance<LevelData>();
-
-        levelData.numRow = levelDTO.numRow;
-        levelData.numCol = levelDTO.numCol;
-        levelData.words = levelDTO.words;
-
-        return levelData;
-    }
-
 }

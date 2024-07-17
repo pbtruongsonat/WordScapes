@@ -1,0 +1,49 @@
+{
+  "numRow": 5,
+  "numCol": 9,
+  "letters": "WANTU",
+  "words": [
+    {
+      "word": "NAT",
+      "startRowIndex": 2,
+      "startColIndex": 1,
+      "dir": 1
+    },
+    {
+      "word": "WANT",
+      "startRowIndex": 3,
+      "startColIndex": 0,
+      "dir": 0
+    },
+    {
+      "word": "WAT",
+      "startRowIndex": 1,
+      "startColIndex": 3,
+      "dir": 1
+    },
+    {
+      "word": "WAN",
+      "startRowIndex": 1,
+      "startColIndex": 3,
+      "dir": 0
+    },
+    {
+      "word": "ANT",
+      "startRowIndex": 0,
+      "startColIndex": 5,
+      "dir": 1
+    },
+    {
+      "word": "AUNT",
+      "startRowIndex": 0,
+      "startColIndex": 5,
+      "dir": 0
+    },
+    {
+      "word": "TUNA",
+      "startRowIndex": 0,
+      "startColIndex": 8,
+      "dir": 1
+    }
+  ]
+}

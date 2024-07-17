@@ -105,7 +105,7 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
 
     private void ScaleGridBoard()
     {
-        float scaleOffet = Mathf.Min(3.3f / (levelData.numCol), 3.3f/ (levelData.numRow));
+        float scaleOffet = Mathf.Min(3.3f / (levelData.numCol), 3f/ (levelData.numRow));
         gameObject.transform.localScale = new Vector3(scaleOffet, scaleOffet, 1f);
     }
 

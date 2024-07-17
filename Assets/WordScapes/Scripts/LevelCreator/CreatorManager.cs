@@ -13,7 +13,6 @@ public class CreatorManager : MonoBehaviour
 
     [Header("Data For Level")]
     public TMP_InputField nameLevel;
-    //public LevelDataDTO levelData;
     public int numRows;
     public int numCols;
     public string listLetter;
@@ -185,7 +184,7 @@ public class CreatorManager : MonoBehaviour
         SortGrid sort = gameObject.GetComponent<SortGrid>();
         if (sort.SortGridWords())
         {
-            LevelData levelData = ScriptableObject.CreateInstance<LevelData>();
+            LevelData levelData = new LevelData();
 
             inputNumCols.text = numCols.ToString();
             inputNumRows.text = numRows.ToString();
@@ -201,7 +200,7 @@ public class CreatorManager : MonoBehaviour
 
     private LevelData CreateNewLevel()
     {
-        LevelData levelDataTmp = ScriptableObject.CreateInstance<LevelData>();
+        LevelData levelDataTmp = new LevelData();
         if (inputNumRows.text != "")
         {
             levelDataTmp.numRow = numRows;

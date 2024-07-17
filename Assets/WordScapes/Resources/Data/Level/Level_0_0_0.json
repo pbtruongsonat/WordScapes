@@ -1,0 +1,31 @@
+{
+  "numRow": 5,
+  "numCol": 4,
+  "letters": "BUSYP",
+  "words": [
+    {
+      "word": "BUYS",
+      "startRowIndex": 1,
+      "startColIndex": 2,
+      "dir": 1
+    },
+    {
+      "word": "BUSY",
+      "startRowIndex": 4,
+      "startColIndex": 0,
+      "dir": 0
+    },
+    {
+      "word": "PUBS",
+      "startRowIndex": 1,
+      "startColIndex": 0,
+      "dir": 0
+    },
+    {
+      "word": "SPY",
+      "startRowIndex": 0,
+      "startColIndex": 0,
+      "dir": 1
+    }
+  ]
+}
