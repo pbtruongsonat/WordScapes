@@ -10,11 +10,13 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
     [Header("Properties")]
     public Vector3 firstPosition;
     private List<GameObject> _cellList = new List<GameObject>();
-    private Dictionary<int, GameObject> cellDic = new Dictionary<int, GameObject>(); 
+
+    private Dictionary<int, GameObject> cellDic = new Dictionary<int, GameObject>();
+    public List<int> listLetterUnsloved = new List<int>();
 
     [Header("Data")]
     public LevelData levelData;
-
+    
     public void LoadNewLevel(LevelData levelData)
     {
         this.levelData = levelData;
@@ -41,6 +43,7 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
         }
         gameObject.transform.localScale = Vector3.one;
         cellDic.Clear();
+        listLetterUnsloved.Clear();
     }
 
     private void SpawnGridCell()
@@ -54,6 +57,7 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
             int startRow = word.startRowIndex;
             int startIndex = startRow * numCols + startCol;
             int indexIncrease;
+
             if (word.dir == DirectionType.H)
             {
                 indexIncrease = 1; // Horizontal
@@ -62,6 +66,7 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
             {
                 indexIncrease = numCols; // V
             }
+
             for (int i = 0; i < word.word.Length; i++)
             {
                 int index = startIndex + i * indexIncrease;
@@ -83,6 +88,7 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
     {
         var cell = _cellList[0];
         cellDic.Add(index, cell);
+        listLetterUnsloved.Add(index);
         _cellList.Remove(cell);
 
         //
@@ -105,8 +111,12 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
 
     private void ScaleGridBoard()
     {
-        float scaleOffet = Mathf.Min(3.3f / (levelData.numCol), 3f/ (levelData.numRow));
-        gameObject.transform.localScale = new Vector3(scaleOffet, scaleOffet, 1f);
+        float width = Camera.main.orthographicSize * 2 * Camera.main.aspect;
+        float height = Camera.main.orthographicSize * 2;
+        float numcell = Mathf.Min(width / 1.5f, height*0.4f /1.5f);
+
+        float scaleOffset = Mathf.Min(numcell / (levelData.numCol), numcell / (levelData.numRow));
+        gameObject.transform.localScale = new Vector3(scaleOffset, scaleOffset, 1f);
     }
 
     // --------------------- Sloved New Word ------------------
@@ -116,10 +126,16 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
         int indexIncrease = (word.dir == DirectionType.H) ? 1 : levelData.numCol;
         for (int i = 0; i < word.word.Length; i++)
         {
-            if(cellDic.ContainsKey(startIndexWord + indexIncrease * i))
-            {
-                cellDic[startIndexWord + indexIncrease * i].GetComponent<GridCell>()?.OnSloved();
-            }
+            SlovedNewLetter(startIndexWord + indexIncrease * i);
+        }
+    }
+
+    public void SlovedNewLetter(int index)
+    {
+        if (cellDic.ContainsKey(index))
+        {
+            cellDic[index].GetComponent<GridCell>()?.OnSloved();
+            listLetterUnsloved.Remove(index);
         }
     }
 

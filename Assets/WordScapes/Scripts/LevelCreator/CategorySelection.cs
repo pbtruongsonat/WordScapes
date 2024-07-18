@@ -62,7 +62,7 @@ public class Category : MonoBehaviour
             {
                 if(child.name == nameChild)
                 {
-                    if(child.listLevel == null)
+                    if (child.listLevel == null)
                     {
                         child.listLevel = new List<LevelData>();
                     }
