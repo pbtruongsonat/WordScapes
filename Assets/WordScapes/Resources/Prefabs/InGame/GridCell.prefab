@@ -267,6 +267,7 @@ MonoBehaviour:
   squarePink: {fileID: 4622657244812082491}
   squareWhite: {fileID: 3643063437153769435}
   letterUI: {fileID: 5296133939360002284}
+  pinkColor: {r: 0.86274517, g: 0.31764707, b: 1, a: 1}
 --- !u!1 &3643063437153769435
 GameObject:
   m_ObjectHideFlags: 0

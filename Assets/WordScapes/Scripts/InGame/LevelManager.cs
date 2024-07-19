@@ -17,6 +17,9 @@ public class LevelManager : SingletonBase<LevelManager>
     public Dictionary<string, Word> wordList;
     public List<string> slovedWordList;
 
+    [Header("Bonus Word")]
+    public List<string> listBonusWord;
+
     public void Start()
     {
         levelData = new LevelData();
@@ -74,13 +77,16 @@ public class LevelManager : SingletonBase<LevelManager>
                 // Word has been solved
                 Debug.Log($"{wordstr} is sloved");
             }
-        } else if (extraWordList.Contains(wordstr))
+        } else if (extraWordList.Contains(wordstr) && !listBonusWord.Contains(wordstr))
         {
             // Dont exist word in level, but word is correct => bonus
+            listBonusWord.Add(wordstr);
             Debug.Log($"bonus word: {wordstr}");
         }
     }
 
+
+    
     private void Win()
     {
         Debug.Log("win");

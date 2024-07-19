@@ -22,4 +22,5 @@ public class InputCell : Cell
         squarePink.SetActive(selected);
         letterUI.color = selected ? selectedColor : normalColor;
     }
+
 }

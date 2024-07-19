@@ -12,14 +12,6 @@ public class TestUI : MonoBehaviour
     public List<GameObject> probarReward = new List<GameObject>();
     public Slider sliderProbar;
 
-    [Header("Jump")]
-    public GameObject inputCell;
-    public Transform transform;
-    public float jumpPower;
-    public int numJump;
-    public float duration;
-    public bool snapping;
-
 
     void Start()
     {
@@ -33,8 +25,6 @@ public class TestUI : MonoBehaviour
         impressiveObj.transform.DOScale(Vector3.one, 2f).SetEase(Ease.InOutBack);
 
         StartCoroutine("StarsAnimation");
-
-        inputCell.transform.DOJump(transform.position, jumpPower, numJump, duration, snapping);
     }
 
     IEnumerator StarsAnimation()

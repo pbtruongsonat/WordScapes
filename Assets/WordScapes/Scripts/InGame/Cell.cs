@@ -4,14 +4,6 @@ using UnityEngine;
 
 public class Cell : MonoBehaviour
 {
-    public void SetSizeCell(Vector3 size)
-    {
-
-    }
-    public void SetPosition(Vector3 position)
-    {
-
-    }
     public void Destroy()
     {
         Destroy(gameObject);

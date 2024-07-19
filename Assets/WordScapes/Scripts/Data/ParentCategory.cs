@@ -8,4 +8,10 @@ public class ParentCategory : ScriptableObject
 {
     public string name;
     public List<ChildCategory> listChild;
+
+    public ParentCategory(string name)
+    {
+        this.name = name;
+        listChild = new List<ChildCategory>();
+    }
 }

@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ public class InputHandle : MonoBehaviour
     public List<InputCell> inputCellSelected;
 
     public LineManager lineManager;
+    public LineRenderer bgInputWord;
 
     private void Awake()
     {
@@ -31,10 +33,12 @@ public class InputHandle : MonoBehaviour
             if (word != string.Empty)
             {
                 lineManager.ClearLine();
-
                 LevelManager.Instance.CheckWord(word);
+
                 word = string.Empty;
                 inputWord.text = word;
+                bgInputWord.positionCount = 0;
+
                 foreach (var inputCell in inputCellSelected)
                 {
                     inputCell.SelectedLetter(false);
@@ -56,6 +60,7 @@ public class InputHandle : MonoBehaviour
 
             word += inputCell.letter;
             inputWord.text = word;
+            Hello();
 
             lineManager.AddNewLine(cell.transform.position);
         }
@@ -70,6 +75,16 @@ public class InputHandle : MonoBehaviour
 
             lineManager.RemoveLine();
         }
+    }
+
+    private void Hello()
+    {
+        float xLeft = inputWord.rectTransform.position.x - inputWord.rectTransform.rect.width / 2 - 0.1f;
+        float xRight = inputWord.rectTransform.position.x + inputWord.rectTransform.rect.width / 2 + 0.1f;
+
+        bgInputWord.positionCount = 2;
+        bgInputWord.SetPosition(0, new Vector3(xLeft, inputWord.rectTransform.position.y, 0f));
+        bgInputWord.SetPosition(1, new Vector3(xRight, inputWord.rectTransform.position.y, 0f));
     }
 
 }

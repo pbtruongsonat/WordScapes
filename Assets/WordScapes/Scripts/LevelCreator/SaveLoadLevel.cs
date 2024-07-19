@@ -11,7 +11,9 @@ public class SaveLoadLevel : MonoBehaviour
     {
         if(GridBoardManager.Instance.levelData == null)
         {
+            #if UNITY_EDITOR
             Debug.LogWarning("Dont have valid data level");
+            #endif
             return;
         }
         LevelData levelData = GridBoardManager.Instance.levelData;
