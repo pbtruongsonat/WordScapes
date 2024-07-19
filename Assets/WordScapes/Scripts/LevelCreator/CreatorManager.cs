@@ -12,7 +12,7 @@ public class CreatorManager : MonoBehaviour
     public static CreatorManager Instance {  get { return _instance; } }
 
     [Header("Data For Level")]
-    public TMP_InputField nameLevel;
+    public LevelData levelData;
     public int numRows;
     public int numCols;
     public string listLetter;
@@ -55,7 +55,7 @@ public class CreatorManager : MonoBehaviour
         words = new List<Word>();
 
         searchWordButton.onClick.AddListener(() => SearchWord());
-        resetButton.onClick.AddListener(() => { objSelectedWords.RemoveList(); });
+        resetButton.onClick.AddListener(() => ResetData());
         sortGridButton.onClick.AddListener(() => SortGird());
     }
 
@@ -184,7 +184,7 @@ public class CreatorManager : MonoBehaviour
         SortGrid sort = gameObject.GetComponent<SortGrid>();
         if (sort.SortGridWords())
         {
-            LevelData levelData = new LevelData();
+            levelData = new LevelData();
 
             inputNumCols.text = numCols.ToString();
             inputNumRows.text = numRows.ToString();
@@ -198,20 +198,12 @@ public class CreatorManager : MonoBehaviour
         }
     }
 
-    private LevelData CreateNewLevel()
-    {
-        LevelData levelDataTmp = new LevelData();
-        if (inputNumRows.text != "")
-        {
-            levelDataTmp.numRow = numRows;
-        }
-        else levelDataTmp.numRow = 8;
-        if (inputNumCols.text != "")
-        {
-            levelDataTmp.numCol = numCols;
-        } else levelDataTmp.numCol = 8;
 
-        levelDataTmp.letters = listLetter;
-        return levelDataTmp;
+    public void ResetData()
+    {
+        objSelectedWords.RemoveList();
+
+        GridBoardManager.Instance.levelData = null;
+        GridBoardManager.Instance.DisplaySloved();
     }
 }

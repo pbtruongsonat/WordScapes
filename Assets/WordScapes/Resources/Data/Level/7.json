@@ -1,0 +1,25 @@
+{
+  "numRow": 4,
+  "numCol": 3,
+  "letters": "RECUB",
+  "words": [
+    {
+      "word": "REC",
+      "startRowIndex": 0,
+      "startColIndex": 0,
+      "dir": 1
+    },
+    {
+      "word": "CUB",
+      "startRowIndex": 2,
+      "startColIndex": 0,
+      "dir": 0
+    },
+    {
+      "word": "CUBE",
+      "startRowIndex": 0,
+      "startColIndex": 2,
+      "dir": 1
+    }
+  ]
+}

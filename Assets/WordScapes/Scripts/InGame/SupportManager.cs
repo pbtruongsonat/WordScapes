@@ -1,17 +1,20 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Serialization;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SupportManager : MonoBehaviour
+public class SupportManager : SingletonBase<SupportManager>
 {
     [Header("Button")]
     public Button convertButton;
     public Button ideaButton;
     public Button pointButton;
     public Button rocketButton;
+
+    public bool inPointSupport;
 
     public List<Vector3> newPosition;
 
@@ -57,18 +60,21 @@ public class SupportManager : MonoBehaviour
     }
     private void IdeaLetter()
     {
-        int indexLetter = UnityEngine.Random.Range(0, GridBoardManager.Instance.listLetterUnsloved.Count);
-        GridBoardManager.Instance.SlovedNewLetter(GridBoardManager.Instance.listLetterUnsloved[indexLetter]);
+        int indexWord = UnityEngine.Random.Range(0, GridBoardManager.Instance.wordUnSloved.Count);
+        var word = GridBoardManager.Instance.wordUnSloved.ElementAt(indexWord);
+        int indexCell = Random.Range(0, word.Value.Count);
+
+        GridBoardManager.Instance.SlovedNewLetter(word.Key, indexCell);
     }
     private void PointLetter()
     {
-        
+        inPointSupport = !inPointSupport;
     }
     private void RocketLetter()
     {
         for (int i = 0; i < 5; i++)
         {
-            if (GridBoardManager.Instance.listLetterUnsloved.Count == 0) break;
+            if (GridBoardManager.Instance.wordUnSloved.Count == 0) break;
             IdeaLetter();
         }
     }

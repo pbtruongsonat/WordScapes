@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class Category : MonoBehaviour
 {
@@ -9,21 +8,20 @@ public class Category : MonoBehaviour
     public TMP_Dropdown parentCategory;
     public TMP_Dropdown childCategory;
 
-    [Header("Data Category")]
-    public List<ParentCategory> listParentCategory;
+    [Header("Category")]
     public Dictionary<string, ParentCategory> dicParent;
+    public Dictionary<string, ChildCategory> dicChild;
     public List<string> listNameParent;
-
-    public GameObject levelButtonPrefabs;
-    public GameObject levelContainer;
 
     private void Start()
     {
         parentCategory.onValueChanged.AddListener(delegate { UpdateChildList(); });
-        childCategory.onValueChanged.AddListener(delegate { UpdateLevelName(); });
+        childCategory.onValueChanged.AddListener(delegate { childChangeValue(); });
 
         dicParent = new Dictionary<string, ParentCategory>();
-        foreach(var category in listParentCategory)
+        dicChild = new Dictionary<string, ChildCategory>();
+
+        foreach(var category in CategoryManager.Instance.gameData.listParent)
         {
             dicParent.Add(category.name, category);
             listNameParent.Add(category.name);
@@ -36,6 +34,7 @@ public class Category : MonoBehaviour
 
     private void UpdateChildList()
     {
+        dicChild.Clear();
         List<string> listNameChildCategory = new List<string>();
         string nameParent = parentCategory.options[parentCategory.value].text;
         if (listNameParent.Contains(nameParent))
@@ -47,33 +46,12 @@ public class Category : MonoBehaviour
             childCategory.ClearOptions();
             childCategory.AddOptions(listNameChildCategory);
         }
-        UpdateLevelName();
+        childChangeValue();
     }
 
-    private void UpdateLevelName()
+    public void childChangeValue()
     {
-        int levelCount = 0;
-        string nameParent = parentCategory.options[parentCategory.value].text;
-        if (listNameParent.Contains(nameParent))
-        {
-            ParentCategory parent = dicParent[nameParent];
-            string nameChild = childCategory.options[childCategory.value].text;
-            foreach(var child in parent.listChild)
-            {
-                if(child.name == nameChild)
-                {
-                    if (child.listLevel == null)
-                    {
-                        child.listLevel = new List<LevelData>();
-                    }
-                    else
-                    {
-                        levelCount = child.listLevel.Count;
-                    }
-                    break;
-                }
-            }
-        }
-        CreatorManager.Instance.nameLevel.text = $"Level_{parentCategory.value}_{childCategory.value}_{levelCount}";
+        var parent = CategoryManager.Instance.gameData.listParent[parentCategory.value];
+        CategoryManager.Instance.UpdateChildSelected(parent.listChild[childCategory.value]);
     }
 }

@@ -1,0 +1,25 @@
+{
+  "numRow": 4,
+  "numCol": 5,
+  "letters": "CLINK",
+  "words": [
+    {
+      "word": "CLINK",
+      "startRowIndex": 2,
+      "startColIndex": 0,
+      "dir": 0
+    },
+    {
+      "word": "LINK",
+      "startRowIndex": 0,
+      "startColIndex": 3,
+      "dir": 1
+    },
+    {
+      "word": "NIC",
+      "startRowIndex": 0,
+      "startColIndex": 0,
+      "dir": 1
+    }
+  ]
+}
