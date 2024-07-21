@@ -23,13 +23,13 @@ public class LevelManager : SingletonBase<LevelManager>
     public void Start()
     {
         levelData = new LevelData();
-        LoadLevelData(1, 2, 0);
+        LoadLevelData(9);
         extraWordList = new List<string>(extraWordData.listWords);
     }
 
     public void LoadLevelData(int parentIndex, int childIndex, int levelIndex)
     {
-        string path = $"Data/Level/Level_{parentIndex}_{childIndex}_{levelIndex}";
+        string path = $"Data/Level/9";
         TextAsset fileLevel = Resources.Load<TextAsset>(path);
         if (fileLevel == null) return;
 
@@ -45,10 +45,12 @@ public class LevelManager : SingletonBase<LevelManager>
 
     public void LoadLevelData(int levelIndex)
     {
-        string path = $"Data/Level/Level_{levelIndex}";
+        //string path = $"/Data/Level/{levelIndex}.json";
+        string path = $"Data/Level/{levelIndex}";
         TextAsset fileLevel = Resources.Load<TextAsset>(path);
         if (fileLevel == null) return;
 
+        Debug.Log(fileLevel.text);
         levelData = JsonConvert.DeserializeObject<LevelData>(fileLevel.text);
         wordList = new Dictionary<string, Word>();
         foreach (var word in levelData.words)

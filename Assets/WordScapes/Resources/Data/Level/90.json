@@ -1,0 +1,31 @@
+{
+  "numRow": 5,
+  "numCol": 6,
+  "letters": "LOVES",
+  "words": [
+    {
+      "word": "LES",
+      "startRowIndex": 0,
+      "startColIndex": 3,
+      "dir": 0
+    },
+    {
+      "word": "LOVES",
+      "startRowIndex": 0,
+      "startColIndex": 3,
+      "dir": 1
+    },
+    {
+      "word": "SOLVE",
+      "startRowIndex": 2,
+      "startColIndex": 0,
+      "dir": 0
+    },
+    {
+      "word": "LOS",
+      "startRowIndex": 1,
+      "startColIndex": 1,
+      "dir": 1
+    }
+  ]
+}

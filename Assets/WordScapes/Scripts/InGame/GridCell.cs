@@ -1,5 +1,11 @@
 using DG.Tweening;
+using System;
 using UnityEngine;
+
+public class ActionEvent
+{
+    public static Action<bool> onBoosterHint;
+}
 
 public class GridCell : Cell
 {
@@ -9,7 +15,15 @@ public class GridCell : Cell
     public TMPro.TextMeshPro letterUI;
     public Color pinkColor;
 
+    public BoxCollider2D colider;
+
     public bool sloved = false;
+
+    public void Awake()
+    {
+        ActionEvent.onBoosterHint += ReadyToHint;
+        ReadyToHint(false);
+    }
 
     public void SetLetter(string _letter)
     {
@@ -28,10 +42,17 @@ public class GridCell : Cell
     }
     public void OnMouseDown()
     {
-        if (SupportManager.Instance.inPointSupport && !sloved)
-        {
-            SupportManager.Instance.inPointSupport = false;
-            this.OnSloved();
-        }
+        //if (SupportManager.Instance.inPointSupport && !sloved)
+        //{
+        //    SupportManager.Instance.inPointSupport = false;
+        this.OnSloved();
+        ActionEvent.onBoosterHint(false);
+        ActionEvent.onBoosterHint -= ReadyToHint;
+        //}
+    }
+
+    public void ReadyToHint(bool value)
+    {
+        colider.enabled = value;
     }
 }
