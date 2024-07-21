@@ -20,7 +20,8 @@ public class SaveLoadLevel : SingletonBase<SaveLoadLevel>
 
     [Header("Creator Text")]
     public TextMeshProUGUI idLevelSave;
-    public TMP_InputField inputIdLevel;
+    public TMP_InputField inputIdLevelSave;
+    public TMP_InputField inputIdLevelLoad;
 
     public void Start()
     {
@@ -46,7 +47,7 @@ public class SaveLoadLevel : SingletonBase<SaveLoadLevel>
         {
             //var path = StandaloneFileBrowser.SaveFilePanel("Save File", "", nameFile, extensions);
 
-            string levelId = idLevelSave.text;
+            string levelId = inputIdLevelSave.text;
 
             var path = $"{pathLevel}{levelId}.json";
             //var path = Application.dataPath + "/" + nameFile;
@@ -54,6 +55,8 @@ public class SaveLoadLevel : SingletonBase<SaveLoadLevel>
             File.WriteAllText(path, json);
             CreatorManager.Instance.ResetData();
             LoadAllLevelID();
+
+            inputIdLevelSave.text = (int.Parse(levelId) + 1).ToString();
         }
         catch (ArgumentException ex) {
             Debug.Log(ex.Message);
@@ -74,12 +77,12 @@ public class SaveLoadLevel : SingletonBase<SaveLoadLevel>
 
     public void OpenFileLevel()
     {
-        if(inputIdLevel.text == "")
+        if(inputIdLevelLoad.text == "")
         {
             Debug.LogWarning("Please enter a valid level ID to open the file");
             return;
         }
-        var path = $"Assets/WordScapes/Resources/Data/Level/{inputIdLevel.text}.json";
+        var path = $"Assets/WordScapes/Resources/Data/Level/{inputIdLevelLoad.text}.json";
         LoadFileLevel(path);
     }
 
@@ -88,8 +91,7 @@ public class SaveLoadLevel : SingletonBase<SaveLoadLevel>
         if (File.Exists(path))
         {
             string json = File.ReadAllText(path);
-            GridBoardManager.Instance.levelData = JsonConvert.DeserializeObject<LevelData>(json);
-            GridBoardManager.Instance.LoadLevelGrid();
+            GridBoardManager.Instance.LoadNewLevel(JsonConvert.DeserializeObject<LevelData>(json));
             GridBoardManager.Instance.DisplaySloved();
         } else
         {
@@ -110,11 +112,10 @@ public class SaveLoadLevel : SingletonBase<SaveLoadLevel>
             }
         }
         listIDLevels.Sort();
-        int id = 1;
-        while (listIDLevels.Contains(id))
-        {
-            id++;
-        }
-        idLevelSave.text = id.ToString();
+        int rcmIdLevel = listIDLevels.Max() + 1;
+        idLevelSave.text = $"Recomment Valid Id Level: {rcmIdLevel}";
     }
+
+
+
 }

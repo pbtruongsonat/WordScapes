@@ -669,6 +669,7 @@ MonoBehaviour:
   ideaButton: {fileID: 1662353570}
   pointButton: {fileID: 1958679668}
   rocketButton: {fileID: 760990789}
+  inPointSupport: 0
   newPosition: []
 --- !u!4 &176603540
 Transform:
@@ -6622,6 +6623,7 @@ GameObject:
   - component: {fileID: 1958679670}
   - component: {fileID: 1958679669}
   - component: {fileID: 1958679668}
+  - component: {fileID: 1958679671}
   m_Layer: 5
   m_Name: Point Button
   m_TagString: Untagged
@@ -6692,7 +6694,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1958679669}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1958679671}
+        m_TargetAssemblyTypeName: HintButtonController, Assembly-CSharp
+        m_MethodName: OnBoosterHintClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1958679669
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6731,6 +6745,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1958679666}
   m_CullTransparentMesh: 1
+--- !u!114 &1958679671
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1958679666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 170888dd56696a347a075e9458904d4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1960827243
 GameObject:
   m_ObjectHideFlags: 0

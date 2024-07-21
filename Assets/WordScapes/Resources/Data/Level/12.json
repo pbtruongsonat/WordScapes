@@ -1,0 +1,43 @@
+{
+  "numRow": 4,
+  "numCol": 8,
+  "letters": "WOREC",
+  "words": [
+    {
+      "word": "CREW",
+      "startRowIndex": 2,
+      "startColIndex": 4,
+      "dir": 0
+    },
+    {
+      "word": "ROW",
+      "startRowIndex": 0,
+      "startColIndex": 7,
+      "dir": 1
+    },
+    {
+      "word": "WORE",
+      "startRowIndex": 0,
+      "startColIndex": 5,
+      "dir": 1
+    },
+    {
+      "word": "CROW",
+      "startRowIndex": 0,
+      "startColIndex": 2,
+      "dir": 0
+    },
+    {
+      "word": "CORE",
+      "startRowIndex": 0,
+      "startColIndex": 2,
+      "dir": 1
+    },
+    {
+      "word": "ORE",
+      "startRowIndex": 3,
+      "startColIndex": 0,
+      "dir": 0
+    }
+  ]
+}
