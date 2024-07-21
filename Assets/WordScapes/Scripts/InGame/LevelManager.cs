@@ -84,8 +84,6 @@ public class LevelManager : SingletonBase<LevelManager>
             Debug.Log($"bonus word: {wordstr}");
         }
     }
-
-
     
     private void Win()
     {

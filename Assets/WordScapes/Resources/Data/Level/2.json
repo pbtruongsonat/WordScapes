@@ -1,0 +1,25 @@
+{
+  "numRow": 5,
+  "numCol": 4,
+  "letters": "CAINE",
+  "words": [
+    {
+      "word": "CAINE",
+      "startRowIndex": 0,
+      "startColIndex": 2,
+      "dir": 1
+    },
+    {
+      "word": "CAN",
+      "startRowIndex": 1,
+      "startColIndex": 1,
+      "dir": 0
+    },
+    {
+      "word": "CANE",
+      "startRowIndex": 3,
+      "startColIndex": 0,
+      "dir": 0
+    }
+  ]
+}

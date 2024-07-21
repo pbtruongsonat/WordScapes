@@ -1,28 +1,22 @@
 {
   "numRow": 5,
   "numCol": 4,
-  "letters": "BUSYP",
+  "letters": "SCRUM",
   "words": [
     {
-      "word": "BUYS",
-      "startRowIndex": 1,
+      "word": "SUM",
+      "startRowIndex": 0,
       "startColIndex": 2,
       "dir": 1
     },
     {
-      "word": "BUSY",
-      "startRowIndex": 4,
-      "startColIndex": 0,
-      "dir": 0
-    },
-    {
-      "word": "PUBS",
+      "word": "CRUS",
       "startRowIndex": 1,
       "startColIndex": 0,
       "dir": 0
     },
     {
-      "word": "SPY",
+      "word": "SCRUM",
       "startRowIndex": 0,
       "startColIndex": 0,
       "dir": 1

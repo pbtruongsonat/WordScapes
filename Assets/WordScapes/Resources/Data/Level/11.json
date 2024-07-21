@@ -1,0 +1,31 @@
+{
+  "numRow": 4,
+  "numCol": 5,
+  "letters": "FORKT",
+  "words": [
+    {
+      "word": "FOR",
+      "startRowIndex": 0,
+      "startColIndex": 2,
+      "dir": 1
+    },
+    {
+      "word": "FRO",
+      "startRowIndex": 0,
+      "startColIndex": 2,
+      "dir": 0
+    },
+    {
+      "word": "FORK",
+      "startRowIndex": 2,
+      "startColIndex": 0,
+      "dir": 0
+    },
+    {
+      "word": "OFT",
+      "startRowIndex": 1,
+      "startColIndex": 0,
+      "dir": 1
+    }
+  ]
+}

@@ -8,6 +8,7 @@ public class ParentCategory : ScriptableObject
 {
     public string name;
     public List<ChildCategory> listChild;
+    public Color backgroundColor;
 
     public ParentCategory(string name)
     {

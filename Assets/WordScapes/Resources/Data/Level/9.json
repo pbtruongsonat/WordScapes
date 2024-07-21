@@ -1,0 +1,31 @@
+{
+  "numRow": 5,
+  "numCol": 5,
+  "letters": "GESSO",
+  "words": [
+    {
+      "word": "SOS",
+      "startRowIndex": 2,
+      "startColIndex": 2,
+      "dir": 1
+    },
+    {
+      "word": "GESSO",
+      "startRowIndex": 2,
+      "startColIndex": 0,
+      "dir": 0
+    },
+    {
+      "word": "EGO",
+      "startRowIndex": 0,
+      "startColIndex": 4,
+      "dir": 1
+    },
+    {
+      "word": "GEO",
+      "startRowIndex": 2,
+      "startColIndex": 0,
+      "dir": 1
+    }
+  ]
+}

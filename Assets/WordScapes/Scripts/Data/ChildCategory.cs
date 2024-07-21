@@ -8,6 +8,5 @@ public class ChildCategory : ScriptableObject
 {
     public string name;
     public Sprite backgroundImage;
-    //public List<int> listLevelID;
-    public List<LevelData> listLevel;
+    public List<int> listLevelID;
 }

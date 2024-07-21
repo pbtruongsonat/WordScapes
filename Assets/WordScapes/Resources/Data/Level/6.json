@@ -1,0 +1,43 @@
+{
+  "numRow": 5,
+  "numCol": 8,
+  "letters": "TACHE",
+  "words": [
+    {
+      "word": "TACH",
+      "startRowIndex": 2,
+      "startColIndex": 2,
+      "dir": 0
+    },
+    {
+      "word": "ETCH",
+      "startRowIndex": 1,
+      "startColIndex": 2,
+      "dir": 1
+    },
+    {
+      "word": "THE",
+      "startRowIndex": 1,
+      "startColIndex": 5,
+      "dir": 1
+    },
+    {
+      "word": "TEA",
+      "startRowIndex": 1,
+      "startColIndex": 5,
+      "dir": 0
+    },
+    {
+      "word": "ATE",
+      "startRowIndex": 1,
+      "startColIndex": 0,
+      "dir": 0
+    },
+    {
+      "word": "HATE",
+      "startRowIndex": 0,
+      "startColIndex": 7,
+      "dir": 1
+    }
+  ]
+}

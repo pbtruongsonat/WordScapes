@@ -1,4 +1,3 @@
-using JetBrains.Annotations;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -60,7 +59,7 @@ public class InputHandle : MonoBehaviour
 
             word += inputCell.letter;
             inputWord.text = word;
-            Hello();
+            SetBGInputWord();
 
             lineManager.AddNewLine(cell.transform.position);
         }
@@ -72,12 +71,13 @@ public class InputHandle : MonoBehaviour
 
             word = word.Remove(word.Length - 1, 1);
             inputWord.text = word;
+            SetBGInputWord();
 
             lineManager.RemoveLine();
         }
     }
 
-    private void Hello()
+    private void SetBGInputWord()
     {
         float xLeft = inputWord.rectTransform.position.x - inputWord.rectTransform.rect.width / 2 - 0.1f;
         float xRight = inputWord.rectTransform.position.x + inputWord.rectTransform.rect.width / 2 + 0.1f;

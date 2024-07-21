@@ -12,7 +12,7 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
     private List<GameObject> _cellList = new List<GameObject>();
 
     private Dictionary<int, GameObject> cellDic = new Dictionary<int, GameObject>();
-    public List<int> listLetterUnsloved = new List<int>();
+    public Dictionary<string, List<int>> wordUnSloved = new Dictionary<string, List<int>>();
 
     [Header("Data")]
     public LevelData levelData;
@@ -43,7 +43,7 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
         }
         gameObject.transform.localScale = Vector3.one;
         cellDic.Clear();
-        listLetterUnsloved.Clear();
+        wordUnSloved.Clear();
     }
 
     private void SpawnGridCell()
@@ -58,6 +58,10 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
             int startIndex = startRow * numCols + startCol;
             int indexIncrease;
 
+            if (!wordUnSloved.ContainsKey(word.word))
+            {
+                wordUnSloved[word.word] = new List<int>();
+            }
             if (word.dir == DirectionType.H)
             {
                 indexIncrease = 1; // Horizontal
@@ -70,6 +74,7 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
             for (int i = 0; i < word.word.Length; i++)
             {
                 int index = startIndex + i * indexIncrease;
+                wordUnSloved[word.word].Add(index);
                 if (cellDic.ContainsKey(index)) continue;
 
                 if(_cellList.Count == 0)
@@ -88,7 +93,6 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
     {
         var cell = _cellList[0];
         cellDic.Add(index, cell);
-        listLetterUnsloved.Add(index);
         _cellList.Remove(cell);
 
         //
@@ -122,6 +126,8 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
     // --------------------- Sloved New Word ------------------
     public void SlovedNewWord(Word word)
     {
+        wordUnSloved.Remove(word.word);
+
         int startIndexWord = word.startRowIndex * levelData.numCol + word.startColIndex;
         int indexIncrease = (word.dir == DirectionType.H) ? 1 : levelData.numCol;
         for (int i = 0; i < word.word.Length; i++)
@@ -135,8 +141,17 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
         if (cellDic.ContainsKey(index))
         {
             cellDic[index].GetComponent<GridCell>()?.OnSloved();
-            listLetterUnsloved.Remove(index);
         }
+    }
+    public void SlovedNewLetter(string word, int index)
+    {
+        wordUnSloved[word].Remove(index);
+        if (wordUnSloved[word].Count == 0)
+        {
+            wordUnSloved.Remove(word);
+            LevelManager.Instance.CheckWord(word);
+        }
+        SlovedNewLetter(index);
     }
 
     public void DisplaySloved()

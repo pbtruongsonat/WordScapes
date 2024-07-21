@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: MOUNTAIN
   listChild:
-  - {fileID: 11400000, guid: 30d212140293af747aaeb66bab2cf749, type: 2}
-  - {fileID: 11400000, guid: 67e3b72810ef735468789f750d054a65, type: 2}
-  - {fileID: 11400000, guid: 9a6f544ebb48ec14faac4688d7bb8c82, type: 2}
+  - {fileID: 11400000, guid: 614a4569e465fa54cb27d5d62f252179, type: 2}
+  - {fileID: 11400000, guid: b624b06eebadf004c9adfaebf1d6d7b8, type: 2}
+  - {fileID: 11400000, guid: ae65b69a29be18446a0e7d6440422042, type: 2}
+  backgroundColor: {r: 0, g: 0, b: 0, a: 0}
