@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: child 6
   m_EditorClassIdentifier: 
   name: SUN
-  backgroundImage: {fileID: 0}
+  backgroundImage: {fileID: 21300000, guid: 34a3f6a1260372b458974d8cf7341564, type: 3}
   listLevelID: 
