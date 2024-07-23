@@ -9,10 +9,12 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
 
     [Header("Properties")]
     public Vector3 firstPosition;
-    private List<GameObject> _cellList = new List<GameObject>();
+    private List<GameObject> cellList = new List<GameObject>();
 
-    private Dictionary<int, GameObject> cellDic = new Dictionary<int, GameObject>();
+    public Dictionary<int, GameObject> cellDic = new Dictionary<int, GameObject>();
     public Dictionary<string, List<int>> wordUnSloved = new Dictionary<string, List<int>>();
+    public Dictionary<int, List<string>> cellWord = new Dictionary<int, List<string>>();
+    public List<int> indexCellHidden = new List<int>();
 
     [Header("Data")]
     public LevelData levelData;
@@ -20,11 +22,6 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
     public void LoadNewLevel(LevelData levelData)
     {
         this.levelData = levelData;
-        LoadLevelGrid();
-    }
-
-    public void LoadLevelGrid()
-    {
         if (levelData != null)
         {
             ResetGridBoard();
@@ -39,11 +36,13 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
         for (int i = 0; i < gameObject.transform.childCount; i++)
         {
             gameObject.transform.GetChild(i).gameObject.SetActive(false);
-            _cellList.Add(gameObject.transform.GetChild(i).gameObject);
+            cellList.Add(gameObject.transform.GetChild(i).gameObject);
         }
         gameObject.transform.localScale = Vector3.one;
         cellDic.Clear();
         wordUnSloved.Clear();
+        cellWord.Clear();
+        indexCellHidden.Clear();
     }
 
     private void SpawnGridCell()
@@ -77,13 +76,19 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
                 wordUnSloved[word.word].Add(index);
                 if (cellDic.ContainsKey(index)) continue;
 
-                if(_cellList.Count == 0)
+                if (cellList.Count == 0)
                 {
                     var newCell = Instantiate(gridCellPrefab, gameObject.transform);
                     newCell.SetActive(false);
-                    _cellList.Add(newCell);
+                    cellList.Add(newCell);
                 }
                 SetCell(index, word.word[i]);
+
+                if (!cellWord.ContainsKey(index))
+                {
+                    cellWord.Add(index, new List<string>());
+                }
+                cellWord[index].Add(word.word);
             }
         }
 
@@ -91,9 +96,9 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
     
     private void SetCell(int index, char letter)
     {
-        var cell = _cellList[0];
+        var cell = cellList[0];
         cellDic.Add(index, cell);
-        _cellList.Remove(cell);
+        cellList.Remove(cell);
 
         //
         int r = index / levelData.numCol;
@@ -101,6 +106,7 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
         cell.transform.localPosition = new Vector3(firstPosition.x + c * 1.5f, firstPosition.y - r * 1.5f, 0f);
 
         //
+        indexCellHidden.Add(index);
         cell.GetComponent<GridCell>().SetLetter(letter.ToString());
         cell.SetActive(true);
     }
@@ -128,30 +134,42 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
     {
         wordUnSloved.Remove(word.word);
 
-        int startIndexWord = word.startRowIndex * levelData.numCol + word.startColIndex;
+        int index = word.startRowIndex * levelData.numCol + word.startColIndex;
         int indexIncrease = (word.dir == DirectionType.H) ? 1 : levelData.numCol;
         for (int i = 0; i < word.word.Length; i++)
         {
-            SlovedNewLetter(startIndexWord + indexIncrease * i);
+            cellDic[index].GetComponent<GridCell>()?.OnSloved();
+
+            indexCellHidden.Remove(index);
+            foreach (var w in cellWord[index])
+            {
+                if (wordUnSloved.ContainsKey(w))
+                    wordUnSloved[w].Remove(index);
+            }
+
+            index += indexIncrease;
         }
     }
 
-    public void SlovedNewLetter(int index)
+    public void VisibleOneCell()
     {
-        if (cellDic.ContainsKey(index))
+        int index = UnityEngine.Random.Range(0, indexCellHidden.Count);
+        int cellindex = indexCellHidden[index];
+        var cell = cellDic[cellindex];
+        cell.GetComponent<GridCell>()?.OnVisible();
+        indexCellHidden.Remove(cellindex);
+
+        foreach(var k in wordUnSloved)
         {
-            cellDic[index].GetComponent<GridCell>()?.OnSloved();
+            if (!k.Value.Contains(cellindex)) continue;
+
+            k.Value.Remove(cellindex);
+            if (k.Value.Count == 0)
+            {
+                SlovedNewWord(LevelManager.Instance.wordList[k.Key]);
+                LevelManager.Instance.slovedWordList.Add(k.Key);
+            }
         }
-    }
-    public void SlovedNewLetter(string word, int index)
-    {
-        wordUnSloved[word].Remove(index);
-        if (wordUnSloved[word].Count == 0)
-        {
-            wordUnSloved.Remove(word);
-            LevelManager.Instance.CheckWord(word);
-        }
-        SlovedNewLetter(index);
     }
 
     public void DisplaySloved()
@@ -160,5 +178,15 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
         {
             k.Value.GetComponent<GridCell>().OnSloved();
         }
+    }
+
+    public void OnEnable()
+    {
+        GameEvent.onClickIdea += VisibleOneCell;
+    }
+
+    public void OnDisable()
+    {
+        GameEvent.onClickIdea -= VisibleOneCell;
     }
 }
