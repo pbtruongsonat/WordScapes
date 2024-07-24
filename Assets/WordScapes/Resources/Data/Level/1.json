@@ -1,25 +1,19 @@
 {
-  "numRow": 5,
-  "numCol": 4,
-  "letters": "SCRUM",
+  "numRow": 3,
+  "numCol": 3,
+  "letters": "ACT",
   "words": [
     {
-      "word": "SUM",
+      "word": "ACT",
       "startRowIndex": 0,
-      "startColIndex": 2,
+      "startColIndex": 1,
       "dir": 1
     },
     {
-      "word": "CRUS",
-      "startRowIndex": 1,
+      "word": "CAT",
+      "startRowIndex": 0,
       "startColIndex": 0,
       "dir": 0
-    },
-    {
-      "word": "SCRUM",
-      "startRowIndex": 0,
-      "startColIndex": 0,
-      "dir": 1
     }
   ]
 }

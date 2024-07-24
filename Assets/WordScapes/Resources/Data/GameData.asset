@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: GameData
   m_EditorClassIdentifier: 
   listParent:
-  - {fileID: 11400000, guid: 470ee752f2511c044bd305416c9728cc, type: 2}
-  - {fileID: 11400000, guid: 18d58b454a398b241ac7ac418b4d1fa1, type: 2}
+  - {fileID: 11400000, guid: 6661438abb93a8545915cde74253aa0f, type: 2}
+  - {fileID: 11400000, guid: 3f1ac7d629c1aa145a6ff1051d08941a, type: 2}

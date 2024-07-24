@@ -1,43 +1,31 @@
 {
-  "numRow": 6,
-  "numCol": 7,
-  "letters": "GOALS",
+  "numRow": 5,
+  "numCol": 5,
+  "letters": "LAYD",
   "words": [
     {
-      "word": "ALSO",
-      "startRowIndex": 3,
-      "startColIndex": 1,
-      "dir": 0
-    },
-    {
-      "word": "AGO",
-      "startRowIndex": 3,
-      "startColIndex": 1,
+      "word": "LAY",
+      "startRowIndex": 2,
+      "startColIndex": 2,
       "dir": 1
     },
     {
-      "word": "LAGO",
+      "word": "LAD",
+      "startRowIndex": 2,
+      "startColIndex": 2,
+      "dir": 0
+    },
+    {
+      "word": "LADY",
       "startRowIndex": 0,
       "startColIndex": 4,
       "dir": 1
     },
     {
-      "word": "SAGO",
-      "startRowIndex": 1,
-      "startColIndex": 3,
-      "dir": 0
-    },
-    {
-      "word": "GOALS",
-      "startRowIndex": 5,
+      "word": "DAY",
+      "startRowIndex": 4,
       "startColIndex": 0,
       "dir": 0
-    },
-    {
-      "word": "LOGS",
-      "startRowIndex": 0,
-      "startColIndex": 6,
-      "dir": 1
     }
   ]
 }

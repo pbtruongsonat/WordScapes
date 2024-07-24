@@ -46,8 +46,12 @@ public class SaveLoadLevel : SingletonBase<SaveLoadLevel>
         try
         {
             //var path = StandaloneFileBrowser.SaveFilePanel("Save File", "", nameFile, extensions);
-
             string levelId = inputIdLevelSave.text;
+            if(levelId == "")
+            {
+                Debug.LogWarning("Please Fill Level ID");
+                return;
+            }
 
             var path = $"{pathLevel}{levelId}.json";
             //var path = Application.dataPath + "/" + nameFile;
@@ -112,8 +116,16 @@ public class SaveLoadLevel : SingletonBase<SaveLoadLevel>
             }
         }
         listIDLevels.Sort();
-        int rcmIdLevel = listIDLevels.Max() + 1;
+        int rcmIdLevel = 1;
+        if (listIDLevels.Count > 0)
+        {
+            rcmIdLevel = listIDLevels.Max() + 1;
+        }
         idLevelSave.text = $"Recomment Valid Id Level: {rcmIdLevel}";
+        if(inputIdLevelSave.text == "")
+        {
+            inputIdLevelSave.text = rcmIdLevel.ToString();
+        }
     }
 
 

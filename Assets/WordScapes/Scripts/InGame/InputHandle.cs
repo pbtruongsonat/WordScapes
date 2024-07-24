@@ -1,4 +1,9 @@
+using DG.Tweening;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class InputHandle : MonoBehaviour
@@ -10,12 +15,9 @@ public class InputHandle : MonoBehaviour
     public List<InputCell> inputCellSelected;
 
     public LineManager lineManager;
-    public LineRenderer bgInputWord;
+    public SpriteRenderer bgRenderer;
 
-    private void Awake()
-    {
-        lineManager = gameObject.GetComponentInChildren<LineManager>();
-    }
+    public List<Vector3> listPosLetters = new List<Vector3>();
 
     public void Update()
     {
@@ -32,11 +34,19 @@ public class InputHandle : MonoBehaviour
             if (word != string.Empty)
             {
                 lineManager.ClearLine();
-                LevelManager.Instance.CheckWord(word);
+                listPosLetters.Clear();
+                for(int i = 0; i < inputWord.textInfo.characterCount; i++)
+                {
+                    var charInfo = inputWord.textInfo.characterInfo[i];
+                    float posX = (charInfo.bottomLeft.x + charInfo.bottomRight.x) /2f;
+                    listPosLetters.Add(new Vector3(posX, inputWord.transform.position.y, 0f));
+                }
 
+                LevelManager.Instance.CheckWord(word);
+               
                 word = string.Empty;
                 inputWord.text = word;
-                bgInputWord.positionCount = 0;
+                bgRenderer.gameObject.SetActive(false);
 
                 foreach (var inputCell in inputCellSelected)
                 {
@@ -77,14 +87,9 @@ public class InputHandle : MonoBehaviour
         }
     }
 
-    private void SetBGInputWord()
-    {
-        float xLeft = inputWord.rectTransform.position.x - inputWord.rectTransform.rect.width / 2 - 0.1f;
-        float xRight = inputWord.rectTransform.position.x + inputWord.rectTransform.rect.width / 2 + 0.1f;
-
-        bgInputWord.positionCount = 2;
-        bgInputWord.SetPosition(0, new Vector3(xLeft, inputWord.rectTransform.position.y, 0f));
-        bgInputWord.SetPosition(1, new Vector3(xRight, inputWord.rectTransform.position.y, 0f));
+    private void SetBGInputWord() {
+        float minWidth = 1.3f;
+        bgRenderer.size = new Vector2(Mathf.Max(inputWord.preferredWidth * 2f + 0.5f, minWidth), 1.16f);
+        bgRenderer.gameObject.SetActive(true);
     }
-
 }

@@ -1,11 +1,19 @@
 using Newtonsoft.Json;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Unity.Collections.LowLevel.Unsafe;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class LevelManager : SingletonBase<LevelManager>
 {
+    [Header("Other Script")]
+    public LetterManager letterBoard;
+    public InputHandle inputHandle;
+    public LineManager lineManager;
+
     public ExtraWordData extraWordData;
     public List<string> extraWordList;
 
@@ -14,51 +22,45 @@ public class LevelManager : SingletonBase<LevelManager>
 
     [Header("Level")]
     public int curLevel;
-    public Dictionary<string, Word> wordList;
+    public Dictionary<string, Word> wordList = new Dictionary<string, Word>();
     public List<string> slovedWordList;
 
     [Header("Bonus Word")]
     public List<string> listBonusWord;
 
+    public Transform lettersMoveContainers;
+    public GameObject letterMovePrefab;
+    public Word curWord;
+
     public void Start()
     {
         levelData = new LevelData();
-        LoadLevelData(9);
+        //LoadLevelData(24);
         extraWordList = new List<string>(extraWordData.listWords);
     }
 
-    public void LoadLevelData(int parentIndex, int childIndex, int levelIndex)
+    public void SetLevel(LevelData _levelData)
     {
-        string path = $"Data/Level/9";
-        TextAsset fileLevel = Resources.Load<TextAsset>(path);
-        if (fileLevel == null) return;
+        if (_levelData == null) return;
 
-        levelData = JsonConvert.DeserializeObject<LevelData>(fileLevel.text);
-        wordList = new Dictionary<string, Word>();
+        this.levelData = _levelData;
+
+        wordList.Clear();
+        slovedWordList.Clear();
+
         foreach (var word in levelData.words)
         {
             wordList.Add(word.word, word);
         }
+
         GridBoardManager.Instance.LoadNewLevel(levelData);
-        LetterManager.Instance.LoadNewLevel();
-    }
+        letterBoard.LoadNewLevel(levelData.letters);
+        lineManager.InitLine(levelData.letters.Length - 1);
 
-    public void LoadLevelData(int levelIndex)
-    {
-        //string path = $"/Data/Level/{levelIndex}.json";
-        string path = $"Data/Level/{levelIndex}";
-        TextAsset fileLevel = Resources.Load<TextAsset>(path);
-        if (fileLevel == null) return;
-
-        Debug.Log(fileLevel.text);
-        levelData = JsonConvert.DeserializeObject<LevelData>(fileLevel.text);
-        wordList = new Dictionary<string, Word>();
-        foreach (var word in levelData.words)
+        while (lettersMoveContainers.childCount < levelData.letters.Length)
         {
-            wordList.Add(word.word, word);
+            Instantiate(letterMovePrefab, lettersMoveContainers).SetActive(false);
         }
-        GridBoardManager.Instance.LoadNewLevel(levelData);
-        LetterManager.Instance.LoadNewLevel();
     }
 
     public void CheckWord(string wordstr)
@@ -68,12 +70,12 @@ public class LevelManager : SingletonBase<LevelManager>
             if (!slovedWordList.Contains(wordstr))
             {
                 // Slove New Word
-                GridBoardManager.Instance.SlovedNewWord(wordList[wordstr]);
-                slovedWordList.Add(wordstr);
-                if (slovedWordList.Count == levelData.words.Count)
-                {
-                    Win();
-                }
+                //CreateMoveLetter(wordList[wordstr]);
+                curWord = wordList[wordstr];
+                StartCoroutine("CreateMoveLetter");
+                //GridBoardManager.Instance.SlovedNewWord(curWord);
+               NewWordSloved(wordstr);
+                
             } else
             {
                 // Word has been solved
@@ -84,11 +86,38 @@ public class LevelManager : SingletonBase<LevelManager>
             // Dont exist word in level, but word is correct => bonus
             listBonusWord.Add(wordstr);
             Debug.Log($"bonus word: {wordstr}");
-        }
+        } 
     }
     
+    public void NewWordSloved(string wordstr)
+    {
+        slovedWordList.Add(wordstr);
+        if (slovedWordList.Count == levelData.words.Count)
+        {
+            Win();
+        }
+    }
+
+    IEnumerator CreateMoveLetter()
+    {
+        int index = curWord.startRowIndex * levelData.numCol + curWord.startColIndex;
+        int incrementIndex = (curWord.dir == DirectionType.H) ? 1 : levelData.numCol;
+        for(int i = 0; i < curWord.word.Length; i++)
+        {
+            var letterMove = lettersMoveContainers.GetChild(i);
+
+            letterMove.GetComponent<LetterMoveController>()?.
+                SetLetter(curWord.word[i], inputHandle.listPosLetters[i], GridBoardManager.Instance.cellDic[index].transform.position);
+            
+            index += incrementIndex;
+            yield return new WaitForSeconds(0.04f);
+        }
+        yield return new WaitForSeconds(0.3f);
+        GridBoardManager.Instance.SlovedNewWord(curWord);
+    }
     private void Win()
     {
         Debug.Log("win");
+        GameManager.Instance.WinGame();
     }
 }

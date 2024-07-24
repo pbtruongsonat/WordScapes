@@ -42,4 +42,13 @@ public class TestUI : MonoBehaviour
 
         sliderProbar.DOValue(3, 3f, false);
     }
+
+    public void OnEnable()
+    {
+        InWinPopup();
+    }
+    public void OnDisable()
+    {
+        Debug.Log("Disable Popup Win");
+    }
 }
