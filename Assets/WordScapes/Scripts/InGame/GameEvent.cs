@@ -7,4 +7,5 @@ public class GameEvent
     public static Action onClickConvertLetters;
     public static Action onClickIdea;
     public static Action onClickRocket;
+    public static Action<bool> onPointerHint;
 }

@@ -30,7 +30,7 @@ public class SupportManager : MonoBehaviour
 
         pointButton.onClick.AddListener(() =>
         {
-            GameEvent.onClickRocket?.Invoke();
+            GameEvent.onPointerHint?.Invoke(true);
         });
 
         rocketButton.onClick.AddListener(() => 

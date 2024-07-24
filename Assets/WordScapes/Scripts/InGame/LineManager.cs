@@ -14,13 +14,6 @@ public class LineManager : MonoBehaviour
         connectedAll = false;
         listLine = new List<LineRenderer>();
         lineActive = new List<LineRenderer>();
-
-        var numLines = LevelManager.Instance.levelData.letters.Length-1;
-        for (int i = 0; i < numLines; i++)
-        {
-            var line = Instantiate(linePrefabs, this.transform);
-            listLine.Add(line.GetComponent<LineRenderer>());
-        }
     }
     private void LateUpdate()
     {
@@ -30,6 +23,16 @@ public class LineManager : MonoBehaviour
             lineActive[lineActive.Count - 1].SetPosition(1, new Vector3(mousePos.x, mousePos.y, 1f));
         }
     }
+
+    public void InitLine(int numLines)
+    {
+        while (this.transform.childCount < numLines)
+        {
+            var line = Instantiate(linePrefabs, this.transform);
+            listLine.Add(line.GetComponent<LineRenderer>());
+        }
+    }
+
     public void AddNewLine(Vector3 position)
     {
         if (lineActive.Count > 0)

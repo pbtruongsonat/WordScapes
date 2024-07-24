@@ -49,6 +49,7 @@ public class CategorySelection : MonoBehaviour
     {
         dicChild.Clear();
         listNameChildCategory.Clear();
+        if (parentCategory.options.Count <= 0) return;
 
         string nameParent = parentCategory.options[parentCategory.value].text;
 

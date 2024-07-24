@@ -1,6 +1,5 @@
-using Newtonsoft.Json;
 using System;
-using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -191,7 +190,7 @@ public class CreatorManager : MonoBehaviour
 
             levelData.numCol = numCols;
             levelData.numRow = numRows;
-            levelData.letters = listLetter;
+            levelData.letters = new string(listLetter.OrderBy(c => Guid.NewGuid()).ToArray()); 
             levelData.words = words;
             GridBoardManager.Instance.LoadNewLevel(levelData);
             GridBoardManager.Instance.DisplaySloved();

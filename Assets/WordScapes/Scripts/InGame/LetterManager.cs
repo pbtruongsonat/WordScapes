@@ -18,10 +18,6 @@ public class LetterManager : MonoBehaviour
     private Vector3 scaleLetter;
 
 
-    private void OnEnable()
-    {
-        GameEvent.onClickConvertLetters += ConvertLetter;
-    }
 
     public void LoadNewLevel(string _letters)
     {
@@ -29,18 +25,22 @@ public class LetterManager : MonoBehaviour
 
         numLetter = letters.Length;
         angle = (Mathf.PI * 2) / numLetter;
-        float scaleValue = (numLetter > 5) ? 0.45f : 0.5f;
+        float scaleValue = (numLetter > 5) ? 0.45f : 0.55f;
         scaleLetter = new Vector3(scaleValue, scaleValue, 1f);
         SpawnLetter();
     }
 
     private void SpawnLetter()
     {
+        while (listLetterCell.Count < letters.Length)
+        {
+            var cell = Instantiate(letterCellPrefabs, this.transform);
+            listLetterCell.Add(cell);
+        }
         for (int i = 0; i < letters.Length; i++)
         {
-            var cell = Instantiate(letterCellPrefabs,this.transform);
+            var cell = listLetterCell[i];
             SetCell(cell, i);
-            listLetterCell.Add(cell);
             lettersPosition.Add(cell.transform.position);
         }
     }
@@ -77,6 +77,10 @@ public class LetterManager : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        GameEvent.onClickConvertLetters += ConvertLetter;
+    }
     private void OnDisable()
     {
         GameEvent.onClickConvertLetters -= ConvertLetter;

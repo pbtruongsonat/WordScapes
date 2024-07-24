@@ -1,25 +1,37 @@
 {
-  "numRow": 4,
-  "numCol": 3,
-  "letters": "RECUB",
+  "numRow": 6,
+  "numCol": 6,
+  "letters": "DENT",
   "words": [
     {
-      "word": "REC",
-      "startRowIndex": 0,
-      "startColIndex": 0,
+      "word": "TEN",
+      "startRowIndex": 3,
+      "startColIndex": 4,
       "dir": 1
     },
     {
-      "word": "CUB",
-      "startRowIndex": 2,
-      "startColIndex": 0,
+      "word": "DENT",
+      "startRowIndex": 3,
+      "startColIndex": 1,
       "dir": 0
     },
     {
-      "word": "CUBE",
+      "word": "TEND",
       "startRowIndex": 0,
-      "startColIndex": 2,
+      "startColIndex": 1,
       "dir": 1
+    },
+    {
+      "word": "END",
+      "startRowIndex": 5,
+      "startColIndex": 3,
+      "dir": 0
+    },
+    {
+      "word": "NET",
+      "startRowIndex": 1,
+      "startColIndex": 0,
+      "dir": 0
     }
   ]
 }

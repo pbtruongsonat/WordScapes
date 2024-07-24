@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using Unity.Collections;
+using UnityEditor;
 using UnityEngine;
 
 public class GridBoardManager : SingletonBase<GridBoardManager>
@@ -13,7 +15,6 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
 
     public Dictionary<int, GameObject> cellDic = new Dictionary<int, GameObject>();
     public Dictionary<string, List<int>> wordUnSloved = new Dictionary<string, List<int>>();
-    public Dictionary<int, List<string>> cellWord = new Dictionary<int, List<string>>();
     public List<int> indexCellHidden = new List<int>();
 
     [Header("Data")]
@@ -41,7 +42,6 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
         gameObject.transform.localScale = Vector3.one;
         cellDic.Clear();
         wordUnSloved.Clear();
-        cellWord.Clear();
         indexCellHidden.Clear();
     }
 
@@ -83,12 +83,6 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
                     cellList.Add(newCell);
                 }
                 SetCell(index, word.word[i]);
-
-                if (!cellWord.ContainsKey(index))
-                {
-                    cellWord.Add(index, new List<string>());
-                }
-                cellWord[index].Add(word.word);
             }
         }
 
@@ -123,9 +117,9 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
     {
         float width = Camera.main.orthographicSize * 2 * Camera.main.aspect;
         float height = Camera.main.orthographicSize * 2;
-        float numcell = Mathf.Min(width / 1.5f, height*0.4f /1.5f);
+        float numcell = Mathf.Min(width / 1.35f, (height*0.4f) /1.35f);
 
-        float scaleOffset = Mathf.Min(numcell / (levelData.numCol), numcell / (levelData.numRow));
+        float scaleOffset = Mathf.Min(numcell / (levelData.numCol), numcell / (levelData.numRow), numcell/3.5f);
         gameObject.transform.localScale = new Vector3(scaleOffset, scaleOffset, 1f);
     }
 
@@ -141,12 +135,6 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
             cellDic[index].GetComponent<GridCell>()?.OnSloved();
 
             indexCellHidden.Remove(index);
-            foreach (var w in cellWord[index])
-            {
-                if (wordUnSloved.ContainsKey(w))
-                    wordUnSloved[w].Remove(index);
-            }
-
             index += indexIncrease;
         }
     }
@@ -159,17 +147,7 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
         cell.GetComponent<GridCell>()?.OnVisible();
         indexCellHidden.Remove(cellindex);
 
-        foreach(var k in wordUnSloved)
-        {
-            if (!k.Value.Contains(cellindex)) continue;
-
-            k.Value.Remove(cellindex);
-            if (k.Value.Count == 0)
-            {
-                SlovedNewWord(LevelManager.Instance.wordList[k.Key]);
-                LevelManager.Instance.slovedWordList.Add(k.Key);
-            }
-        }
+        CheckSlovedWord();
     }
 
     public void DisplaySloved()
@@ -177,6 +155,68 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
         foreach (var k in cellDic)
         {
             k.Value.GetComponent<GridCell>().OnSloved();
+        }
+    }
+
+    public void VisibleNewCell(GameObject cell)
+    {
+        foreach(var c in cellDic)
+        {
+            if(c.Value == cell)
+            {
+                indexCellHidden.Remove(c.Key);
+            }
+        }
+    }
+
+    public void CheckSlovedWord()
+    {
+        Dictionary<string, List<int>> tmp = new Dictionary<string, List<int>>(wordUnSloved);
+        List<string> wordsToRemove = new List<string>();
+        Dictionary<string, List<int>> indicesToRemove = new Dictionary<string, List<int>>();
+
+        foreach (var word in tmp)
+        {
+            List<int> indices = new List<int>();
+
+            foreach (var index in word.Value)
+            {
+                if (cellDic[index].GetComponent<GridCell>().state != CellState.hidden)
+                {
+                    indices.Add(index);
+                }
+            }
+
+            if (indices.Count > 0)
+            {
+                if (!indicesToRemove.ContainsKey(word.Key))
+                {
+                    indicesToRemove[word.Key] = new List<int>();
+                }
+                indicesToRemove[word.Key].AddRange(indices);
+            }
+
+            if (wordUnSloved[word.Key].Count == indices.Count)
+            {
+                wordsToRemove.Add(word.Key);
+            }
+        }
+
+        // Remove indices
+        foreach (var word in indicesToRemove)
+        {
+            foreach (var index in word.Value)
+            {
+                wordUnSloved[word.Key].Remove(index);
+            }
+        }
+
+        // Remove words
+        foreach (var word in wordsToRemove)
+        {
+            wordUnSloved.Remove(word);
+            SlovedNewWord(LevelManager.Instance.wordList[word]);
+            LevelManager.Instance.NewWordSloved(word);
         }
     }
 

@@ -1,31 +1,31 @@
 {
-  "numRow": 5,
+  "numRow": 3,
   "numCol": 5,
-  "letters": "GESSO",
+  "letters": "TONU",
   "words": [
     {
-      "word": "SOS",
+      "word": "NOT",
       "startRowIndex": 2,
       "startColIndex": 2,
-      "dir": 1
-    },
-    {
-      "word": "GESSO",
-      "startRowIndex": 2,
-      "startColIndex": 0,
       "dir": 0
     },
     {
-      "word": "EGO",
+      "word": "NUT",
       "startRowIndex": 0,
       "startColIndex": 4,
       "dir": 1
     },
     {
-      "word": "GEO",
-      "startRowIndex": 2,
-      "startColIndex": 0,
+      "word": "TON",
+      "startRowIndex": 0,
+      "startColIndex": 2,
       "dir": 1
+    },
+    {
+      "word": "OUT",
+      "startRowIndex": 0,
+      "startColIndex": 0,
+      "dir": 0
     }
   ]
 }

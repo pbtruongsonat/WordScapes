@@ -13,5 +13,8 @@ MonoBehaviour:
   m_Name: P_AUTUMN
   m_EditorClassIdentifier: 
   name: AUTUMN
-  listChild: []
+  listChild:
+  - {fileID: 11400000, guid: 93cabce394eda2745a2832b57a523850, type: 2}
+  - {fileID: 11400000, guid: 5accccb1fb9cf2e4da7e4c8bde8a6e45, type: 2}
+  - {fileID: 11400000, guid: aa45e26d6657f424b88ab2596c69757b, type: 2}
   backgroundColor: {r: 0, g: 0, b: 0, a: 0}
