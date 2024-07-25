@@ -76,6 +76,7 @@ public class CategoryManager : SingletonBase<CategoryManager>
     public void UpdateLevelInCategory()
     {
         childSelected.listLevelID = selectedLevel.listIdLevel;
+        EditorUtility.SetDirty(childSelected);
     }
 
     /// 

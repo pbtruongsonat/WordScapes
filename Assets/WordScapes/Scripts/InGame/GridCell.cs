@@ -61,7 +61,7 @@ public class GridCell : Cell
 
     public void OnMouseDown()
     {
-        GameEvent.onPointerHint(false);
+        GameEvent.onPointerHint?.Invoke(false);
         this.OnVisible();
         GridBoardManager.Instance.CheckSlovedWord();
     }

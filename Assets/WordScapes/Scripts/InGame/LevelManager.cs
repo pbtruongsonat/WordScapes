@@ -1,11 +1,8 @@
 using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Unity.Collections.LowLevel.Unsafe;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LevelManager : SingletonBase<LevelManager>
 {
@@ -18,7 +15,6 @@ public class LevelManager : SingletonBase<LevelManager>
     public List<string> extraWordList;
 
     public LevelData levelData;
-    public GameObject background;
 
     [Header("Level")]
     public int curLevel;

@@ -78,4 +78,5 @@ public class LineManager : MonoBehaviour
             RemoveLine();
         }
     }
+
 }

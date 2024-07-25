@@ -13,7 +13,7 @@ public class LetterManager : MonoBehaviour
     public float radius;
     public int numLetter;
     public float angle;
-    private List<Vector3> lettersPosition = new List<Vector3>();
+    public List<Vector3> lettersPosition = new List<Vector3>();
     [Space]
     private Vector3 scaleLetter;
 

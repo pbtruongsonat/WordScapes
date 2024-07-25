@@ -92,4 +92,18 @@ public class InputHandle : MonoBehaviour
         bgRenderer.size = new Vector2(Mathf.Max(inputWord.preferredWidth * 2f + 0.5f, minWidth), 1.16f);
         bgRenderer.gameObject.SetActive(true);
     }
+
+
+     //--------------------------------------------------------------------
+
+    private void OnEnable()
+    {
+        //gameObject.transform.localScale = Vector3.zero;
+        gameObject.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBack);
+    }
+
+    private void OnCloseUI()
+    {
+        gameObject.transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InBack);
+    }
 }

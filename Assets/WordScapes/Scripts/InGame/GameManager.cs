@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : SingletonBase<GameManager>
 {
@@ -15,9 +16,12 @@ public class GameManager : SingletonBase<GameManager>
     [Header("Data Game")]
     public GameData gameData;
     public List<int> listLevelID = new List<int>();
+    public Dictionary<int, Sprite> listBackground = new Dictionary<int, Sprite>();
 
     [Header("Component")]
     public LevelManager levelManager;
+
+    public Image background;
 
     void Start()
     {
@@ -78,6 +82,7 @@ public class GameManager : SingletonBase<GameManager>
                 foreach(var idLevel in child.listLevelID)
                 {
                     listLevelID.Add(idLevel);
+                    listBackground.Add(listLevelID.Count - 1, child.backgroundImage);
                 }
             }
         }
@@ -102,6 +107,7 @@ public class GameManager : SingletonBase<GameManager>
         if (fileLevel == null) return;
 
         LevelData levelData = JsonConvert.DeserializeObject<LevelData>(fileLevel.text);
+        background.sprite = listBackground[levelNumber-1];
         levelManager.SetLevel(levelData);
     }
 

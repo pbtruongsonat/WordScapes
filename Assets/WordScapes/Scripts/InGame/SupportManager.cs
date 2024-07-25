@@ -8,7 +8,6 @@ using UnityEngine.UI;
 public class SupportManager : MonoBehaviour
 {
     [Header("Button")]
-    public Button convertButton;
     public Button ideaButton;
     public Button pointButton;
     public Button rocketButton;
@@ -19,19 +18,14 @@ public class SupportManager : MonoBehaviour
 
     public void Start()
     {
-        convertButton.onClick.AddListener(() =>
-        {
-            GameEvent.onClickConvertLetters?.Invoke();
-        });
+        //ideaButton.onClick.AddListener(() => { 
+        //    GameEvent.onClickIdea?.Invoke(); 
+        //});
 
-        ideaButton.onClick.AddListener(() => { 
-            GameEvent.onClickIdea?.Invoke(); 
-        });
-
-        pointButton.onClick.AddListener(() =>
-        {
-            GameEvent.onPointerHint?.Invoke(true);
-        });
+        //pointButton.onClick.AddListener(() =>
+        //{
+        //    GameEvent.onPointerHint?.Invoke(true);
+        //});
 
         rocketButton.onClick.AddListener(() => 
         {
