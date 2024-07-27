@@ -117,7 +117,9 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
     {
         float width = Camera.main.orthographicSize * 2 * Camera.main.aspect;
         float height = Camera.main.orthographicSize * 2;
-        float numcell = Mathf.Min(width / 1.35f, (height*0.4f) /1.35f);
+
+        float cellSize = 1.56f;
+        float numcell = Mathf.Min(width / cellSize, (height*0.55f) / cellSize);
 
         float scaleOffset = Mathf.Min(numcell / (levelData.numCol), numcell / (levelData.numRow), numcell/4f);
         gameObject.transform.localScale = new Vector3(scaleOffset, scaleOffset, 1f);
