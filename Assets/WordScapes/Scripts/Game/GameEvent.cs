@@ -2,6 +2,11 @@ using System;
 
 public class GameEvent
 {
+    // ----------- Select Level -------------
+    public static Action<bool> changeChildSelect;
+    public static Action<ChildCategory> displayListLevel;
+
+
     // ----------- Support ------------------
     public static Action onClickConvertLetters;
     public static Action onClickIdea;

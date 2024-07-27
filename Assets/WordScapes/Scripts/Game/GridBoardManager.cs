@@ -1,8 +1,11 @@
+using DG.Tweening;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.Collections;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.XR;
 
 public class GridBoardManager : SingletonBase<GridBoardManager>
 {
@@ -19,7 +22,14 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
 
     [Header("Data")]
     public LevelData levelData;
-    
+
+    [Header("Position + Scale")]
+    public RectTransform topNeo;
+    public RectTransform botNeo;
+    public RectTransform leftNeo;
+    public RectTransform rightNeo;
+
+
     public void LoadNewLevel(LevelData levelData)
     {
         this.levelData = levelData;
@@ -113,16 +123,44 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
         return firstPos;
     }
 
+    //private void ScaleGridBoard()
+    //{
+    //    float width = Camera.main.orthographicSize * 2 * Camera.main.aspect;
+    //    float height = Camera.main.orthographicSize * 2;
+
+    //    float cellSize = 1.56f;
+    //    float numcell = Mathf.Min(width / cellSize, (height*0.55f) / cellSize);
+
+    //    float scaleOffset = Mathf.Min(numcell / (levelData.numCol), numcell / (levelData.numRow), numcell/4f);
+    //    gameObject.transform.localScale = new Vector3(scaleOffset, scaleOffset, 1f);
+    //}
+
     private void ScaleGridBoard()
     {
-        float width = Camera.main.orthographicSize * 2 * Camera.main.aspect;
-        float height = Camera.main.orthographicSize * 2;
+        var defaultCamera = 5f;
 
-        float cellSize = 1.56f;
-        float numcell = Mathf.Min(width / cellSize, (height*0.55f) / cellSize);
+        Canvas.ForceUpdateCanvases();
 
-        float scaleOffset = Mathf.Min(numcell / (levelData.numCol), numcell / (levelData.numRow), numcell/4f);
-        gameObject.transform.localScale = new Vector3(scaleOffset, scaleOffset, 1f);
+        var offset = topNeo.position + botNeo.position;
+        gameObject.transform.position = new Vector3(offset.x/2, offset.y/2f, 0f);
+
+        var maxX = levelData.numCol * 1.5f / 2f;
+        var maxY = levelData.numRow * 1.5f / 2f;
+
+        var minX = -maxX;
+        var minY = -maxY;
+
+        maxY += offset.y;
+        minY += offset.y;
+
+        var top = maxY - topNeo.transform.position.y;
+        var bot = -(minY - botNeo.transform.position.y);
+        var right = maxX - rightNeo.transform.position.x;
+        var left = -(minX - leftNeo.transform.position.x);
+
+        var max = Mathf.Max(top, bot, right, left);
+
+        gameObject.transform.localScale = Vector3.one * defaultCamera / (defaultCamera + max * (1 / Camera.main.aspect));
     }
 
     // --------------------- Sloved New Word ------------------

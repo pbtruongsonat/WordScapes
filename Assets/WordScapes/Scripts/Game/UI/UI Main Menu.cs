@@ -12,7 +12,6 @@ public class UIMainMenu : MonoBehaviour
     public Image playButton;
     public GameObject bottomComponent;
 
-
     IEnumerator OpenUI()
     {
         diamondButton.rectTransform.DOPivotY(0.5f, 0.5f).SetEase(Ease.OutExpo);
@@ -21,6 +20,7 @@ public class UIMainMenu : MonoBehaviour
         playButton.rectTransform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBack);
 
         yield return null;
+
     }
 
     IEnumerator CloseUI()
@@ -38,6 +38,7 @@ public class UIMainMenu : MonoBehaviour
     {
         StartCoroutine(k);
     }
+
 
     private void OnEnable()
     {

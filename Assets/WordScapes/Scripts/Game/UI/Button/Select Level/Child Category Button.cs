@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class ChildCategoryButton : ButtonBase
 {
+    public ChildCategory child;
     public string nameChild;
     public bool onSelect;
 
@@ -15,7 +16,6 @@ public class ChildCategoryButton : ButtonBase
     public GameObject unlockedChild;
     public GameObject lockedChild;
 
-
     public void SetChild(ChildCategory child)
     {
         if (child == null)
@@ -25,19 +25,37 @@ public class ChildCategoryButton : ButtonBase
         }
         else
         {
+            this.child = child;
             unlockedChild.SetActive(true);
             lockedChild.SetActive(false);
 
-            nameChild = child.name;
+            nameChild = this.child.name;
             textNameChild.text = nameChild;
-            childBackground.sprite = child.backgroundImage;
+            childBackground.sprite = this.child.backgroundImage;
         }
+    }
+
+    private void OnSelectChild(bool selected)
+    {
+        onSelect = selected;
+        borderSelected.gameObject.SetActive(onSelect);
     }
 
     protected override void OnClick()
     {
-        onSelect = !onSelect;
-        borderSelected.gameObject.SetActive(onSelect);
-        Debug.Log(onSelect);
+        bool selectTmp = !onSelect;
+        GameEvent.changeChildSelect?.Invoke(false);
+        OnSelectChild(selectTmp);
+        GameEvent.displayListLevel(child);
+    }
+
+    private void OnEnable()
+    {
+        GameEvent.changeChildSelect += OnSelectChild;
+    }
+
+    private void OnDisable()
+    {
+        GameEvent.changeChildSelect -= OnSelectChild;
     }
 }
