@@ -29,7 +29,7 @@ public class ListLevelScroll : MonoBehaviour
         {
             var levelButton = thisContentTransform.GetChild(i).gameObject;
             levelButton.SetActive(true);
-            levelButton.GetComponent<LevelButton>()?.SetIDLevel(listIdLevel[i]);
+            levelButton.GetComponent<LevelIdButton>()?.SetIDLevel(listIdLevel[i]);
         }
     }
 
@@ -40,7 +40,7 @@ public class ListLevelScroll : MonoBehaviour
 
     public void RemoveLevel(GameObject level)
     {
-        int idLevel = level.GetComponent<LevelButton>().id;
+        int idLevel = level.GetComponent<LevelIdButton>().id;
 
         level.transform.SetParent(otherContentTransform);
         listIdLevel.Remove(idLevel);

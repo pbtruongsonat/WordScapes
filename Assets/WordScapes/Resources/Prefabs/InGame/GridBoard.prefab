@@ -45,6 +45,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridCellPrefab: {fileID: 2883154668358307261, guid: 5a7d1c734c12a2341aaebb1e5f9f7c8f, type: 3}
-  cellOffset: 0
   firstPosition: {x: 0, y: 0, z: 0}
-  levelData: {fileID: 11400000, guid: 227314a86fb51f94e83487b383388a43, type: 2}
+  indexCellHidden: 
