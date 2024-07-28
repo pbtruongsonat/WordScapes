@@ -46,7 +46,7 @@ public class ChildCategoryButton : ButtonBase
         bool selectTmp = !onSelect;
         GameEvent.changeChildSelect?.Invoke(false);
         OnSelectChild(selectTmp);
-        GameEvent.displayListLevel(child);
+        GameEvent.displayListLevel(child, selectTmp);
     }
 
     private void OnEnable()

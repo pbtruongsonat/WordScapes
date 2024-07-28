@@ -123,45 +123,60 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
         return firstPos;
     }
 
-    //private void ScaleGridBoard()
-    //{
-    //    float width = Camera.main.orthographicSize * 2 * Camera.main.aspect;
-    //    float height = Camera.main.orthographicSize * 2;
-
-    //    float cellSize = 1.56f;
-    //    float numcell = Mathf.Min(width / cellSize, (height*0.55f) / cellSize);
-
-    //    float scaleOffset = Mathf.Min(numcell / (levelData.numCol), numcell / (levelData.numRow), numcell/4f);
-    //    gameObject.transform.localScale = new Vector3(scaleOffset, scaleOffset, 1f);
-    //}
-
     private void ScaleGridBoard()
     {
-        var defaultCamera = 5f;
+        var offset = (topNeo.position + botNeo.position) / 2f;
+        gameObject.transform.position = new Vector3(offset.x, offset.y, 0f);
 
-        Canvas.ForceUpdateCanvases();
+        float width = Camera.main.orthographicSize * 2 * Camera.main.aspect;
+        float height = Camera.main.orthographicSize * 2;
 
-        var offset = topNeo.position + botNeo.position;
-        gameObject.transform.position = new Vector3(offset.x/2, offset.y/2f, 0f);
+        float cellSize = 1.56f;
+        float numcell = Mathf.Min(width / cellSize, (height * 0.55f) / cellSize);
 
-        var maxX = levelData.numCol * 1.5f / 2f;
-        var maxY = levelData.numRow * 1.5f / 2f;
-
-        var minX = -maxX;
-        var minY = -maxY;
-
-        maxY += offset.y;
-        minY += offset.y;
-
-        var top = maxY - topNeo.transform.position.y;
-        var bot = -(minY - botNeo.transform.position.y);
-        var right = maxX - rightNeo.transform.position.x;
-        var left = -(minX - leftNeo.transform.position.x);
-
-        var max = Mathf.Max(top, bot, right, left);
-
-        gameObject.transform.localScale = Vector3.one * defaultCamera / (defaultCamera + max * (1 / Camera.main.aspect));
+        float scaleOffset = Mathf.Min(numcell / (levelData.numCol), numcell / (levelData.numRow), numcell / 4f);
+        gameObject.transform.localScale = new Vector3(scaleOffset, scaleOffset, 1f);
     }
+
+    //private void ScaleGridBoard()
+    //{
+    //    var defaultCamera = Camera.main.orthographicSize;
+
+    //    Canvas.ForceUpdateCanvases();
+
+    //    var offset = (topNeo.position + botNeo.position)/2f;
+    //    gameObject.transform.position = new Vector3(offset.x, offset.y, 0f);
+
+    //    var maxX = levelData.numCol * 1.5f / 2f;
+    //    var maxY = levelData.numRow * 1.5f / 2f;
+
+    //    //var minX = -maxX;
+    //    //var minY = -maxY;
+
+    //    maxY += offset.y;
+    //    //minY += offset.y;
+
+    //    var top = maxY - topNeo.transform.position.y;
+    //    //var bot = -(minY - botNeo.transform.position.y);
+    //    var right = maxX - rightNeo.transform.position.x;
+    //    //var left = -(minX - leftNeo.transform.position.x);
+
+    //    //var max = Mathf.Max(top, bot, right, left);
+    //    var max = Mathf.Max(top, right);
+    //    var ratio = 0f;
+
+    //    if(max == top)
+    //    {
+    //        ratio = topNeo.transform.position.y / defaultCamera;
+    //    }
+    //    else
+    //    {
+    //        ratio = rightNeo.transform.position.x / (defaultCamera * Camera.main.aspect);
+    //    }
+    //    max /= ratio;
+    //    gameObject.transform.localScale = Vector3.one * defaultCamera / (defaultCamera + max);
+    //    //gameObject.transform.localScale = Vector3.one * defaultCamera / (defaultCamera + max * (1 / Camera.main.aspect));
+    //}
 
     // --------------------- Sloved New Word ------------------
     public void SlovedNewWord(Word word)

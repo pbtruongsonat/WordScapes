@@ -9162,6 +9162,7 @@ MonoBehaviour:
   levelButtonPrefabs: {fileID: 8524689903522638322, guid: 4f18a483491352942ae1f79108361b93, type: 3}
   levelContainer: {fileID: 1937893842}
   contentScroll: {fileID: 1698863079}
+  contentScrollRect: {fileID: 0}
   childSelected: {fileID: 0}
   parentSeleted: {fileID: 0}
 --- !u!1 &1228208933
@@ -11280,7 +11281,6 @@ GameObject:
   - component: {fileID: 1417871167}
   - component: {fileID: 1417871170}
   - component: {fileID: 1417871169}
-  - component: {fileID: 1417871168}
   m_Layer: 5
   m_Name: Game Title
   m_TagString: Untagged
@@ -11302,25 +11302,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1698863079}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 540, y: -60.59}
-  m_SizeDelta: {x: 640.84, y: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1417871168
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1417871166}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_HorizontalFit: 2
-  m_VerticalFit: 2
 --- !u!114 &1417871169
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14661,10 +14647,10 @@ MonoBehaviour:
     m_Bottom: 8
   m_ChildAlignment: 1
   m_Spacing: 24
-  m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 1
-  m_ChildControlWidth: 0
-  m_ChildControlHeight: 0
+  m_ChildForceExpandWidth: 0
+  m_ChildForceExpandHeight: 0
+  m_ChildControlWidth: 1
+  m_ChildControlHeight: 1
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
@@ -16351,7 +16337,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1937893842}
   - component: {fileID: 1937893844}
-  - component: {fileID: 1937893843}
   m_Layer: 5
   m_Name: List Level
   m_TagString: Untagged
@@ -16373,25 +16358,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1698863079}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 540, y: -137.18}
-  m_SizeDelta: {x: 816, y: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1937893843
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1937893841}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_HorizontalFit: 2
-  m_VerticalFit: 2
 --- !u!114 &1937893844
 MonoBehaviour:
   m_ObjectHideFlags: 0

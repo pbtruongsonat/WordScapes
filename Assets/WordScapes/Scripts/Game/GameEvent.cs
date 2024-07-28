@@ -4,7 +4,7 @@ public class GameEvent
 {
     // ----------- Select Level -------------
     public static Action<bool> changeChildSelect;
-    public static Action<ChildCategory> displayListLevel;
+    public static Action<ChildCategory, bool> displayListLevel;
 
 
     // ----------- Support ------------------

@@ -1,9 +1,12 @@
+using DG.Tweening;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Analytics;
+using UnityEngine.UI;
 
 public class SelectLevelController : MonoBehaviour
 {
@@ -14,13 +17,14 @@ public class SelectLevelController : MonoBehaviour
     [Header("Other Transform")]
     public Transform levelContainer;
     public Transform contentScroll;
+    public RectTransform contentScrollRect;
 
     [Header("Component")]
     public ChildCategory childSelected;
     public ParentCategory parentSeleted;
 
     public Dictionary<ChildCategory, int> dicLevelIdStart = new Dictionary<ChildCategory, int>();
-    public Dictionary<ChildCategory, ParentCategory> dicChild = new Dictionary<ChildCategory, ParentCategory>();
+    public Dictionary<ChildCategory, Transform> dicChild = new Dictionary<ChildCategory, Transform>(); // Parent obj transform of child
 
     public Dictionary<int, string> dicLettersOfLevel = new Dictionary<int, string>();
 
@@ -28,7 +32,7 @@ public class SelectLevelController : MonoBehaviour
     public void Start()
     {
         ProcessData();
-        SpawnParentCategory();
+        //SpawnParentCategory();
     }
 
     private void ProcessData()
@@ -36,9 +40,12 @@ public class SelectLevelController : MonoBehaviour
         int levelIdStart = 1;
         foreach(var parent in GameManager.Instance.gameData.listParent)
         {
-            foreach(var child in parent.listChild)
+            var parentObj = Instantiate(parentPrefabs, contentScroll);
+            parentObj.GetComponent<UIParentCategory>()?.SetParent(parent);
+
+            foreach (var child in parent.listChild)
             {
-                dicChild.Add(child, parent);
+                dicChild.Add(child, parentObj.transform);
 
                 dicLevelIdStart.Add(child, levelIdStart);
 
@@ -47,53 +54,63 @@ public class SelectLevelController : MonoBehaviour
         }
     }
 
-    private void SpawnParentCategory()
+    //private void SpawnParentCategory()
+    //{
+    //    foreach(var parent in GameManager.Instance.gameData.listParent)
+    //    {
+    //    }
+    //}
+
+    private void SetLevelContainer(ChildCategory child, bool active)
     {
-        foreach(var parent in GameManager.Instance.gameData.listParent)
+        if (!active)
         {
-            var parentObj = Instantiate(parentPrefabs, contentScroll);
-            parentObj.GetComponent<UIParentCategory>()?.SetParent(parent);
-        }
-    }
-
-    private void SetLevelContainer(ChildCategory child)
-    {
-        int numLevels = child.listLevelID.Count;
-        int startIdLevel = dicLevelIdStart[child];
-
-
-        while(levelContainer.childCount < numLevels)
+            levelContainer.gameObject.SetActive(false);
+            return;
+        } else
         {
-            var levelBtn = Instantiate(levelButtonPrefabs, levelContainer);
-        }
 
-        for(int i = 0; i < levelContainer.childCount; i++)
-        {
-            levelContainer.GetChild(i).gameObject.SetActive(false);
-        }
+            levelContainer.gameObject.SetActive(true);
 
-        for(int i = 0; i < numLevels; i++)
-        {
-            var levelId = startIdLevel + i;
+            int numLevels = child.listLevelID.Count;
+            int startIdLevel = dicLevelIdStart[child];
 
-            // Add Letters for Levels
-            if (!dicLettersOfLevel.ContainsKey(levelId))
+
+            while (levelContainer.childCount < numLevels)
             {
-                string path = $"Data/Level/{child.listLevelID[i]}";
-                TextAsset fileLevel = Resources.Load<TextAsset>(path);
-                if (fileLevel == null) continue;
-
-                LevelData levelData = JsonConvert.DeserializeObject<LevelData>(fileLevel.text);
-
-                dicLettersOfLevel.Add(levelId, levelData.letters);
+                var levelBtn = Instantiate(levelButtonPrefabs, levelContainer);
             }
 
-            var levelBtn = levelContainer.GetChild(i);
-            levelBtn.GetComponent<LevelButton>().SetLevel(levelId, dicLettersOfLevel[levelId]);
-            levelBtn.gameObject.SetActive(true);
+            for (int i = 0; i < levelContainer.childCount; i++)
+            {
+                levelContainer.GetChild(i).gameObject.SetActive(false);
+            }
+
+            for (int i = 0; i < numLevels; i++)
+            {
+                var levelId = startIdLevel + i;
+
+                // Add Letters for Levels
+                if (!dicLettersOfLevel.ContainsKey(levelId))
+                {
+                    string path = $"Data/Level/{child.listLevelID[i]}";
+                    TextAsset fileLevel = Resources.Load<TextAsset>(path);
+                    if (fileLevel == null) continue;
+
+                    LevelData levelData = JsonConvert.DeserializeObject<LevelData>(fileLevel.text);
+
+                    dicLettersOfLevel.Add(levelId, levelData.letters);
+                }
+
+                var levelBtn = levelContainer.GetChild(i);
+                levelBtn.GetComponent<LevelButton>().SetLevel(levelId, dicLettersOfLevel[levelId]);
+                levelBtn.gameObject.SetActive(true);
+            }
+
+            levelContainer.SetParent(dicChild[child]);
         }
 
-        Canvas.ForceUpdateCanvases();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(contentScrollRect);
     }
 
     private void OnEnable()

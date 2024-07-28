@@ -73,6 +73,6 @@ public class LevelButton : ButtonBase
 
     protected override void OnClick()
     {
-        GameEvent.playLevel(levelId);
+        GameEvent.playLevel?.Invoke(levelId);
     }
 }
