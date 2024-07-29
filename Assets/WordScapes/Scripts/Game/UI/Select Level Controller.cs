@@ -1,6 +1,7 @@
 using DG.Tweening;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -25,6 +26,8 @@ public class SelectLevelController : MonoBehaviour
 
     public Dictionary<ChildCategory, int> dicLevelIdStart = new Dictionary<ChildCategory, int>();
     public Dictionary<ChildCategory, Transform> dicChild = new Dictionary<ChildCategory, Transform>(); // Parent obj transform of child
+    
+    public Dictionary<ParentCategory, Tuple<int, int>> rangeLevelParent = new Dictionary<ParentCategory, Tuple<int, int>>();
 
     public Dictionary<int, string> dicLettersOfLevel = new Dictionary<int, string>();
 
@@ -41,7 +44,8 @@ public class SelectLevelController : MonoBehaviour
         foreach(var parent in GameManager.Instance.gameData.listParent)
         {
             var parentObj = Instantiate(parentPrefabs, contentScroll);
-            parentObj.GetComponent<UIParentCategory>()?.SetParent(parent);
+
+            int parentStart = levelIdStart;
 
             foreach (var child in parent.listChild)
             {
@@ -51,6 +55,10 @@ public class SelectLevelController : MonoBehaviour
 
                 levelIdStart += child.listLevelID.Count;
             }
+
+            rangeLevelParent.Add(parent, new Tuple<int,int>(parentStart, levelIdStart - 1));
+
+            parentObj.GetComponent<UIParentCategory>()?.SetParent(parent, parentStart, levelIdStart - 1);
         }
     }
 
@@ -91,7 +99,7 @@ public class SelectLevelController : MonoBehaviour
                 var levelId = startIdLevel + i;
 
                 // Add Letters for Levels
-                if (!dicLettersOfLevel.ContainsKey(levelId))
+                if (!dicLettersOfLevel.ContainsKey(levelId) && levelId <= GameManager.Instance.unlockedLevel)
                 {
                     string path = $"Data/Level/{child.listLevelID[i]}";
                     TextAsset fileLevel = Resources.Load<TextAsset>(path);
@@ -103,7 +111,20 @@ public class SelectLevelController : MonoBehaviour
                 }
 
                 var levelBtn = levelContainer.GetChild(i);
-                levelBtn.GetComponent<LevelButton>().SetLevel(levelId, dicLettersOfLevel[levelId]);
+                var levelBtnScript = levelBtn.GetComponent<LevelButton>();
+
+                if (levelId <= GameManager.Instance.unlockedLevel)
+                {
+                    levelBtnScript.SetLevel(levelId, dicLettersOfLevel[levelId]);
+                    if (levelId == GameManager.Instance.unlockedLevel)
+                    {
+                        levelBtnScript.SetCurrentLevel();
+                    }
+                } else
+                {
+                    levelBtnScript.SetLevel(levelId);
+                }
+
                 levelBtn.gameObject.SetActive(true);
             }
 

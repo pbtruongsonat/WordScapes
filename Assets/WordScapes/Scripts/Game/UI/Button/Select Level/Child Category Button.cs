@@ -22,12 +22,14 @@ public class ChildCategoryButton : ButtonBase
         {
             unlockedChild.SetActive(false);
             lockedChild.SetActive(true);
+            button.interactable = false;
         }
         else
         {
             this.child = child;
             unlockedChild.SetActive(true);
             lockedChild.SetActive(false);
+            button.interactable = true;
 
             nameChild = this.child.name;
             textNameChild.text = nameChild;

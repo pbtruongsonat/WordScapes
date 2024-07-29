@@ -1,11 +1,5 @@
-using DG.Tweening;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.Collections;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.XR;
 
 public class GridBoardManager : SingletonBase<GridBoardManager>
 {
@@ -44,12 +38,14 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
 
     public void ResetGridBoard()
     {
+        cellList.Clear();
         for (int i = 0; i < gameObject.transform.childCount; i++)
         {
             gameObject.transform.GetChild(i).gameObject.SetActive(false);
             cellList.Add(gameObject.transform.GetChild(i).gameObject);
         }
         gameObject.transform.localScale = Vector3.one;
+
         cellDic.Clear();
         wordUnSloved.Clear();
         indexCellHidden.Clear();
@@ -125,58 +121,38 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
 
     private void ScaleGridBoard()
     {
+        var defaultCamera = Camera.main.orthographicSize;
+
+        Canvas.ForceUpdateCanvases();
+
         var offset = (topNeo.position + botNeo.position) / 2f;
         gameObject.transform.position = new Vector3(offset.x, offset.y, 0f);
 
-        float width = Camera.main.orthographicSize * 2 * Camera.main.aspect;
-        float height = Camera.main.orthographicSize * 2;
+        int numColMin = Mathf.Max(5, levelData.numCol);
+        int numRowMin = Mathf.Max(4, levelData.numRow);
 
-        float cellSize = 1.56f;
-        float numcell = Mathf.Min(width / cellSize, (height * 0.55f) / cellSize);
+        var maxX = numColMin * 1.5f / 2f;
+        var maxY = numRowMin * 1.5f / 2f;
 
-        float scaleOffset = Mathf.Min(numcell / (levelData.numCol), numcell / (levelData.numRow), numcell / 4f);
-        gameObject.transform.localScale = new Vector3(scaleOffset, scaleOffset, 1f);
+        maxY += offset.y;
+
+        var top = maxY - topNeo.transform.position.y;
+        var right = maxX - rightNeo.transform.position.x;
+        var max = Mathf.Max(top, right);
+
+        var ratio = 0f;
+
+        if (max == top)
+        {
+            ratio = topNeo.transform.position.y / (defaultCamera *2f) ;
+        }
+        else
+        {
+            ratio = rightNeo.transform.position.x / (defaultCamera * Camera.main.aspect * 2f);
+        }
+        max /= ratio;
+        gameObject.transform.localScale = Vector3.one * defaultCamera / (defaultCamera + max);
     }
-
-    //private void ScaleGridBoard()
-    //{
-    //    var defaultCamera = Camera.main.orthographicSize;
-
-    //    Canvas.ForceUpdateCanvases();
-
-    //    var offset = (topNeo.position + botNeo.position)/2f;
-    //    gameObject.transform.position = new Vector3(offset.x, offset.y, 0f);
-
-    //    var maxX = levelData.numCol * 1.5f / 2f;
-    //    var maxY = levelData.numRow * 1.5f / 2f;
-
-    //    //var minX = -maxX;
-    //    //var minY = -maxY;
-
-    //    maxY += offset.y;
-    //    //minY += offset.y;
-
-    //    var top = maxY - topNeo.transform.position.y;
-    //    //var bot = -(minY - botNeo.transform.position.y);
-    //    var right = maxX - rightNeo.transform.position.x;
-    //    //var left = -(minX - leftNeo.transform.position.x);
-
-    //    //var max = Mathf.Max(top, bot, right, left);
-    //    var max = Mathf.Max(top, right);
-    //    var ratio = 0f;
-
-    //    if(max == top)
-    //    {
-    //        ratio = topNeo.transform.position.y / defaultCamera;
-    //    }
-    //    else
-    //    {
-    //        ratio = rightNeo.transform.position.x / (defaultCamera * Camera.main.aspect);
-    //    }
-    //    max /= ratio;
-    //    gameObject.transform.localScale = Vector3.one * defaultCamera / (defaultCamera + max);
-    //    //gameObject.transform.localScale = Vector3.one * defaultCamera / (defaultCamera + max * (1 / Camera.main.aspect));
-    //}
 
     // --------------------- Sloved New Word ------------------
     public void SlovedNewWord(Word word)

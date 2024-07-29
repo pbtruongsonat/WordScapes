@@ -1,6 +1,8 @@
 using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class LetterManager : MonoBehaviour
 {
@@ -48,6 +50,16 @@ public class LetterManager : MonoBehaviour
         {
             var cell = listLetterCell[i];
             SetCell(cell, i);
+        }
+        StartCoroutine(IELoadPositionLetters());
+    }
+
+    IEnumerator IELoadPositionLetters()
+    {
+        yield return new WaitForSeconds(0.5f);
+        for (int i = 0; i < letters.Length; i++)
+        {
+            var cell = listLetterCell[i];
             lettersPosition.Add(cell.transform.position);
         }
     }

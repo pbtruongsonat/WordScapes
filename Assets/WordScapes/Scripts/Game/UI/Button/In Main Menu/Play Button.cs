@@ -27,7 +27,8 @@ public class PlayButton : ButtonBase
 
     protected override void OnClick()
     {
-        GameEvent.playLevel(GameManager.Instance.unlockedLevel);
+        UIManager.Instance.DisplayGamePlay();
+        GameEvent.playLevel?.Invoke(GameManager.Instance.unlockedLevel);
     }
 
     public void UpdateTextContent()

@@ -14,7 +14,7 @@ public class UISettings : MonoBehaviour
 
     public void DisablePanel()
     {
-        settingsPanel.transform.DOScale(Vector3.zero, 0.15f).SetEase(Ease.OutQuint);
+        settingsPanel.transform.DOScale(Vector3.zero, 0.15f).SetEase(Ease.OutFlash);
         StartCoroutine("WaitDisable");
     }
 

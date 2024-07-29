@@ -1,9 +1,10 @@
 
 using DG.Tweening;
 
-public abstract class BottomButtonBase : ButtonBase
+public abstract class TopButtonBase : ButtonBase
 {
-    protected abstract override void OnClick();
+    protected override abstract void OnClick();
+
     protected override void OnEnableButton(bool enable)
     {
         if (enable)
@@ -12,7 +13,7 @@ public abstract class BottomButtonBase : ButtonBase
         }
         else
         {
-            rectTransform.DOPivotY(10f, 0.5f).SetEase(Ease.OutSine);
+            rectTransform.DOPivotY(-10f, 0.5f).SetEase(Ease.OutSine);
         }
     }
 }

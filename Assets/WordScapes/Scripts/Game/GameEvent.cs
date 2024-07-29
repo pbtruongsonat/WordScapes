@@ -18,10 +18,9 @@ public class GameEvent
     public static ValueChanged coinChanged;
     public static ValueChanged diamondChanged;
 
-
     // ----------  Game  ---------------
     public static Action<bool> inGameplay;
     public static Action<bool> inMainMenu;
-
+    public static Action<bool> inSelectLevel;
     public static Action<int> playLevel;
 }

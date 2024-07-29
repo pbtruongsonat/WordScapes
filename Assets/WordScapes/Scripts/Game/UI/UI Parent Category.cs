@@ -15,12 +15,17 @@ public class UIParentCategory : MonoBehaviour
     public GameObject childCatePrefabs;
 
     public ParentCategory parent;
+    public int levelStart;
     public List<ChildCategoryButton> listChildButton = new List<ChildCategoryButton>();
 
-    public void SetParent(ParentCategory parent)
+    public void SetParent(ParentCategory parent, int levelStart, int levelEnd)
     {
         this.parent = parent;
+        this.levelStart = levelStart;
         textNameParent.text = this.parent.name;
+        textLevelsRange.text = $"Levels {levelStart} - {levelEnd}";
+
+        onCompleted.SetActive(GameManager.Instance.unlockedLevel > levelEnd);
 
         SpawnListChild();
     }
@@ -40,11 +45,23 @@ public class UIParentCategory : MonoBehaviour
             childButton.gameObject.SetActive(false);
         }
 
+        int levelCounter = 0;
+
         for(int i = 0; i < numChildren; i++)
         {
             var childButton = listChildButton[i];
-            childButton.SetChild(parent.listChild[i]);
+
+            if(levelStart + levelCounter <= GameManager.Instance.unlockedLevel)
+            {
+                childButton.SetChild(parent.listChild[i]);
+            } else
+            {
+                childButton.SetChild(null);
+            }
+
             childButton.gameObject.SetActive(true);
+
+            levelCounter += parent.listChild[i].listLevelID.Count;
         }
     }
 }

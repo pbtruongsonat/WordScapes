@@ -1,9 +1,5 @@
 using DG.Tweening;
-using System;
 using System.Collections.Generic;
-using System.Globalization;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class InputHandle : MonoBehaviour
@@ -96,14 +92,26 @@ public class InputHandle : MonoBehaviour
 
      //--------------------------------------------------------------------
 
-    private void OnEnable()
+    private void OnEnableUI(bool isEnable)
     {
-        //gameObject.transform.localScale = Vector3.zero;
-        gameObject.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBack);
+        if (isEnable)
+        {
+            gameObject.transform.localScale = Vector3.zero;
+            gameObject.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBack);
+        }else
+        {
+            gameObject.transform.DOScale(Vector3.zero, 0.2f).SetEase(Ease.InFlash);
+            gameObject.transform.DOScale(Vector3.zero, 0.2f).SetEase(Ease.InFlash);
+        }
     }
 
-    private void OnCloseUI()
+    private void OnEnable()
     {
-        gameObject.transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InBack);
+        GameEvent.inGameplay += OnEnableUI;
+    }
+
+    private void OnDisable()
+    {
+        GameEvent.inGameplay -= OnEnableUI;
     }
 }

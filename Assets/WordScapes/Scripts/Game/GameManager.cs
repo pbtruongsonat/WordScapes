@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,10 +19,11 @@ public class GameManager : SingletonBase<GameManager>
     public Dictionary<int, Sprite> listBackground = new Dictionary<int, Sprite>();
 
     [Header("Component")]
+    public int currentLevel;
     public LevelManager levelManager;
     public UIManager uiManager;
 
-    public Image background;
+    public Image backgroundGamePlay;
 
     void Start()
     {
@@ -91,25 +93,34 @@ public class GameManager : SingletonBase<GameManager>
 
     public void WinGame()
     {
-        unlockedLevel++;
-        StartCoroutine("Wait2Second");
+        if(currentLevel == unlockedLevel)
+        {
+            ++ unlockedLevel;
+            // Win new level in the Game
+        } else
+        {
+            // Re-win a previously completed level
+        }
+        StartCoroutine(Wait1Second());
     }
 
-    IEnumerator Wait2Second()
+    IEnumerator Wait1Second()
     {
-        yield return new WaitForSeconds(2f); 
-        OnGamePlay(unlockedLevel);
+        yield return new WaitForSeconds(1f);
+        UIManager.Instance.DisplayMainMenu();
     }
 
     public void OnGamePlay(int levelNumber)
     {
+        currentLevel = levelNumber;
+
         string path = $"Data/Level/{listLevelID[levelNumber - 1]}";
         TextAsset fileLevel = Resources.Load<TextAsset>(path);
         if (fileLevel == null) return;
 
-        uiManager.OpenGamePlay();
+        //uiManager.DisplayGamePlay();
         LevelData levelData = JsonConvert.DeserializeObject<LevelData>(fileLevel.text);
-        background.sprite = listBackground[levelNumber-1];
+        backgroundGamePlay.sprite = listBackground[levelNumber-1];
         levelManager.SetLevel(levelData);
     }
 

@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using UnityEngine;
 
@@ -5,44 +6,80 @@ public class UIManager : SingletonBase<UIManager>
 {
     public GameObject mainMenuUI;
     public GameObject gamePlayUI;
+    public GameObject levelSelectUI;
 
-    public void OpenGamePlay()
-    {
-        StartCoroutine("OpenGamePlayAnim");
-    }
 
-    IEnumerator OpenGamePlayAnim()
+    // ---- Game Play ----
+    public void DisplayGamePlay()
     {
-        GameEvent.inMainMenu?.Invoke(false);
-        yield return new WaitForSeconds(0.1f);
+        CloseAllUI();
+
         gamePlayUI.SetActive(true);
         GameEvent.inGameplay?.Invoke(true);
-
-        yield return new WaitForSeconds(0.2f);
-        mainMenuUI.SetActive(false);
     }
 
-    public void OpenMainMenu()
-    {
-        StartCoroutine("OpenMainMenuAnim");
-    }
-
-    IEnumerator OpenMainMenuAnim()
+    IEnumerator IECLoseGamePlay()
     {
         GameEvent.inGameplay?.Invoke(false);
-        yield return new WaitForSeconds(0.1f);
-
-        mainMenuUI.SetActive(true);
-        GameEvent.inMainMenu?.Invoke(true);
-
         yield return new WaitForSeconds(0.2f);
         gamePlayUI.SetActive(false);
     }
 
+    // ---- Main Menu ----
+    public void DisplayMainMenu()
+    {
+        CloseAllUI();
+
+        mainMenuUI.SetActive(true);
+        GameEvent.inMainMenu?.Invoke(true);
+    }
+
+    IEnumerator IECloseMainMenu()
+    {
+        GameEvent.inMainMenu?.Invoke(false);
+        yield return new WaitForSeconds(0.2f);
+        mainMenuUI.SetActive(false);
+    }
+
+    // ---- Level Select ----
+    public void DisplayLevelSelect()
+    {
+        CloseAllUI();
+
+        levelSelectUI.SetActive(true);
+        levelSelectUI.transform.localScale = Vector3.zero;
+        levelSelectUI.transform.DOScale(Vector3.one, 0.15f).SetEase(Ease.InFlash);
+    }
+
+    IEnumerator IECloseLevelSelect()
+    {
+        yield return new WaitForSeconds(0.1f);
+        levelSelectUI.SetActive(false);
+    }
+
+
+
+
+    public void CloseAllUI()
+    {
+        if (gamePlayUI.activeSelf)
+        {
+            StartCoroutine(IECLoseGamePlay());
+        }
+        if (levelSelectUI.activeSelf)
+        {
+            StartCoroutine(IECloseLevelSelect());
+        }
+        if (mainMenuUI.activeSelf)
+        {
+            StartCoroutine(IECloseMainMenu());
+        }
+    }
+
     private void OnEnable()
     {
-        
     }
+
     private void OnDisable()
     {
             

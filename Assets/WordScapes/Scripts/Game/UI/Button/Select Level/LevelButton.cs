@@ -40,9 +40,16 @@ public class LevelButton : ButtonBase
 
         textLevelId.text = levelId.ToString();
         lettersContainer.gameObject.SetActive(true);
+
         SetLetters();
 
         button.interactable = true;
+    }
+
+    // Current Level
+    public void SetCurrentLevel()
+    {
+        // Curent Level
     }
 
     private void SetLetters()
@@ -73,6 +80,7 @@ public class LevelButton : ButtonBase
 
     protected override void OnClick()
     {
+        UIManager.Instance.DisplayGamePlay();
         GameEvent.playLevel?.Invoke(levelId);
     }
 }
