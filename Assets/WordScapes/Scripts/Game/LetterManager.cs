@@ -1,6 +1,8 @@
 using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class LetterManager : MonoBehaviour
 {
@@ -22,6 +24,7 @@ public class LetterManager : MonoBehaviour
     public void LoadNewLevel(string _letters)
     {
         letters = _letters;
+        lettersPosition.Clear();
 
         numLetter = letters.Length;
         angle = (Mathf.PI * 2) / numLetter;
@@ -37,10 +40,26 @@ public class LetterManager : MonoBehaviour
             var cell = Instantiate(letterCellPrefabs, this.transform);
             listLetterCell.Add(cell);
         }
+        
+        foreach(var letterCell in listLetterCell)
+        {
+            letterCell.SetActive(false);
+        }
+
         for (int i = 0; i < letters.Length; i++)
         {
             var cell = listLetterCell[i];
             SetCell(cell, i);
+        }
+        StartCoroutine(IELoadPositionLetters());
+    }
+
+    IEnumerator IELoadPositionLetters()
+    {
+        yield return new WaitForSeconds(0.5f);
+        for (int i = 0; i < letters.Length; i++)
+        {
+            var cell = listLetterCell[i];
             lettersPosition.Add(cell.transform.position);
         }
     }
@@ -51,6 +70,7 @@ public class LetterManager : MonoBehaviour
         cell.transform.SetLocalPositionAndRotation(position, Quaternion.identity);
         cell.transform.localScale = scaleLetter;
         cell.GetComponent<InputCell>()?.SetLetter(letters[index].ToString());
+        cell.SetActive(true);
     }
 
     private void ConvertLetter()

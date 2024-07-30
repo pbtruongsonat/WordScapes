@@ -111,7 +111,6 @@ public class LevelManager : SingletonBase<LevelManager>
 
     private void Win()
     {
-        Debug.Log("win");
         GameManager.Instance.WinGame();
     }
 }

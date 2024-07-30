@@ -1,7 +1,14 @@
 using System;
+using UnityEngine;
 
 public class GameEvent
 {
+    // ----------- Select Level -------------
+    public static Action<bool> changeChildSelect;
+    public static Action<int, int,Transform, bool> displayListLevel;
+    public static Action hiddenLevelContainer;
+
+
     // ----------- Support ------------------
     public static Action onClickConvertLetters;
     public static Action onClickIdea;
@@ -13,10 +20,9 @@ public class GameEvent
     public static ValueChanged coinChanged;
     public static ValueChanged diamondChanged;
 
-
     // ----------  Game  ---------------
     public static Action<bool> inGameplay;
     public static Action<bool> inMainMenu;
-
+    public static Action<bool> inSelectLevel;
     public static Action<int> playLevel;
 }

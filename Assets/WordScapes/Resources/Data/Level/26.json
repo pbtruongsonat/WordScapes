@@ -1,0 +1,13 @@
+{
+  "numRow": 20,
+  "numCol": 1,
+  "letters": "ZECAT",
+  "words": [
+    {
+      "word": "HELLOWOLRDVIETNAMABC",
+      "startRowIndex": 0,
+      "startColIndex": 0,
+      "dir": 1
+    }
+  ]
+}

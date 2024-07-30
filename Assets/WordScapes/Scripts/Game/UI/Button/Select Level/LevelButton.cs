@@ -40,9 +40,16 @@ public class LevelButton : ButtonBase
 
         textLevelId.text = levelId.ToString();
         lettersContainer.gameObject.SetActive(true);
+
         SetLetters();
 
         button.interactable = true;
+    }
+
+    // Current Level
+    public void SetCurrentLevel()
+    {
+        // Curent Level
     }
 
     private void SetLetters()
@@ -54,6 +61,12 @@ public class LevelButton : ButtonBase
             Instantiate(textLetterPrefabs, lettersContainer);
         }
 
+        for(int i = 0; i < lettersContainer.childCount; i++)
+        {
+            var letter = lettersContainer.GetChild(i);
+            letter.gameObject.SetActive(false);
+        }
+
         for(int i = 0; i < numLetters; i++)
         {
             var letter = lettersContainer.GetChild(i);
@@ -63,12 +76,11 @@ public class LevelButton : ButtonBase
             Vector3 position = new Vector3(Mathf.Cos(angle * i + Mathf.PI / 2), Mathf.Sin(angle * i + Mathf.PI / 2), 0) * radius;
             letter.transform.SetLocalPositionAndRotation(position, Quaternion.identity);
         }
-
-        Debug.Log("Set Letters");
     }
 
     protected override void OnClick()
     {
-        base.OnClick();
+        UIManager.Instance.DisplayGamePlay();
+        GameEvent.playLevel?.Invoke(levelId);
     }
 }

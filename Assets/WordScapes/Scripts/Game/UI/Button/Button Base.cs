@@ -22,7 +22,7 @@ public abstract class ButtonBase : MonoBehaviour
     }
     protected virtual void OnClick()
     {
-        Debug.Log("OnClick In Base");
+
     }
     protected virtual void OnEnableButton(bool enable) { }
 
