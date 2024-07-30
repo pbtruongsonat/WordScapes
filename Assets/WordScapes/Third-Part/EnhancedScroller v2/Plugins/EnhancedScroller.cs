@@ -668,6 +668,7 @@ namespace EnhancedUI.EnhancedScroller
             }
         }
 
+
         /// <summary>
         /// Create a cell view, or recycle one if it already exists
         /// </summary>
@@ -1882,7 +1883,7 @@ namespace EnhancedUI.EnhancedScroller
             }
 
             // Create a new active cell view container with a layout group
-            go = new GameObject("Container", typeof(RectTransform));
+            go = new GameObject("Content", typeof(RectTransform));
             go.transform.SetParent(_scrollRectTransform);
             if (scrollDirection == ScrollDirectionEnum.Vertical)
                 go.AddComponent<VerticalLayoutGroup>();
@@ -1922,6 +1923,7 @@ namespace EnhancedUI.EnhancedScroller
             }
 
             // cache the layout group and set up its spacing and padding
+            // pbtruong03: edit vertical Layout Group
             _layoutGroup = _container.GetComponent<HorizontalOrVerticalLayoutGroup>();
             _layoutGroup.spacing = spacing;
             _layoutGroup.padding = padding;
@@ -1936,8 +1938,9 @@ namespace EnhancedUI.EnhancedScroller
             // create the padder objects
 
             go = new GameObject("First Padder", typeof(RectTransform), typeof(LayoutElement));
+            //firstPadder.transform.SetParent(_container, true);
             go.transform.SetParent(_container, false);
-            _firstPadder = go.GetComponent<LayoutElement>();
+            _firstPadder = go.AddComponent<LayoutElement>();
 
             go = new GameObject("Last Padder", typeof(RectTransform), typeof(LayoutElement));
             go.transform.SetParent(_container, false);
@@ -1957,6 +1960,17 @@ namespace EnhancedUI.EnhancedScroller
             _initialized = true;
         }
 
+        // pbtruong03: add method ResizeContent 
+        public void ResizeContent(float valueChanged)
+        {
+            _container.sizeDelta = new Vector2(_container.sizeDelta.x, _container.sizeDelta.y + valueChanged);
+            LayoutRebuilder.ForceRebuildLayoutImmediate(_container);
+        }
+
+        //IEnumerator UpdateCanvasScroll()
+        //{
+
+        //}
 		/// <summary>
         /// This event is fired when the user begins dragging on the scroller.
 		/// We can disable looping or snapping while dragging if desired.

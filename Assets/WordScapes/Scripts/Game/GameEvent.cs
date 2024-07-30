@@ -1,10 +1,12 @@
 using System;
+using UnityEngine;
 
 public class GameEvent
 {
     // ----------- Select Level -------------
     public static Action<bool> changeChildSelect;
-    public static Action<ChildCategory, bool> displayListLevel;
+    public static Action<int, int,Transform, bool> displayListLevel;
+    public static Action hiddenLevelContainer;
 
 
     // ----------- Support ------------------

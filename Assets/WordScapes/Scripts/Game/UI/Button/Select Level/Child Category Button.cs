@@ -4,6 +4,10 @@ using UnityEngine.UI;
 
 public class ChildCategoryButton : ButtonBase
 {
+    public int indexParent;
+    public int indexChild;
+
+    [Header("Infomation")]
     public ChildCategory child;
     public string nameChild;
     public bool onSelect;
@@ -16,25 +20,28 @@ public class ChildCategoryButton : ButtonBase
     public GameObject unlockedChild;
     public GameObject lockedChild;
 
-    public void SetChild(ChildCategory child)
+    public void SetChild(ChildCategory child, int indexParent, int indexChild)
     {
-        if (child == null)
-        {
-            unlockedChild.SetActive(false);
-            lockedChild.SetActive(true);
-            button.interactable = false;
-        }
-        else
-        {
-            this.child = child;
-            unlockedChild.SetActive(true);
-            lockedChild.SetActive(false);
-            button.interactable = true;
+        this.indexParent = indexParent;
+        this.indexChild = indexChild;
 
-            nameChild = this.child.name;
-            textNameChild.text = nameChild;
-            childBackground.sprite = this.child.backgroundImage;
-        }
+        this.child = child;
+        unlockedChild.SetActive(true);
+        lockedChild.SetActive(false);
+        button.interactable = true;
+
+        nameChild = this.child.name;
+        textNameChild.text = nameChild;
+        childBackground.sprite = this.child.backgroundImage;
+    }
+
+
+    // Set Child locked
+    public void SetChild()
+    {
+        unlockedChild.SetActive(false);
+        lockedChild.SetActive(true);
+        button.interactable = false;
     }
 
     private void OnSelectChild(bool selected)
@@ -48,7 +55,13 @@ public class ChildCategoryButton : ButtonBase
         bool selectTmp = !onSelect;
         GameEvent.changeChildSelect?.Invoke(false);
         OnSelectChild(selectTmp);
-        GameEvent.displayListLevel(child, selectTmp);
+        OnActiveLevel();
+    }
+
+    public void OnActiveLevel()
+    {
+        Transform parentTransform = this.transform.parent.parent;
+        GameEvent.displayListLevel?.Invoke(indexParent, indexChild, parentTransform, onSelect);
     }
 
     private void OnEnable()

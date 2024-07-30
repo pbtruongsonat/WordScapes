@@ -1,13 +1,10 @@
-using DG.Tweening;
-using JetBrains.Annotations;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Analytics;
 using UnityEngine.UI;
+using static GameEvent;
 
 public class SelectLevelController : MonoBehaviour
 {
@@ -16,13 +13,7 @@ public class SelectLevelController : MonoBehaviour
     public GameObject levelButtonPrefabs;
 
     [Header("Other Transform")]
-    public Transform levelContainer;
-    public Transform contentScroll;
-    public RectTransform contentScrollRect;
-
-    [Header("Component")]
-    public ChildCategory childSelected;
-    public ParentCategory parentSeleted;
+    public RectTransform levelContainer;
 
     public Dictionary<ChildCategory, int> dicLevelIdStart = new Dictionary<ChildCategory, int>();
     public Dictionary<ChildCategory, Transform> dicChild = new Dictionary<ChildCategory, Transform>(); // Parent obj transform of child
@@ -31,58 +22,62 @@ public class SelectLevelController : MonoBehaviour
 
     public Dictionary<int, string> dicLettersOfLevel = new Dictionary<int, string>();
 
+    [Header("Other Script")]
+    public ScrollerController scroller;
 
     public void Start()
     {
         ProcessData();
-        //SpawnParentCategory();
     }
 
     private void ProcessData()
     {
+        /// Move to GameData ...
+
         int levelIdStart = 1;
-        foreach(var parent in GameManager.Instance.gameData.listParent)
+        foreach (var parent in GameManager.Instance.gameData.listParent)
         {
-            var parentObj = Instantiate(parentPrefabs, contentScroll);
+            //var parentObj = Instantiate(parentPrefabs, contentScroll);
 
             int parentStart = levelIdStart;
 
             foreach (var child in parent.listChild)
             {
-                dicChild.Add(child, parentObj.transform);
+                //dicChild.Add(child, parentObj.transform);
 
                 dicLevelIdStart.Add(child, levelIdStart);
 
                 levelIdStart += child.listLevelID.Count;
             }
 
-            rangeLevelParent.Add(parent, new Tuple<int,int>(parentStart, levelIdStart - 1));
+            //rangeLevelParent.Add(parent, new Tuple<int, int>(parentStart, levelIdStart - 1));
 
-            parentObj.GetComponent<UIParentCategory>()?.SetParent(parent, parentStart, levelIdStart - 1);
+            //parentObj.GetComponent<UIParentCategory>()?.SetParent(parent, parentStart, levelIdStart - 1);
         }
     }
 
-    //private void SpawnParentCategory()
-    //{
-    //    foreach(var parent in GameManager.Instance.gameData.listParent)
-    //    {
-    //    }
-    //}
-
-    private void SetLevelContainer(ChildCategory child, bool active)
+    private void SetLevelContainer(int indexParent, int indexChild, Transform parentTransform, bool active)
     {
+        ChildCategory child = scroller.data[indexParent].parent.listChild[indexChild];
+
+        if(levelContainer.gameObject.activeSelf)
+        {
+            float spacingElement = 8;
+            float valueChanged = levelContainer.rect.height + spacingElement;
+            scroller.ResizeScroller(-valueChanged);
+        }
+
         if (!active)
         {
             levelContainer.gameObject.SetActive(false);
-            return;
+            scroller.data[indexParent].indexCateActive = -1;
         } else
         {
-
             levelContainer.gameObject.SetActive(true);
+            scroller.data[indexParent].indexCateActive = indexChild;
 
             int numLevels = child.listLevelID.Count;
             int startIdLevel = dicLevelIdStart[child];
-
 
             while (levelContainer.childCount < numLevels)
             {
@@ -128,19 +123,41 @@ public class SelectLevelController : MonoBehaviour
                 levelBtn.gameObject.SetActive(true);
             }
 
-            levelContainer.SetParent(dicChild[child]);
+            levelContainer.SetParent(parentTransform);
+
+
+            StartCoroutine(ResetSize());
         }
 
-        LayoutRebuilder.ForceRebuildLayoutImmediate(contentScrollRect);
+    }
+
+    IEnumerator ResetSize()
+    {
+        yield return new WaitForEndOfFrame();
+
+        float spacingElement = 8;
+        float valueChanged = levelContainer.rect.height + spacingElement;
+        scroller.ResizeScroller(valueChanged);
+    }
+
+    public void HiddenLevelContainer()
+    {
+        float spacingElement = 8;
+        float valueChanged = levelContainer.rect.height + spacingElement;
+
+        levelContainer.gameObject.SetActive(false);
+        scroller.ResizeScroller(-valueChanged);
     }
 
     private void OnEnable()
     {
         GameEvent.displayListLevel += SetLevelContainer;
+        GameEvent.hiddenLevelContainer += HiddenLevelContainer;
     }
 
     private void OnDisable()
     {
         GameEvent.displayListLevel -= SetLevelContainer;
+        GameEvent.hiddenLevelContainer -= HiddenLevelContainer;
     }
 }
