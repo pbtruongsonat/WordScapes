@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEditor;
@@ -93,12 +92,16 @@ public class CategoryManager : SingletonBase<CategoryManager>
             string assetPath = AssetDatabase.GetAssetPath(parentSelected);
             AssetDatabase.DeleteAsset(assetPath);
             UpdateOptionCategory();
+
         }
     }
 
     public void AddNewChild(ChildCategory newChild)
     {
         parentSelected.listChild.Add(newChild);
+
+        EditorUtility.SetDirty(parentSelected);
+
         UpdateOptionCategory();
     }
 
@@ -107,6 +110,9 @@ public class CategoryManager : SingletonBase<CategoryManager>
         if (parentSelected.listChild.Contains(childSelected))
         {
             parentSelected.listChild.Remove(childSelected);
+
+            EditorUtility.SetDirty(parentSelected);
+
             string assetPath = AssetDatabase.GetAssetPath(childSelected);
             AssetDatabase.DeleteAsset(assetPath);
             UpdateOptionCategory();
@@ -118,4 +124,18 @@ public class CategoryManager : SingletonBase<CategoryManager>
         categorySelection.UpdateParentList();
     }
 
+    private void SetDirtyData()
+    {
+
+        EditorUtility.SetDirty(gameData);
+
+        EditorUtility.SetDirty(childSelected);
+
+        EditorUtility.SetDirty(parentSelected);
+    }
+
+    private void OnDisable()
+    {
+        SetDirtyData();
+    }
 }

@@ -3,9 +3,7 @@ using TMPro;
 using UnityEngine;
 using System.IO;
 using SFB;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 using System.Collections.Generic;
-using UnityEngine.WSA;
 
 public class ChildCategoryEditor : MonoBehaviour
 {
