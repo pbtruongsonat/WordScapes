@@ -1,6 +1,7 @@
 using DG.Tweening;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIManager : SingletonBase<UIManager>
 {
@@ -47,13 +48,16 @@ public class UIManager : SingletonBase<UIManager>
         CloseAllUI();
 
         levelSelectUI.SetActive(true);
-        levelSelectUI.transform.localScale = Vector3.zero;
-        levelSelectUI.transform.DOScale(Vector3.one, 0.15f).SetEase(Ease.InFlash);
+        GameEvent.inSelectLevel?.Invoke(true);
+
+        //levelSelectUI.transform.localScale = Vector3.zero;
+        //levelSelectUI.transform.DOScale(Vector3.one, 0.15f).SetEase(Ease.InFlash);
     }
 
     IEnumerator IECloseLevelSelect()
     {
-        yield return new WaitForSeconds(0.1f);
+        GameEvent.inSelectLevel?.Invoke(false);
+        yield return new WaitForSeconds(0.2f);
         levelSelectUI.SetActive(false);
     }
 

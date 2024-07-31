@@ -13,5 +13,8 @@ MonoBehaviour:
   m_Name: P_SMARTPHONE
   m_EditorClassIdentifier: 
   name: SMARTPHONE
-  listChild: []
+  listChild:
+  - {fileID: 11400000, guid: 68edfcd80b3282a4698a417c304b987d, type: 2}
+  - {fileID: 11400000, guid: 3e8309b928c10cb48abc05ade02cfd5d, type: 2}
+  - {fileID: 11400000, guid: cc9cfb0586464be47acbec023820b453, type: 2}
   backgroundColor: {r: 0, g: 0, b: 0, a: 0}

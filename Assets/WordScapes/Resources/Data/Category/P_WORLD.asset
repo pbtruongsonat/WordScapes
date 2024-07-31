@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: P_WORLD
   m_EditorClassIdentifier: 
   name: WORLD
-  listChild: []
+  listChild:
+  - {fileID: 11400000, guid: c37e6b840089a194d90a17ee4cc3f2c1, type: 2}
   backgroundColor: {r: 0, g: 0, b: 0, a: 0}

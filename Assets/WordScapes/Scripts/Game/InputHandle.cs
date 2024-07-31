@@ -15,6 +15,8 @@ public class InputHandle : MonoBehaviour
 
     public List<Vector3> listPosLetters = new List<Vector3>();
 
+    public RectTransform positionAnchor; 
+
     public void Update()
     {
         if (Input.GetMouseButton(0))
@@ -96,12 +98,17 @@ public class InputHandle : MonoBehaviour
     {
         if (isEnable)
         {
+            transform.localPosition = new Vector3(positionAnchor.position.x, positionAnchor.position.y, 0);
+            float scaleOffset = 1.1f * Mathf.Min(1, Camera.main.aspect / (0.5625f)); 
+            // 0.5625 = (9/16) is the original screen ratio
+            // 1.1 is the correction factor for larger sizes closer to the booster Button
+
             gameObject.transform.localScale = Vector3.zero;
-            gameObject.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBack);
-        }else
+            gameObject.transform.DOScale(new Vector3(scaleOffset, scaleOffset, 1), 0.5f).SetEase(Ease.OutBack);
+        }
+        else
         {
-            gameObject.transform.DOScale(Vector3.zero, 0.2f).SetEase(Ease.InFlash);
-            gameObject.transform.DOScale(Vector3.zero, 0.2f).SetEase(Ease.InFlash);
+            gameObject.transform.DOScale(Vector3.zero, 0.1f).SetEase(Ease.InFlash);
         }
     }
 

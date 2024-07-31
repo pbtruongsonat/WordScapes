@@ -13,5 +13,8 @@ MonoBehaviour:
   m_Name: P_SCHOOL
   m_EditorClassIdentifier: 
   name: SCHOOL
-  listChild: []
+  listChild:
+  - {fileID: 11400000, guid: c9324c6e9efce1d4888c9ffd6c1b4536, type: 2}
+  - {fileID: 11400000, guid: 06d1344826c1d5b44abe5c1f6216cbad, type: 2}
+  - {fileID: 11400000, guid: 5edb23353ac346d46b096db062c339a5, type: 2}
   backgroundColor: {r: 0, g: 0, b: 0, a: 0}

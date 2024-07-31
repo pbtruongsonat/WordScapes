@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class LevelManager : SingletonBase<LevelManager>
@@ -14,6 +15,10 @@ public class LevelManager : SingletonBase<LevelManager>
     public List<string> extraWordList;
 
     public LevelData levelData;
+
+    [Header("Text UI")]
+    public TextMeshProUGUI textLevelID;
+    public TextMeshProUGUI textCategoryOrder;
 
     [Header("Level")]
     public int curLevel;
@@ -38,6 +43,10 @@ public class LevelManager : SingletonBase<LevelManager>
         if (_levelData == null) return;
 
         this.levelData = _levelData;
+        curLevel = GameManager.Instance.currentLevel;
+
+        textLevelID.text = $"LEVEL {curLevel}";
+        textCategoryOrder.text = "PINE 1";
 
         wordList.Clear();
         slovedWordList.Clear();

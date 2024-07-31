@@ -75,12 +75,27 @@ public class GridCell : Cell
         }
     }
 
+    private void OnEnableUI(bool isEnable)
+    {
+        if (isEnable)
+        {
+            transform.localScale = Vector3.zero;
+            transform.DOScale(Vector3.one, 0.4f);
+        }
+        else
+        {
+            transform.DOScale(Vector3.zero, 0.05f);
+        }
+    }
+
     private void OnEnable()
     {
         GameEvent.onPointerHint += ReadyToPoint;
+        GameEvent.inGameplay += OnEnableUI;
     }
     private void OnDisable()
     {
         GameEvent.onPointerHint -= ReadyToPoint;
+        GameEvent.inGameplay -= OnEnableUI;
     }
 }

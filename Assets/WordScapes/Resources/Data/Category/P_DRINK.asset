@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: P_DRINK
   m_EditorClassIdentifier: 
   name: DRINK
-  listChild: []
+  listChild:
+  - {fileID: 11400000, guid: 17f1cb866e168144d9cf9fae017b2112, type: 2}
+  - {fileID: 11400000, guid: 5978b06c84c5e5c40afb63cc137626f7, type: 2}
   backgroundColor: {r: 0, g: 0, b: 0, a: 0}
