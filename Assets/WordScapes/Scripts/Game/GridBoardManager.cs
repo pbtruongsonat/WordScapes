@@ -121,18 +121,20 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
 
     private void ScaleGridBoard()
     {
-        var defaultCamera = Camera.main.orthographicSize;
+        var defaultSize = Camera.main.orthographicSize;
 
         Canvas.ForceUpdateCanvases();
 
         var offset = (topNeo.position + botNeo.position) / 2f;
         gameObject.transform.position = new Vector3(offset.x, offset.y, 0f);
 
-        int numColMin = Mathf.Max(5, levelData.numCol);
-        int numRowMin = Mathf.Max(4, levelData.numRow);
+        //int numColMin = Mathf.Max(4, levelData.numCol);
+        //int numRowMin = Mathf.Max(3, levelData.numRow);
 
-        var maxX = numColMin * 1.5f / 2f;
-        var maxY = numRowMin * 1.5f / 2f;
+        float sizeOfCell = 1.5f;
+
+        var maxX = levelData.numCol * sizeOfCell / 2f;
+        var maxY = levelData.numRow * sizeOfCell / 2f;
 
         maxY += offset.y;
 
@@ -144,14 +146,14 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
 
         if (max == top)
         {
-            ratio = topNeo.transform.position.y / (defaultCamera *2f) ;
+            ratio = topNeo.transform.position.y / (defaultSize * 2f) ;
         }
         else
         {
-            ratio = rightNeo.transform.position.x / (defaultCamera * Camera.main.aspect * 2f);
+            ratio = rightNeo.transform.position.x / (defaultSize * Camera.main.aspect * 2f);
         }
         max /= ratio;
-        gameObject.transform.localScale = Vector3.one * defaultCamera / (defaultCamera + max);
+        gameObject.transform.localScale = (Vector3.one * defaultSize) / (defaultSize + max);
     }
 
     // --------------------- Sloved New Word ------------------

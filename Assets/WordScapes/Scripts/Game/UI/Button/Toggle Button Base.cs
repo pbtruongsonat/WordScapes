@@ -22,13 +22,13 @@ public abstract class ToggleButtonBase : MonoBehaviour
         ApplyChange();
         if (isOn)
         {
-            handleRect.DOAnchorPosX(30f, 0.3f, true).SetEase(Ease.InOutQuad);
-            backgroundOn.DOFade(1f, 0.3f).SetEase(Ease.OutQuad);
+            handleRect.DOAnchorPosX(30f, 0.2f, true).SetEase(Ease.InOutQuad);
+            backgroundOn.DOFade(1f, 0.2f).SetEase(Ease.OutQuad);
         }
         else
         {
-            handleRect.DOAnchorPosX(-30f, 0.3f, true).SetEase(Ease.InOutQuad);
-            backgroundOn.DOFade(0f, 0.3f).SetEase(Ease.OutQuad);
+            handleRect.DOAnchorPosX(-30f, 0.2f, true).SetEase(Ease.InOutQuad);
+            backgroundOn.DOFade(0f, 0.2f).SetEase(Ease.OutQuad);
         }
     }
 
