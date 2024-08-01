@@ -25,4 +25,7 @@ public class GameEvent
     public static Action<bool> inMainMenu;
     public static Action<bool> inSelectLevel;
     public static Action<int> playLevel;
+
+    // ----------  Popup  ---------------
+
 }

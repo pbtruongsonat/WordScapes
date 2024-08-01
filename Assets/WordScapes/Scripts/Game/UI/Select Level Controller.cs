@@ -98,7 +98,7 @@ public class SelectLevelController : MonoBehaviour
                 var levelId = startIdLevel + i;
 
                 // Add Letters for Levels
-                if (!dicLettersOfLevel.ContainsKey(levelId) && levelId <= GameManager.Instance.unlockedLevel)
+                if (!dicLettersOfLevel.ContainsKey(levelId) && levelId <= DataManager.unlockedLevel)
                 {
                     string path = $"Data/Level/{child.listLevelID[i]}";
                     TextAsset fileLevel = Resources.Load<TextAsset>(path);
@@ -112,10 +112,10 @@ public class SelectLevelController : MonoBehaviour
                 var levelBtn = levelContainer.GetChild(i);
                 var levelBtnScript = levelBtn.GetComponent<LevelButton>();
 
-                if (levelId <= GameManager.Instance.unlockedLevel)
+                if (levelId <= DataManager.unlockedLevel)
                 {
                     levelBtnScript.SetLevel(levelId, dicLettersOfLevel[levelId]);
-                    if (levelId == GameManager.Instance.unlockedLevel)
+                    if (levelId == DataManager.unlockedLevel)
                     {
                         levelBtnScript.SetCurrentLevel();
                     }

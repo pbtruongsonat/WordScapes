@@ -20,7 +20,7 @@ public class ScrollerController : MonoBehaviour, IEnhancedScrollerDelegate
     private void Start()
     {
         rectScroller = myScroller.GetComponent<RectTransform>();
-        //myScroller.Delegate = this;
+        myScroller.Delegate = this;
 
         LoadData();
     }
@@ -56,7 +56,6 @@ public class ScrollerController : MonoBehaviour, IEnhancedScrollerDelegate
 
         data.Add(new FooterViewData(footerHeight));
 
-        myScroller.Delegate = this;
         ResizeScroller();
         myScroller.ReloadData();
     }

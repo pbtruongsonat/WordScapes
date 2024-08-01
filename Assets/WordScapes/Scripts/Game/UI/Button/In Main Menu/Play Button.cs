@@ -28,12 +28,12 @@ public class PlayButton : ButtonBase
     protected override void OnClick()
     {
         UIManager.Instance.DisplayGamePlay();
-        GameEvent.playLevel?.Invoke(GameManager.Instance.unlockedLevel);
+        GameEvent.playLevel?.Invoke(DataManager.unlockedLevel);
     }
 
     public void UpdateTextContent()
     {
-        levelNumberText.text = $"LEVEL {GameManager.Instance.unlockedLevel}";
+        levelNumberText.text = $"LEVEL {DataManager.unlockedLevel}";
     }
 
     private void OnEnable()

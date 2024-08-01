@@ -32,7 +32,7 @@ public class UIParentCategory : UIBlockScroll
         textNameParent.text = parentData.parentName;
         textLevelsRange.text = $"Levels {parentData.indexLevelStart} - {parentData.indexLevelEnd}";
 
-        onCompleted.SetActive(GameManager.Instance.unlockedLevel > parentData.indexLevelEnd);
+        onCompleted.SetActive(DataManager.unlockedLevel > parentData.indexLevelEnd);
 
         SpawnListChild();
 
@@ -61,7 +61,7 @@ public class UIParentCategory : UIBlockScroll
         {
             var childButton = listChildButton[i];
 
-            if (parentData.indexLevelStart + levelCounter <= GameManager.Instance.unlockedLevel)
+            if (parentData.indexLevelStart + levelCounter <= DataManager.unlockedLevel)
             {
                 childButton.SetChild(childCategories[i], parentData.index, i);
             }

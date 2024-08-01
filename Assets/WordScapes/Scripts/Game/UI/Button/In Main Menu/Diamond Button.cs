@@ -1,16 +1,40 @@
+using DG.Tweening;
+using UnityEngine;
 
-public class DiamondButton : TopButtonBase
+public class DiamondButton : ResourceButton
 {
+    protected override void Start()
+    {
+        base.Start();
+        value = DataManager.diamond;
+        textValue.text = value.ToString();
+    }
+
     protected override void OnClick()
     {
+        OnValueChange(Random.Range(0, 1000));
+    }
+
+    public void OnHidenButton(bool hide)
+    {
+        if (!hide)
+        {
+            rectTransform.DOPivotY(0.5f, 0.5f).SetEase(Ease.OutSine);
+        }
+        else
+        {
+            rectTransform.DOPivotY(-10f, 0.5f).SetEase(Ease.OutSine);
+        }
     }
 
     private void OnEnable()
     {
-        GameEvent.inMainMenu += OnEnableButton;
+        GameEvent.diamondChanged += OnValueChange;
+        GameEvent.inGameplay += OnHidenButton;
     }
     private void OnDisable()
     {
-        GameEvent.inMainMenu -= OnEnableButton;
+        GameEvent.diamondChanged -= OnValueChange;
+        GameEvent.inGameplay -= OnHidenButton;
     }
 }

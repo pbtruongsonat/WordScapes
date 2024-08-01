@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -45,8 +46,10 @@ public class LevelManager : SingletonBase<LevelManager>
         this.levelData = _levelData;
         curLevel = GameManager.Instance.currentLevel;
 
+        var cateOfLevel = DataManager.cateOfLevelID[curLevel];
+
         textLevelID.text = $"LEVEL {curLevel}";
-        textCategoryOrder.text = "PINE 1";
+        textCategoryOrder.text = $"{cateOfLevel.Item1.name} {cateOfLevel.Item2 + 1}";
 
         wordList.Clear();
         slovedWordList.Clear();
@@ -120,6 +123,6 @@ public class LevelManager : SingletonBase<LevelManager>
 
     private void Win()
     {
-        GameManager.Instance.WinGame();
+        DOVirtual.DelayedCall(1, () => { GameManager.Instance.WinGame(); });
     }
 }

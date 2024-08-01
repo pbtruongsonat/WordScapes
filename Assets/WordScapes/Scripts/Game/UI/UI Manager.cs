@@ -1,7 +1,5 @@
-using DG.Tweening;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class UIManager : SingletonBase<UIManager>
 {
