@@ -121,8 +121,67 @@ public class LevelManager : SingletonBase<LevelManager>
         boardManager.SlovedNewWord(curWord);
     }
 
+    // Use Booster 
+    private void UseConvertBooster()
+    {
+        letterBoard.ConvertLetter();
+    }
+
+    private void UseIdeaBooster()
+    {
+        if (DataManager.Instance.SpentIdeaBooster())
+        {
+            boardManager.VisibleOneCell();
+        }
+        else
+        {
+            Debug.Log("Open Shop");
+        }
+    }
+
+    private void UseRocketBooster()
+    {
+        if (DataManager.Instance.SpentRocketBooster())
+        {
+            boardManager.VisibleFiveCell();
+        }
+        else
+        {
+            Debug.Log("Open Shop");
+        }
+    }
+
+    private void UsePointBooster()
+    {
+        if (DataManager.Instance.EnoughPointBooster())
+        {
+            GameEvent.onPointerHint?.Invoke(true);
+        }
+        else
+        {
+            Debug.Log("Open Shop");
+        }
+    }
+
+
     private void Win()
     {
         DOVirtual.DelayedCall(1, () => { GameManager.Instance.WinGame(); });
+    }
+
+    private void OnEnable()
+    {
+        GameEvent.onClickConvertLetters += UseConvertBooster;
+        GameEvent.onClickIdea += UseIdeaBooster;
+        GameEvent.onClickRocket += UseRocketBooster;
+        GameEvent.onClickPoint += UsePointBooster;
+    }
+
+    private void OnDisable()
+    {
+        GameEvent.onClickConvertLetters -= UseConvertBooster;
+        GameEvent.onClickIdea -= UseIdeaBooster;
+        GameEvent.onClickRocket -= UseRocketBooster;
+        GameEvent.onClickPoint -= UsePointBooster;
     }
 }

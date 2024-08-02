@@ -9,7 +9,7 @@ public class PlayButton : ButtonBase
     {
         if (enable)
         {
-            UpdateTextContent();
+            DOVirtual.DelayedCall(0.1f, () => UpdateTextContent());
             transform.localScale = Vector3.zero;
             transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBack);
         } 

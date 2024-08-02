@@ -13,7 +13,12 @@ public class GameEvent
     public static Action onClickConvertLetters;
     public static Action onClickIdea;
     public static Action onClickRocket;
+    public static Action onClickPoint;
     public static Action<bool> onPointerHint;
+
+    public static Action<int> amountIdeaChanged;
+    public static Action<int> amountPointChanged;
+    public static Action<int> amountRocketChanged;
 
     // ----------  Resource  ----------------
     public delegate void ValueChanged(int newValue);

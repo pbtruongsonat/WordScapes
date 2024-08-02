@@ -1,5 +1,4 @@
 using DG.Tweening;
-using System;
 using UnityEngine;
 
 public enum CellState
@@ -64,6 +63,7 @@ public class GridCell : Cell
         GameEvent.onPointerHint?.Invoke(false);
         this.OnVisible();
         GridBoardManager.Instance.CheckSlovedWord();
+        DataManager.Instance.SpentPointBooster();
     }
 
     public void ReadyToPoint(bool value)

@@ -73,7 +73,7 @@ public class LetterManager : MonoBehaviour
         cell.SetActive(true);
     }
 
-    private void ConvertLetter()
+    public void ConvertLetter()
     {
         //int numConvert = UnityEngine.Random.Range(1, LetterManager.Instance.listLetterCell.Count +1);
         int numConvert = listLetterCell.Count;
@@ -95,14 +95,5 @@ public class LetterManager : MonoBehaviour
 
             listLetterCell[i].transform.DOJump(lettersPosition[i], 0.2f, 0, 0.25f, false);
         }
-    }
-
-    private void OnEnable()
-    {
-        GameEvent.onClickConvertLetters += ConvertLetter;
-    }
-    private void OnDisable()
-    {
-        GameEvent.onClickConvertLetters -= ConvertLetter;
     }
 }

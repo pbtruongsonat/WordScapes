@@ -33,6 +33,10 @@ public class DataManager : SingletonBase<DataManager>
     public string numIdeaKey = "numIdea";
     public string numPointKey = "numPoint";
     public string numRocketKey = "numRocket";
+    [Space]
+    public int costIdea = 100;
+    public int costPoint = 200;
+    public int costRocket = 300;
 
     public void Start()
     {
@@ -115,6 +119,7 @@ public class DataManager : SingletonBase<DataManager>
     public static void EarnCoin(int amount)
     {
         coin += amount;
+        GameEvent.coinChanged.Invoke(coin);
     }
 
     public static bool SpentCoint(int amount)
@@ -122,12 +127,14 @@ public class DataManager : SingletonBase<DataManager>
         if (amount > coin) return false;
 
         coin -= amount;
+        GameEvent.coinChanged?.Invoke(coin);
         return true;
     }
 
     public static void EarnDiamond(int amount)
     {
         diamond += amount;
+        GameEvent.diamondChanged?.Invoke(diamond);
     }
 
     public static bool SpentDiamond(int amount)
@@ -135,7 +142,77 @@ public class DataManager : SingletonBase<DataManager>
         if (amount > coin) return false;
 
         diamond -= amount;
+        GameEvent.diamondChanged?.Invoke(diamond);
         return true;
+    }
+
+    #endregion
+
+    #region Booster Manager
+    public void EarnIdeaBooster(int num)
+    {
+        numIdea += num;
+        GameEvent.amountIdeaChanged?.Invoke(numIdea);
+    }
+
+    public bool SpentIdeaBooster()
+    {
+        if(numIdea > 0)
+        {
+            numIdea--;
+            GameEvent.amountIdeaChanged?.Invoke(numIdea);
+            return true;
+        }
+
+        return SpentCoint(costIdea);
+    }
+
+    public void EarnPointBooster(int num)
+    {
+        numPoint += num;
+
+        GameEvent.amountPointChanged?.Invoke(numPoint);
+    }
+
+
+    public bool EnoughPointBooster()
+    {
+        if(numPoint > 0 || coin >= costPoint)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public void SpentPointBooster()
+    {
+        if(numPoint > 0)
+        {
+            numPoint--;
+            GameEvent.amountPointChanged?.Invoke(numPoint);
+        }
+        else
+        {
+            SpentCoint(costPoint);
+        }
+    }
+
+    public void EarnRocketBooster(int num)
+    {
+        numRocket += num;
+        GameEvent.amountRocketChanged?.Invoke(numRocket);
+    }
+
+    public bool SpentRocketBooster()
+    {
+        if(numRocket > 0)
+        {
+            numRocket--;
+            GameEvent.amountRocketChanged?.Invoke(numRocket);
+            return true;
+        }
+
+        return SpentCoint(costRocket);
     }
 
     #endregion

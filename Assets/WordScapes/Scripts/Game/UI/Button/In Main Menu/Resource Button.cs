@@ -25,18 +25,24 @@ public class ResourceButton : ButtonBase
         if (value < newValue)
         {
             increase = 1;
+            while (value < newValue)
+            {
+                value += increase;
+                textValue.text = value.ToString();
+                yield return null;
+            }
         }
         else
         {
             increase = -1;
+            while (value > newValue)
+            {
+                value += increase;
+                textValue.text = value.ToString();
+                yield return null;
+            }
         }
 
-        while (value != newValue)
-        {
-            value += increase;
-            textValue.text = value.ToString();
-            yield return new WaitForEndOfFrame();
-        }
     }
 
 

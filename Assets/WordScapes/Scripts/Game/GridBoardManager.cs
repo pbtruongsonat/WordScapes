@@ -251,16 +251,4 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
         }
     }
 
-
-    public void OnEnable()
-    {
-        GameEvent.onClickIdea += VisibleOneCell;
-        GameEvent.onClickRocket += VisibleFiveCell;
-    }
-
-    public void OnDisable()
-    {
-        GameEvent.onClickIdea -= VisibleOneCell;
-        GameEvent.onClickRocket -= VisibleFiveCell;
-    }
 }
