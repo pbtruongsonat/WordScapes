@@ -12,7 +12,6 @@ public class DiamondButton : ResourceButton
 
     protected override void OnClick()
     {
-        OnValueChange(Random.Range(0, 1000));
     }
 
     public void OnHidenButton(bool hide)

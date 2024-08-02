@@ -29,7 +29,7 @@ public class ResourceButton : ButtonBase
             {
                 value += increase;
                 textValue.text = value.ToString();
-                yield return null;
+                yield return new WaitForEndOfFrame();
             }
         }
         else
@@ -39,7 +39,7 @@ public class ResourceButton : ButtonBase
             {
                 value += increase;
                 textValue.text = value.ToString();
-                yield return null;
+                yield return new WaitForEndOfFrame();
             }
         }
 

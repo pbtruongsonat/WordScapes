@@ -18,10 +18,10 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
     public LevelData levelData;
 
     [Header("Position + Scale")]
-    public RectTransform topNeo;
-    public RectTransform botNeo;
-    public RectTransform leftNeo;
-    public RectTransform rightNeo;
+    public RectTransform topAnchor;  
+    public RectTransform botAnchor;  
+    public RectTransform leftAnchor; 
+    public RectTransform rightAnchor;
 
 
     public void LoadNewLevel(LevelData levelData)
@@ -121,39 +121,27 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
 
     private void ScaleGridBoard()
     {
-        var defaultSize = Camera.main.orthographicSize;
-
         Canvas.ForceUpdateCanvases();
 
-        var offset = (topNeo.position + botNeo.position) / 2f;
+        var offset = (topAnchor.position + botAnchor.position) / 2f;
         gameObject.transform.position = new Vector3(offset.x, offset.y, 0f);
-
-        //int numColMin = Mathf.Max(4, levelData.numCol);
-        //int numRowMin = Mathf.Max(3, levelData.numRow);
 
         float sizeOfCell = 1.5f;
 
         var maxX = levelData.numCol * sizeOfCell / 2f;
         var maxY = levelData.numRow * sizeOfCell / 2f;
 
-        maxY += offset.y;
-
-        var top = maxY - topNeo.transform.position.y;
-        var right = maxX - rightNeo.transform.position.x;
+        var top = maxY - topAnchor.position.y + offset.y;
+        var right = maxX - rightAnchor.position.x;
         var max = Mathf.Max(top, right);
 
-        var ratio = 0f;
+        var scaleOffsetV = (topAnchor.position.y - offset.y) / maxY;
+        var scaleOffsetH = rightAnchor.position.x / maxX;
 
-        if (max == top)
-        {
-            ratio = topNeo.transform.position.y / (defaultSize * 2f) ;
-        }
-        else
-        {
-            ratio = rightNeo.transform.position.x / (defaultSize * Camera.main.aspect * 2f);
-        }
-        max /= ratio;
-        gameObject.transform.localScale = (Vector3.one * defaultSize) / (defaultSize + max);
+        float maxScaleOffset = 0.7f;
+        var scaleOffset = Mathf.Min(scaleOffsetV, scaleOffsetH, maxScaleOffset);
+
+        gameObject.transform.localScale = Vector3.one * scaleOffset;
     }
 
     // --------------------- Sloved New Word ------------------

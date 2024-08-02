@@ -55,6 +55,7 @@ public class UIPopupWin : UIPopupBase
     public override void OnDisablePopup()
     {
         base.OnDisablePopup();
+        transform.DOScale(Vector3.zero, 0.1f).SetEase(Ease.InOutQuart);
         DOVirtual.DelayedCall(0.1f, () => { gameObject.SetActive(false); });
 
     }

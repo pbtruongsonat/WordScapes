@@ -16,14 +16,7 @@ public class UIPopupReward : UIPopupBase
     public Button collectButton;
 
     [Header("Coin Move")]
-    public GameObject coinMovePrefab;
     public RectTransform rectForm;
-    public RectTransform rectTo;
-
-    [Header("Jump Settings")]
-    public float jumpPower;
-    public int numJump;
-    public float duration;
 
     private void Start()
     {
@@ -38,19 +31,20 @@ public class UIPopupReward : UIPopupBase
 
     IEnumerator IEDisplayCoinMove()
     {
-        for(int i = 0; i < 5; i++)
-        {
-            var coinMove = Instantiate(coinMovePrefab, rectForm.position, rectForm.rotation);
-            coinMove.transform.DOJump(rectTo.position, jumpPower, numJump, duration);
-            yield return new WaitForSeconds(0.1f);
-        }
+        UIManager.Instance.objMoveCtrl.CreateObjectMove(TypeMoveObject.Coin, rectForm.position, true);
+
         DataManager.EarnCoin(valueReward);
+
+        yield return new WaitForSeconds(0.8f);
+
+        UIManager.Instance.DisplayMainMenu();
         OnDisablePopup();
     }
 
     public override void OnEnablePopup()
     {
         base.OnEnablePopup();
+        collectButton.gameObject.SetActive(true);
         textLevelID.text = $"LEVEL {GameManager.Instance.currentLevel}";
 
         valueReward = Random.Range(10, 30);
@@ -60,9 +54,7 @@ public class UIPopupReward : UIPopupBase
     public override void OnDisablePopup()
     {
         base.OnDisablePopup();
-        DOVirtual.DelayedCall(0.2f, () => { gameObject.SetActive(false); });
-
-        UIManager.Instance.DisplayMainMenu();
+        gameObject.SetActive(false);
     }
 
     private void OnEnable()

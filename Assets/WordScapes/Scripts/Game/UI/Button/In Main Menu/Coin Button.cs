@@ -11,7 +11,6 @@ public class CoinButton : ResourceButton
 
     protected override void OnClick()
     {
-        OnValueChange(Random.Range(0, 1000));
     }
 
     private void OnEnable()
