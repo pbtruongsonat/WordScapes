@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: P_VIETNAM
   m_EditorClassIdentifier: 
   name: VIETNAM
-  listChild: []
+  listChild:
+  - {fileID: 11400000, guid: e2594af683105194981a4d93fd36410a, type: 2}
   backgroundColor: {r: 0, g: 0, b: 0, a: 0}

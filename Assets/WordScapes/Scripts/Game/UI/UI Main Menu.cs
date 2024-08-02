@@ -10,7 +10,7 @@ public class UIMainMenu : MonoBehaviour
     {
         if (enable)
         {
-            background.DOFade(1, 0.25f);
+            background.DOFade(1, 0.35f);
         } else
         {
             background.DOFade(0, 0.25f);

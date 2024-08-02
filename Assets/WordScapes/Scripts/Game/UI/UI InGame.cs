@@ -1,23 +1,41 @@
-using System.Collections;
-using System.Collections.Generic;
+using DG.Tweening;
+using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class UIInGame : MonoBehaviour
 {
-    public List<Image> rightButtons;
-    public List<Image> leftButtons;
-    public GameObject inputBoard;
+    [Header("Text UI")]
+    public TextMeshProUGUI textLevelID;
+    public TextMeshProUGUI textCategoryOrder;
+
+    [Header("")]
     public GameObject gridBoard;
 
 
-
-    private void OpenUI()
+    private void OnEnableUI(bool isEnable)
     {
+        if (isEnable)
+        {
+            textLevelID.text = $"LEVEL {GameManager.Instance.currentLevel}";
+            textCategoryOrder.text = "PINE 1";
 
+            textLevelID.DOFade(1f, 0.1f);
+            textCategoryOrder.DOFade(1f, 0.1f);
+        }
+        else
+        {
+            textLevelID.DOFade(0f, 0.1f);
+            textCategoryOrder.DOFade(0f, 0.1f);
+        }
     }
+
     private void OnEnable()
     {
-        
+        GameEvent.inGameplay += OnEnableUI;
+    }
+
+    private void OnDisable()
+    {
+        GameEvent.inGameplay -= OnEnableUI;
     }
 }

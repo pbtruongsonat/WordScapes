@@ -13,5 +13,8 @@ MonoBehaviour:
   m_Name: P_FOOD
   m_EditorClassIdentifier: 
   name: FOOD
-  listChild: []
+  listChild:
+  - {fileID: 11400000, guid: 58f072ecdbc6eb3459fc9484eabc30f9, type: 2}
+  - {fileID: 11400000, guid: 90f98270cda8c5c4db3ed636f5fd127c, type: 2}
+  - {fileID: 11400000, guid: a3d02bd8e5f5d8243819b1a5affb3782, type: 2}
   backgroundColor: {r: 0, g: 0, b: 0, a: 0}

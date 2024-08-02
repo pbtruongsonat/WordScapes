@@ -8,6 +8,8 @@ using static GameEvent;
 
 public class SelectLevelController : MonoBehaviour
 {
+    float spacingElement = 32;
+
     [Header("Prefabs")]
     public GameObject parentPrefabs;
     public GameObject levelButtonPrefabs;
@@ -58,11 +60,13 @@ public class SelectLevelController : MonoBehaviour
 
     private void SetLevelContainer(int indexParent, int indexChild, Transform parentTransform, bool active)
     {
-        ChildCategory child = scroller.data[indexParent].parent.listChild[indexChild];
+        ParentViewData parentViewData = scroller.data[indexParent] as ParentViewData;
+        if (parentViewData == null) return;
+
+        ChildCategory child = parentViewData.parent.listChild[indexChild];
 
         if(levelContainer.gameObject.activeSelf)
         {
-            float spacingElement = 8;
             float valueChanged = levelContainer.rect.height + spacingElement;
             scroller.ResizeScroller(-valueChanged);
         }
@@ -70,11 +74,11 @@ public class SelectLevelController : MonoBehaviour
         if (!active)
         {
             levelContainer.gameObject.SetActive(false);
-            scroller.data[indexParent].indexCateActive = -1;
+            parentViewData.indexCateActive = -1;
         } else
         {
             levelContainer.gameObject.SetActive(true);
-            scroller.data[indexParent].indexCateActive = indexChild;
+            parentViewData.indexCateActive = indexChild;
 
             int numLevels = child.listLevelID.Count;
             int startIdLevel = dicLevelIdStart[child];
@@ -94,7 +98,7 @@ public class SelectLevelController : MonoBehaviour
                 var levelId = startIdLevel + i;
 
                 // Add Letters for Levels
-                if (!dicLettersOfLevel.ContainsKey(levelId) && levelId <= GameManager.Instance.unlockedLevel)
+                if (!dicLettersOfLevel.ContainsKey(levelId) && levelId <= DataManager.unlockedLevel)
                 {
                     string path = $"Data/Level/{child.listLevelID[i]}";
                     TextAsset fileLevel = Resources.Load<TextAsset>(path);
@@ -108,10 +112,10 @@ public class SelectLevelController : MonoBehaviour
                 var levelBtn = levelContainer.GetChild(i);
                 var levelBtnScript = levelBtn.GetComponent<LevelButton>();
 
-                if (levelId <= GameManager.Instance.unlockedLevel)
+                if (levelId <= DataManager.unlockedLevel)
                 {
                     levelBtnScript.SetLevel(levelId, dicLettersOfLevel[levelId]);
-                    if (levelId == GameManager.Instance.unlockedLevel)
+                    if (levelId == DataManager.unlockedLevel)
                     {
                         levelBtnScript.SetCurrentLevel();
                     }
@@ -135,14 +139,12 @@ public class SelectLevelController : MonoBehaviour
     {
         yield return new WaitForEndOfFrame();
 
-        float spacingElement = 8;
         float valueChanged = levelContainer.rect.height + spacingElement;
         scroller.ResizeScroller(valueChanged);
     }
 
     public void HiddenLevelContainer()
     {
-        float spacingElement = 8;
         float valueChanged = levelContainer.rect.height + spacingElement;
 
         levelContainer.gameObject.SetActive(false);

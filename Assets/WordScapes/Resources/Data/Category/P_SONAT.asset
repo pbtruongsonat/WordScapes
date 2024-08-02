@@ -13,5 +13,8 @@ MonoBehaviour:
   m_Name: P_SONAT
   m_EditorClassIdentifier: 
   name: SONAT
-  listChild: []
+  listChild:
+  - {fileID: 11400000, guid: a348980496b53014196479a15181b2cf, type: 2}
+  - {fileID: 11400000, guid: 08d2c151e590b294a9089c7e717cbd33, type: 2}
+  - {fileID: 11400000, guid: 38b49f1747a9eac4aa147b8d6d9e7843, type: 2}
   backgroundColor: {r: 0, g: 0, b: 0, a: 0}
