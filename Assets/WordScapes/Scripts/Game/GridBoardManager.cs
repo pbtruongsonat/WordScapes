@@ -132,11 +132,11 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
         var maxY = levelData.numRow * sizeOfCell / 2f;
 
         var top = maxY - topAnchor.position.y + offset.y;
-        var right = maxX - rightAnchor.position.x;
+        var right = maxX - rightAnchor.position.x + offset.x;
         var max = Mathf.Max(top, right);
 
         var scaleOffsetV = (topAnchor.position.y - offset.y) / maxY;
-        var scaleOffsetH = rightAnchor.position.x / maxX;
+        var scaleOffsetH = (rightAnchor.position.x - offset.x) / maxX;
 
         float maxScaleOffset = 0.7f;
         var scaleOffset = Mathf.Min(scaleOffsetV, scaleOffsetH, maxScaleOffset);

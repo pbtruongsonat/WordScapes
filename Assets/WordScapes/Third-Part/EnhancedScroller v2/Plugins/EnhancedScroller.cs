@@ -1923,7 +1923,7 @@ namespace EnhancedUI.EnhancedScroller
             }
 
             // cache the layout group and set up its spacing and padding
-            // pbtruong03: edit vertical Layout Group
+
             _layoutGroup = _container.GetComponent<HorizontalOrVerticalLayoutGroup>();
             _layoutGroup.spacing = spacing;
             _layoutGroup.padding = padding;
@@ -1958,13 +1958,6 @@ namespace EnhancedUI.EnhancedScroller
             _lastScrollbarVisibility = scrollbarVisibility;
 
             _initialized = true;
-        }
-
-        // pbtruong03: add method ResizeContent 
-        public void ResizeContent(float valueChanged)
-        {
-            _container.sizeDelta = new Vector2(_container.sizeDelta.x, _container.sizeDelta.y + valueChanged);
-            LayoutRebuilder.ForceRebuildLayoutImmediate(_container);
         }
 
         //IEnumerator UpdateCanvasScroll()

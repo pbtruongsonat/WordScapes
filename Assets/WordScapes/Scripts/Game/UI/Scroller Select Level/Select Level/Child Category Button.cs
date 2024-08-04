@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class ChildCategoryButton : ButtonBase
 {
     public int indexParent;
+    public int indexCellParent;
     public int indexChild;
 
     [Header("Infomation")]
@@ -20,7 +21,7 @@ public class ChildCategoryButton : ButtonBase
     public GameObject unlockedChild;
     public GameObject lockedChild;
 
-    public void SetChild(ChildCategory child, int indexParent, int indexChild)
+    public void SetChild(ChildCategory child, int indexParent, int indexCellParent, int indexChild)
     {
         this.indexParent = indexParent;
         this.indexChild = indexChild;
@@ -44,7 +45,7 @@ public class ChildCategoryButton : ButtonBase
         button.interactable = false;
     }
 
-    private void OnSelectChild(bool selected)
+    public void OnSelectChild(bool selected)
     {
         onSelect = selected;
         borderSelected.gameObject.SetActive(onSelect);
@@ -55,14 +56,7 @@ public class ChildCategoryButton : ButtonBase
         bool selectTmp = !onSelect;
         GameEvent.changeChildSelect?.Invoke(false);
         OnSelectChild(selectTmp);
-        OnActiveLevel();
-    }
-
-    public void OnActiveLevel()
-    {
-        borderSelected.gameObject.SetActive(onSelect);
-        Transform parentTransform = this.transform.parent.parent;
-        GameEvent.displayListLevel?.Invoke(indexParent, indexChild, parentTransform, onSelect);
+        GameEvent.setListLevel?.Invoke(indexParent, indexCellParent, indexChild, onSelect);
     }
 
     private void ResetData()

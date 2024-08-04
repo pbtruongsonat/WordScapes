@@ -1,14 +1,15 @@
 using Newtonsoft.Json;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using static GameEvent;
 
 public class SelectLevelController : MonoBehaviour
 {
-    float spacingElement = 32;
+    [SerializeField] private float padding = 48;
+    [SerializeField] private float spacingLevel = 64;
+    [SerializeField] private float heightLevel = 180;
+
+    private int indexOldParent = -1;
 
     [Header("Prefabs")]
     public GameObject parentPrefabs;
@@ -51,33 +52,36 @@ public class SelectLevelController : MonoBehaviour
 
                 levelIdStart += child.listLevelID.Count;
             }
-
-            //rangeLevelParent.Add(parent, new Tuple<int, int>(parentStart, levelIdStart - 1));
-
-            //parentObj.GetComponent<UIParentCategory>()?.SetParent(parent, parentStart, levelIdStart - 1);
         }
     }
 
-    private void SetLevelContainer(int indexParent, int indexChild, Transform parentTransform, bool active)
+    private void SetLevelContainer(int indexParent, int indexCellParent, int indexChild, bool active)
     {
+        levelContainer.gameObject.SetActive(false);
+
         ParentViewData parentViewData = scroller.data[indexParent] as ParentViewData;
         if (parentViewData == null) return;
 
         ChildCategory child = parentViewData.parent.listChild[indexChild];
 
-        if(levelContainer.gameObject.activeSelf)
+        if (indexOldParent != -1)
         {
-            float valueChanged = levelContainer.rect.height + spacingElement;
-            scroller.ResizeScroller(-valueChanged);
+            var parentOldData = scroller.data[indexOldParent] as ParentViewData;
+            var uiOldParent = scroller.myScroller.GetCellViewAtDataIndex(indexOldParent) as UIParentCategory;
+
+            if (parentOldData != null && uiOldParent != null)
+            {
+                parentOldData.indexCateActive = -1;
+                uiOldParent.BeginTween();
+            }
         }
 
         if (!active)
         {
-            levelContainer.gameObject.SetActive(false);
             parentViewData.indexCateActive = -1;
-        } else
+        } 
+        else
         {
-            levelContainer.gameObject.SetActive(true);
             parentViewData.indexCateActive = indexChild;
 
             int numLevels = child.listLevelID.Count;
@@ -127,39 +131,38 @@ public class SelectLevelController : MonoBehaviour
                 levelBtn.gameObject.SetActive(true);
             }
 
-            levelContainer.SetParent(parentTransform);
+            float numRowLevel = Mathf.Ceil(numLevels / 4f);
+            float expandedValue = numRowLevel * heightLevel + padding + (numRowLevel - 1) * spacingLevel + 8;
 
-
-            StartCoroutine(ResetSize());
+            parentViewData.expandedSize = parentViewData.collapsedSize + expandedValue;
         }
 
+        scroller.InitializeTween(indexParent, indexCellParent);
+        indexOldParent = indexParent;
     }
 
-    IEnumerator ResetSize()
+    private void SetTransformLevel(Transform transformParent)
     {
-        yield return new WaitForEndOfFrame();
-
-        float valueChanged = levelContainer.rect.height + spacingElement;
-        scroller.ResizeScroller(valueChanged);
+        levelContainer.SetParent(transformParent);
+        levelContainer.gameObject.SetActive(true);
     }
 
-    public void HiddenLevelContainer()
+    private void DisplayLevelContainer(bool isActive)
     {
-        float valueChanged = levelContainer.rect.height + spacingElement;
-
-        levelContainer.gameObject.SetActive(false);
-        scroller.ResizeScroller(-valueChanged);
+        levelContainer.gameObject.SetActive(isActive);
     }
 
     private void OnEnable()
     {
-        GameEvent.displayListLevel += SetLevelContainer;
-        GameEvent.hiddenLevelContainer += HiddenLevelContainer;
+        GameEvent.setListLevel += SetLevelContainer;
+        GameEvent.setTransformLevel += SetTransformLevel;
+        GameEvent.setDisplayLevel += DisplayLevelContainer;
     }
 
     private void OnDisable()
     {
-        GameEvent.displayListLevel -= SetLevelContainer;
-        GameEvent.hiddenLevelContainer -= HiddenLevelContainer;
+        GameEvent.setListLevel -= SetLevelContainer;
+        GameEvent.setTransformLevel -= SetTransformLevel;
+        GameEvent.setDisplayLevel -= DisplayLevelContainer;
     }
 }

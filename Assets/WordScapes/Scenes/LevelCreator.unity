@@ -7815,7 +7815,7 @@ GameObject:
   m_Component:
   - component: {fileID: 803854511}
   m_Layer: 5
-  m_Name: botNeo
+  m_Name: botAnchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8147,7 +8147,7 @@ GameObject:
   m_Component:
   - component: {fileID: 884355586}
   m_Layer: 5
-  m_Name: rightNeo
+  m_Name: rightAnchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9877,7 +9877,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1076122018}
   m_Layer: 5
-  m_Name: Rect Transform Neo
+  m_Name: Rect Transform Anchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10894,7 +10894,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1158108475}
   m_Layer: 5
-  m_Name: topNeo
+  m_Name: topAnchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15550,7 +15550,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1618056738}
   m_Layer: 5
-  m_Name: leftNeo
+  m_Name: leftAnchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15572,7 +15572,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: -0.000061035156, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!1 &1623139783
@@ -20952,9 +20952,25 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 884355586}
     - target: {fileID: 3415629464659732451, guid: 9017afed157a0504390efb56b696ff18, type: 3}
+      propertyPath: botAnchor
+      value: 
+      objectReference: {fileID: 803854511}
+    - target: {fileID: 3415629464659732451, guid: 9017afed157a0504390efb56b696ff18, type: 3}
       propertyPath: levelData
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 3415629464659732451, guid: 9017afed157a0504390efb56b696ff18, type: 3}
+      propertyPath: topAnchor
+      value: 
+      objectReference: {fileID: 1158108475}
+    - target: {fileID: 3415629464659732451, guid: 9017afed157a0504390efb56b696ff18, type: 3}
+      propertyPath: leftAnchor
+      value: 
+      objectReference: {fileID: 1618056738}
+    - target: {fileID: 3415629464659732451, guid: 9017afed157a0504390efb56b696ff18, type: 3}
+      propertyPath: rightAnchor
+      value: 
+      objectReference: {fileID: 884355586}
     - target: {fileID: 3971514571714344985, guid: 9017afed157a0504390efb56b696ff18, type: 3}
       propertyPath: m_Name
       value: GridBoard
