@@ -5,12 +5,13 @@ public enum CellState
 {
     hidden,
     visible,
-    sloved
+    solved
 }
 
 public class GridCell : Cell
 {
     [Header("Components")]
+    public int indexCell;
     public GameObject squarePink;
     public GameObject squareWhite;
     public GameObject squarePress;
@@ -23,8 +24,9 @@ public class GridCell : Cell
 
     public BoxCollider2D colider;
 
-    public void SetLetter(string _letter)
+    public void SetLetter(string _letter, int indexCell)
     {
+        this.indexCell = indexCell;
         letterUI.text = _letter;
         OnHidden();
     }
@@ -44,9 +46,9 @@ public class GridCell : Cell
         letterUI.gameObject.SetActive(true);
     }
 
-    public void OnSloved()
+    public void OnSolved()
     {
-        state = CellState.sloved;
+        state = CellState.solved;
         squarePink.SetActive(true);
         squareWhite.SetActive(false);
         if(!letterUI.gameObject.activeSelf)
@@ -61,8 +63,9 @@ public class GridCell : Cell
     public void OnMouseDown()
     {
         GameEvent.onPointerHint?.Invoke(false);
-        this.OnVisible();
-        GridBoardManager.Instance.CheckSlovedWord();
+        //this.OnVisible();
+        GameEvent.visibleCellIndex?.Invoke(indexCell);
+        //GridBoardManager.Instance.CheckSlovedWord();
         DataManager.Instance.SpentPointBooster();
     }
 

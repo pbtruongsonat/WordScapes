@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class GameEvent
 {
+    // ----------- GridBoard -------------
+    public static Action<int> visibleCellIndex;
+
     // ----------- Select Level -------------
     public static Action<bool> changeChildSelect;
     public static Action<int, int, int, bool> setListLevel;

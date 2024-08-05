@@ -15,16 +15,21 @@ public class PopupManager : MonoBehaviour
 
     IEnumerator IEDisplayPopup()
     {
-        yield return new WaitForSeconds(0.7f);
+        yield return new WaitForSeconds(1f);
 
         popupRankUp.gameObject.SetActive(true);
-        yield return new WaitForSeconds(2f);
+        //yield return new WaitForSeconds(2f);
 
-        popupWin.gameObject.SetActive(true);
-        yield return new WaitForSeconds(4.5f);
-        popupWin.OnDisablePopup();
+        //popupWin.gameObject.SetActive(true);
+        //yield return new WaitForSeconds(4.5f);
+        //popupWin.OnDisablePopup();
 
+        //popupWinReward.gameObject.SetActive(true);
+        //yield return new WaitForSeconds(3f);
+    }
+
+    public void DisplayWinReward()
+    {
         popupWinReward.gameObject.SetActive(true);
-        yield return new WaitForSeconds(3f);
     }
 }

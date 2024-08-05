@@ -66,8 +66,8 @@ public class ScrollerController : MonoBehaviour, IEnhancedScrollerDelegate
             parentData.collapsedSize = 472;
 
             parentData.tweenType = Tween.TweenType.easeInOutSine;
-            parentData.tweenTimeCollapse = 0.5f;
-            parentData.tweenTimeExpand = 0.5f;
+            parentData.tweenTimeCollapse = 0.15f;
+            parentData.tweenTimeExpand = 0.3f;
 
             data.Add(parentData);
         }

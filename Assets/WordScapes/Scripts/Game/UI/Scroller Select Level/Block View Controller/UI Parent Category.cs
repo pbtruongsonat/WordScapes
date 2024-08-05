@@ -35,6 +35,7 @@ public class UIParentCategory : UIBlockScroll
     {
         base.SetData(data, dataIndex, updateTween, endTween);
         this.dataIndex = dataIndex;
+
         this.updateTween = updateTween;
         this.endTween = endTween;
 
@@ -52,6 +53,9 @@ public class UIParentCategory : UIBlockScroll
         {
             GameEvent.setTransformLevel?.Invoke(transform);
             listChildButton[parentData.indexCateActive].OnSelectChild(true);
+        } else
+        {
+            
         }
     }
 
@@ -102,6 +106,7 @@ public class UIParentCategory : UIBlockScroll
     // Tween 
     public void BeginTween()
     {
+
         GameEvent.setDisplayLevel?.Invoke(false);
 
         if (parentData.indexCateActive == -1)
@@ -113,7 +118,7 @@ public class UIParentCategory : UIBlockScroll
         else
         {
             layoutElement.minHeight = parentData.collapsedSize;
-            
+
             StartCoroutine(tween.TweenPosition(parentData.tweenType, parentData.tweenTimeExpand, parentData.collapsedSize, parentData.expandedSize, TweenUpdated, TweenCompleted));
         }
     }

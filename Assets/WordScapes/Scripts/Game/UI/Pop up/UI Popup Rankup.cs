@@ -11,6 +11,8 @@ public class UIPopupRankup : UIPopupBase
     public TextMeshProUGUI textBrillianceValue;
     public int value;
 
+    public UIPopupWin uiPopupWin;
+
     IEnumerator IECounter()
     {
         int numBrillianceReward = 5 + Random.Range(1, 10);
@@ -26,6 +28,8 @@ public class UIPopupRankup : UIPopupBase
         }
 
         yield return new WaitForSeconds(0.5f);
+
+        uiPopupWin.gameObject.SetActive(true);
         OnDisablePopup();
     }
 

@@ -28,7 +28,8 @@ public class ChildCategoryEditor : MonoBehaviour
 
     [Header("Component Child Category")]
     public ChildCategory child;
-    public TMP_InputField nameCategory;
+    public TMP_InputField inputNameCategory;
+    public TMP_InputField inputRewardValue;
     [Space]
     public Image bgImage;
     public TextMeshProUGUI fileNameBg;
@@ -46,7 +47,7 @@ public class ChildCategoryEditor : MonoBehaviour
         submitDelete.onClick.AddListener(() => DeleteCategory());
         cancelDelete.onClick.AddListener(() => deletePanel.SetActive(false));
 
-        nameCategory.onValueChanged.AddListener((value) => { nameCategory.text = value.ToUpper(); });
+        inputNameCategory.onValueChanged.AddListener((value) => { inputNameCategory.text = value.ToUpper(); });
 
         chooseBgButton.onClick.AddListener(() => ChooseBackground());
     }
@@ -56,7 +57,8 @@ public class ChildCategoryEditor : MonoBehaviour
         title.text = "Edit Child Category";
 
         child = CategoryManager.Instance.childSelected;
-        nameCategory.text = child.name;
+        inputNameCategory.text = child.name;
+        inputRewardValue.text = child.coinReward.ToString();
         bgImage.sprite = child.backgroundImage;
         fileNameBg.text = child.backgroundImage.name;
         newBg = null;
@@ -69,7 +71,10 @@ public class ChildCategoryEditor : MonoBehaviour
 
         child = null;
         newBg = null;
-        nameCategory.text = "";
+        inputNameCategory.text = "";
+        inputRewardValue.text = "";
+        bgImage.sprite = null;
+        fileNameBg.text = "";
         deleteOption.SetActive(false);
     }
 
@@ -100,7 +105,16 @@ public class ChildCategoryEditor : MonoBehaviour
     private void CreateNewCategory()
     {
         ChildCategory newChild = ScriptableObject.CreateInstance<ChildCategory>();
-        newChild.name = nameCategory.text;
+        newChild.name = inputNameCategory.text;
+
+        if (inputRewardValue.text != "")
+        {
+            newChild.coinReward = int.Parse(inputRewardValue.text);
+        } else
+        {
+            newChild.coinReward = 20;
+        }
+
         if(newBg != null)
         {
             newChild.backgroundImage = newBg;
@@ -108,7 +122,7 @@ public class ChildCategoryEditor : MonoBehaviour
         newChild.listLevelID = new List<int>();
         CategoryManager.Instance.AddNewChild(newChild);
         // Create Asset
-        string path = $"Assets/WordScapes/Resources/Data/Category/C_{nameCategory.text}.asset";
+        string path = $"Assets/WordScapes/Resources/Data/Category/C_{inputNameCategory.text}.asset";
         UnityEditor.AssetDatabase.CreateAsset(newChild, path);
         UnityEditor.AssetDatabase.SaveAssets();
     }
@@ -118,7 +132,17 @@ public class ChildCategoryEditor : MonoBehaviour
         {
             child.backgroundImage = newBg;
         }
-        child.name = nameCategory.text;
+        child.name = inputNameCategory.text;
+
+        if (inputRewardValue.text != "")
+        {
+            child.coinReward = int.Parse(inputRewardValue.text);
+        }
+        else
+        {
+            child.coinReward = 20;
+        }
+
         CategoryManager.Instance.UpdateOptionCategory();
     }
 

@@ -1,5 +1,7 @@
+using DG.Tweening;
 using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -64,7 +66,7 @@ public class SelectLevelController : MonoBehaviour
 
         ChildCategory child = parentViewData.parent.listChild[indexChild];
 
-        if (indexOldParent != -1)
+        if (indexOldParent != -1 && indexOldParent != indexParent)
         {
             var parentOldData = scroller.data[indexOldParent] as ParentViewData;
             var uiOldParent = scroller.myScroller.GetCellViewAtDataIndex(indexOldParent) as UIParentCategory;
@@ -72,7 +74,8 @@ public class SelectLevelController : MonoBehaviour
             if (parentOldData != null && uiOldParent != null)
             {
                 parentOldData.indexCateActive = -1;
-                uiOldParent.BeginTween();
+                //StartCoroutine(ClosePanel(uiOldParent.dataIndex, uiOldParent.cellIndex));
+                scroller.InitializeTween(uiOldParent.dataIndex, uiOldParent.cellIndex);
             }
         }
 
@@ -136,9 +139,21 @@ public class SelectLevelController : MonoBehaviour
 
             parentViewData.expandedSize = parentViewData.collapsedSize + expandedValue;
         }
+        if(indexParent != indexOldParent)
+        {
+            DOVirtual.DelayedCall(0.15f, () => { scroller.InitializeTween(indexParent, indexCellParent); });
+            indexOldParent = indexParent;
+        } 
+        else
+        {
+            scroller.InitializeTween(indexParent, indexCellParent);
+        }
+    }
 
-        scroller.InitializeTween(indexParent, indexCellParent);
-        indexOldParent = indexParent;
+    IEnumerator ClosePanel(int oldIndexData, int oldIndexCell)
+    {
+        scroller.InitializeTween(oldIndexData, oldIndexCell);
+        yield return null;
     }
 
     private void SetTransformLevel(Transform transformParent)

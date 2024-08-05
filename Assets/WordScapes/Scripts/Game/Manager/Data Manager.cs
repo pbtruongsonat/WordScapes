@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,7 +13,7 @@ public class DataManager : SingletonBase<DataManager>
     public static List<int> listLevelID;
     public static Dictionary<int,Tuple<ChildCategory, int> > cateOfLevelID;
 
-
+    public string stateCurLvKey = "stateCurrentLevel";
 
     [Header("Player Data")]
     public static int unlockedLevel;
@@ -217,6 +218,22 @@ public class DataManager : SingletonBase<DataManager>
 
     #endregion
 
+    public StateCurrentLevel LoadStateCurLevel()
+    {
+        if (PlayerPrefs.HasKey(stateCurLvKey))
+        {
+            string json = PlayerPrefs.GetString(stateCurLvKey);
+            return JsonConvert.DeserializeObject<StateCurrentLevel>(json);
+        }
+        return null;
+    }
+
+    public void SaveStateCurLevel(StateCurrentLevel stateCurrentLevel)
+    {
+        string json = JsonConvert.SerializeObject(stateCurrentLevel);
+        PlayerPrefs.SetString(stateCurLvKey, json);
+    }
+
     private void OnEnable()
     {
         
@@ -226,4 +243,11 @@ public class DataManager : SingletonBase<DataManager>
     {
         SavePlayerData();
     }
+}
+
+
+public class StateCurrentLevel
+{
+    public int levelIndex;
+    public List<int> indexVisible;
 }

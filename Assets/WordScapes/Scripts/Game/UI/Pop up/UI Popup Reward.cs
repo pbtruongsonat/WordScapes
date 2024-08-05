@@ -47,7 +47,8 @@ public class UIPopupReward : UIPopupBase
         collectButton.gameObject.SetActive(true);
         textLevelID.text = $"LEVEL {GameManager.Instance.currentLevel}";
 
-        valueReward = Random.Range(10, 30);
+        int coinReward = DataManager.cateOfLevelID[GameManager.Instance.currentLevel].Item1.coinReward;
+        valueReward = coinReward;
         textValueReward.text = valueReward.ToString();
     }
 

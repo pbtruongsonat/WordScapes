@@ -15,3 +15,4 @@ MonoBehaviour:
   name: GROW
   backgroundImage: {fileID: 21300000, guid: 4de706b0ecfa16546ab030e9d93f8013, type: 3}
   listLevelID: 05000000060000000700000008000000
+  coinReward: 15
