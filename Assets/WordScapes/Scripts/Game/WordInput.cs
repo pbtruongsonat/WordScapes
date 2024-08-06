@@ -55,14 +55,20 @@ public class WordInput : MonoBehaviour
         {
             transform.DOPunchPosition(Vector3.right * 0.3f, 0.3f, 22, 1);
         }
-        DOVirtual.DelayedCall(0.3f, () => { ResetWord(); });
+        ResetWord();
     }
 
     public void ResetWord()
     {
         transform.localScale = Vector3.one;
         wordString = string.Empty;
-        inputWord.text = wordString;
-        bgRenderer.gameObject.SetActive(false);
+
+        DOVirtual.DelayedCall(0.3f, () => {
+            inputWord.text = wordString;
+            if(wordString == string.Empty)
+            {
+                bgRenderer.gameObject.SetActive(false);  
+            }
+        });
     }
 }

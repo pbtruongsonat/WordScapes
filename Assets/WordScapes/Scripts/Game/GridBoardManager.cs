@@ -96,12 +96,12 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
             }
         }
 
-        if (GameManager.Instance.currentLevel == DataManager.unlockedLevel)
-        {
-            LoadLevelState();
-        }
+        //if (GameManager.Instance.currentLevel == DataManager.unlockedLevel)
+        //{
+        //    LoadLevelState();
+        //}
     }
-    
+
     private void SetCell(int index, char letter)
     {
         var cell = cellList[0];
@@ -222,10 +222,14 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
 
     public void DisplaySloved()
     {
+        int cellCount = 0;
         foreach (var k in cellDic)
         {
             k.Value.GetComponent<GridCell>().OnSolved();
+            cellCount++;
         }
+        if(levelData != null)
+            levelData.brilliancePoint = cellCount;
     }
 
     public void CheckSlovedWord()
@@ -312,7 +316,7 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
 
     private void OnDisable()
     {
-        SaveLevelState();
+        //SaveLevelState();
         GameEvent.visibleCellIndex -= VisibleCellIndex;
     }
 }

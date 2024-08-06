@@ -188,6 +188,7 @@ public class CreatorManager : MonoBehaviour
             inputNumCols.text = numCols.ToString();
             inputNumRows.text = numRows.ToString();
 
+            levelData.brilliancePoint = 
             levelData.numCol = numCols;
             levelData.numRow = numRows;
             levelData.letters = new string(listLetter.OrderBy(c => Guid.NewGuid()).ToArray()); 

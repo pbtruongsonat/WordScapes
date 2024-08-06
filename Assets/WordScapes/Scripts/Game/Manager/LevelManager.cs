@@ -63,6 +63,10 @@ public class LevelManager : SingletonBase<LevelManager>
         }
 
         boardManager.LoadNewLevel(levelData);
+        //if (GameManager.Instance.currentLevel == DataManager.unlockedLevel)
+        //{
+        //    boardManager.LoadLevelState();
+        //}
 
         letterBoard.LoadNewLevel(levelData.letters);
         lineController.InitLine(levelData.letters.Length - 1);

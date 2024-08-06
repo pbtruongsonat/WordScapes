@@ -15,9 +15,9 @@ public class UIPopupRankup : UIPopupBase
 
     IEnumerator IECounter()
     {
-        int numBrillianceReward = 5 + Random.Range(1, 10);
+        int numBrillianceReward = LevelManager.Instance.levelData.brilliancePoint;
+
         DataManager.brilliance += numBrillianceReward;
-        value = int.Parse(textBrillianceValue.text);
 
         yield return new WaitForSeconds(0.66f);
         for(int i = 0; i < numBrillianceReward; i++)
@@ -37,7 +37,8 @@ public class UIPopupRankup : UIPopupBase
     {
         base.OnEnablePopup();
         congraImage.transform.localScale = Vector3.zero;
-        textBrillianceValue.text = DataManager.brilliance.ToString();
+        value = DataManager.brilliance;
+        textBrillianceValue.text = value.ToString();
 
         congraImage.DOFade(1, 0.15f);
         congraImage.transform.DOScale(Vector3.one, 0.15f).SetEase(Ease.OutBack);

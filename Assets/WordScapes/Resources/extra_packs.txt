@@ -1,6 +1,0 @@
-Sunrise,Rise1,Grow1,Shine1
-Forest,Rise2,Grow2,Shine2
-Canyon,Rise3,Grow3,Shine3
-Sky,Rise4,Grow4,Shine4
-Tropic,Rise5,Grow5,Shine5
-Mountain,Rise6,Grow6,Shine6

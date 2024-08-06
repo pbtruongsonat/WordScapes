@@ -15,9 +15,8 @@ public class PopupManager : MonoBehaviour
 
     IEnumerator IEDisplayPopup()
     {
-        yield return new WaitForSeconds(1f);
-
-        popupRankUp.gameObject.SetActive(true);
+        popupRankUp.OnEnablePopup();
+        yield return null;
         //yield return new WaitForSeconds(2f);
 
         //popupWin.gameObject.SetActive(true);
