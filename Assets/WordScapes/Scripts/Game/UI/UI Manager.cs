@@ -7,6 +7,8 @@ public class UIManager : SingletonBase<UIManager>
     public GameObject gamePlayUI;
     public GameObject levelSelectUI;
 
+    public ObjectMoveController objMoveCtrl;
+
 
     // ---- Game Play ----
     public void DisplayGamePlay()

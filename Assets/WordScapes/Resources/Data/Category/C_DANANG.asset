@@ -15,3 +15,4 @@ MonoBehaviour:
   name: DANANG
   backgroundImage: {fileID: 21300000, guid: 9fd224a8fac5e3944ac34e834c089bdb, type: 3}
   listLevelID: 
+  coinReward: 0

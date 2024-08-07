@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,4 +8,6 @@ public class ChildCategory : ScriptableObject
     public string name;
     public Sprite backgroundImage;
     public List<int> listLevelID;
+
+    public int coinReward;
 }

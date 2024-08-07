@@ -7,7 +7,7 @@ public class SingletonBase<T> : MonoBehaviour where T : Component
     protected static T _instance;
     public static T Instance {  get { return _instance; } }
 
-    protected void Awake()
+    protected virtual void Awake()
     {
         if(_instance != null)
         {

@@ -5,7 +5,7 @@ public class ShieldButton : BottomButtonBase
 
     protected override void OnClick()
     {
-        throw new System.NotImplementedException();
+        //throw new System.NotImplementedException();
     }
 
     private void OnEnable()

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class LevelManager : SingletonBase<LevelManager>
 {
@@ -10,7 +11,8 @@ public class LevelManager : SingletonBase<LevelManager>
     public GridBoardManager boardManager;
     public LetterManager letterBoard;
     public InputHandle inputHandle;
-    public LineManager lineManager;
+    public LineController lineController;
+    public DictionaryController dictionaryController;
 
     public ExtraWordData extraWordData;
     public List<string> extraWordList;
@@ -27,6 +29,8 @@ public class LevelManager : SingletonBase<LevelManager>
     public List<string> slovedWordList;
 
     [Header("Bonus Word")]
+    public TextMeshPro textWordBonus;
+    public RectTransform bonusWordButton;
     public List<string> listBonusWord;
 
     public Transform lettersMoveContainers;
@@ -60,8 +64,13 @@ public class LevelManager : SingletonBase<LevelManager>
         }
 
         boardManager.LoadNewLevel(levelData);
+        //if (GameManager.Instance.currentLevel == DataManager.unlockedLevel)
+        //{
+        //    boardManager.LoadLevelState();
+        //}
+
         letterBoard.LoadNewLevel(levelData.letters);
-        lineManager.InitLine(levelData.letters.Length - 1);
+        lineController.InitLine(levelData.letters.Length - 1);
 
         while (lettersMoveContainers.childCount < levelData.letters.Length)
         {
@@ -69,29 +78,43 @@ public class LevelManager : SingletonBase<LevelManager>
         }
     }
 
-    public void CheckWord(string wordstr)
+    public bool CheckWord(string wordstr)
     {
         if (wordList.ContainsKey(wordstr))
         {
+            curWord = wordList[wordstr];
+
             if (!slovedWordList.Contains(wordstr))
             {
                 // Slove New Word
-                curWord = wordList[wordstr];
-                StartCoroutine("CreateMoveLetter");
-               NewWordSloved(wordstr);
-                
-            } else
-            {
-                // Word has been solved
-                Debug.Log($"{wordstr} is sloved");
+                StartCoroutine(CreateMoveLetter());
+                NewWordSloved(wordstr);
+                dictionaryController.AddNewData(wordstr);// test
             }
-        } 
-        else if (extraWordList.Contains(wordstr) && !listBonusWord.Contains(wordstr))
+            else
+            {
+                boardManager.SlovedWordAgain(curWord);
+                // Word has been solved
+            }
+            return true;
+        }
+        else if (extraWordList.Contains(wordstr))
         {
-            // Dont exist word in level, but word is correct => bonus
-            listBonusWord.Add(wordstr);
-            Debug.Log($"bonus word: {wordstr}");
-        } 
+            if (!listBonusWord.Contains(wordstr))
+            {
+                // Dont exist word in level, but word is correct => bonus
+                listBonusWord.Add(wordstr);
+                StartCoroutine(IEBonusWord(wordstr));
+                dictionaryController.AddNewData(wordstr);// test
+            }
+            else
+            {
+                bonusWordButton.transform.DOPunchScale(Vector3.one * 0.3f, 0.3f, 1);
+            }
+            return true;
+        }
+
+        return false;
     }
     
     public void NewWordSloved(string wordstr)
@@ -103,22 +126,38 @@ public class LevelManager : SingletonBase<LevelManager>
         }
     }
 
+    IEnumerator IEBonusWord(string wordStr)
+    {
+        textWordBonus.text = wordStr;
+        textWordBonus.transform.position = inputHandle.wordInput.transform.position;
+        textWordBonus.transform.localScale = Vector3.one;
+        textWordBonus.gameObject.SetActive(true);
+
+        textWordBonus.transform.DOScale(Vector3.one * 0.8f, 0.7f);
+        yield return textWordBonus.transform.DOJump(bonusWordButton.position, -0.2f, 0, 0.7f).WaitForCompletion();
+
+        textWordBonus.gameObject.SetActive(false);
+        bonusWordButton.transform.DOPunchScale(Vector3.one * 0.3f, 0.3f, 1);
+    }
+
     IEnumerator CreateMoveLetter()
     {
         int index = curWord.startRowIndex * levelData.numCol + curWord.startColIndex;
         int incrementIndex = (curWord.dir == DirectionType.H) ? 1 : levelData.numCol;
-        for(int i = 0; i < curWord.word.Length; i++)
+        int wordLength = curWord.word.Length;
+
+        for (int i = 0; i < wordLength; i++)
         {
             var letterMove = lettersMoveContainers.GetChild(i);
 
             letterMove.GetComponent<LetterMoveController>()?.
-                SetLetter(curWord.word[i], inputHandle.listPosLetters[i], boardManager.cellDic[index].transform.position);
+                SetLetter(curWord.word[i], inputHandle.wordInput.listPosLetters[i], boardManager.cellDic[index].transform.position);
             
             index += incrementIndex;
             yield return new WaitForSeconds(0.04f);
         }
         yield return new WaitForSeconds(0.3f);
-        boardManager.SlovedNewWord(curWord);
+        boardManager.SolvedNewWord(curWord);
     }
 
     // Use Booster 
@@ -131,7 +170,7 @@ public class LevelManager : SingletonBase<LevelManager>
     {
         if (DataManager.Instance.SpentIdeaBooster())
         {
-            boardManager.VisibleOneCell();
+            boardManager.RandomIndexHidden();
         }
         else
         {
@@ -162,7 +201,6 @@ public class LevelManager : SingletonBase<LevelManager>
             Debug.Log("Open Shop");
         }
     }
-
 
     private void Win()
     {

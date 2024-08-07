@@ -258,7 +258,8 @@ GameObject:
   - component: {fileID: 8445891255092848934}
   - component: {fileID: 3298087222494430011}
   - component: {fileID: 2022309291883063889}
-  - component: {fileID: 4234663627072431194}
+  - component: {fileID: 1008515780181170689}
+  - component: {fileID: 2344052623246875680}
   m_Layer: 5
   m_Name: Parent Category
   m_TagString: Untagged
@@ -286,8 +287,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 540, y: -491.085}
-  m_SizeDelta: {x: 1032, y: 0}
+  m_AnchoredPosition: {x: 540, y: -564.1667}
+  m_SizeDelta: {x: 1032, y: 472}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5977160885219920702
 CanvasRenderer:
@@ -310,13 +311,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cellIdentifier: Parent Cell View
+  tween: {fileID: 1008515780181170689}
+  layoutElement: {fileID: 2344052623246875680}
   textNameParent: {fileID: 8608485594388160957}
   textLevelsRange: {fileID: 4207900409962590952}
+  listLevel: {fileID: 0}
   onCompleted: {fileID: 3587253505621617241}
   listChildrenContainer: {fileID: 2865778240855105490}
   childCatePrefabs: {fileID: 7197261661800743435, guid: b07d1ee0b9076f94fac3c94e8a7b0af4, type: 3}
-  parent: {fileID: 0}
-  levelStart: 0
+  childCategories: []
   listChildButton: []
 --- !u!114 &3298087222494430011
 MonoBehaviour:
@@ -374,7 +377,7 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &4234663627072431194
+--- !u!114 &1008515780181170689
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -383,11 +386,29 @@ MonoBehaviour:
   m_GameObject: {fileID: 5372849016820666749}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Script: {fileID: 11500000, guid: f69fd3a8609bb43668420e5ace2cb8ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_HorizontalFit: 0
-  m_VerticalFit: 2
+--- !u!114 &2344052623246875680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5372849016820666749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: 472
+  m_PreferredWidth: -1
+  m_PreferredHeight: -1
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!1 &7154921539444920456
 GameObject:
   m_ObjectHideFlags: 0
@@ -446,7 +467,7 @@ MonoBehaviour:
   m_ChildAlignment: 1
   m_Spacing: 16
   m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 1
+  m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
@@ -510,7 +531,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 516, y: -133.755}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 230.79, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8494498076614463530
 CanvasRenderer:

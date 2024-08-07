@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LineManager : MonoBehaviour
+public class LineController : MonoBehaviour
 {
     public GameObject linePrefabs;
     private List<LineRenderer> listLine = new List<LineRenderer>();

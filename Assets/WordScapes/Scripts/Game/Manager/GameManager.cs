@@ -1,7 +1,6 @@
 using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,6 +18,11 @@ public class GameManager : SingletonBase<GameManager>
 
     public Image backgroundGamePlay;
 
+    protected override void Awake()
+    {
+        base.Awake();
+        Application.targetFrameRate = 60;   
+    }
     void Start()
     {
         GameEvent.inMainMenu?.Invoke(true);

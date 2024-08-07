@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,17 +12,19 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
     private List<GameObject> cellList = new List<GameObject>();
 
     public Dictionary<int, GameObject> cellDic = new Dictionary<int, GameObject>();
-    public Dictionary<string, List<int>> wordUnSloved = new Dictionary<string, List<int>>();
+    public Dictionary<string, List<int>> wordUnSolved = new Dictionary<string, List<int>>();
+
+    public List<int> indexCellVisible = new List<int>();
     public List<int> indexCellHidden = new List<int>();
 
     [Header("Data")]
     public LevelData levelData;
 
     [Header("Position + Scale")]
-    public RectTransform topNeo;
-    public RectTransform botNeo;
-    public RectTransform leftNeo;
-    public RectTransform rightNeo;
+    public RectTransform topAnchor;  
+    public RectTransform botAnchor;  
+    public RectTransform leftAnchor; 
+    public RectTransform rightAnchor;
 
 
     public void LoadNewLevel(LevelData levelData)
@@ -47,8 +50,9 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
         gameObject.transform.localScale = Vector3.one;
 
         cellDic.Clear();
-        wordUnSloved.Clear();
+        wordUnSolved.Clear();
         indexCellHidden.Clear();
+        indexCellVisible.Clear();
     }
 
     private void SpawnGridCell()
@@ -63,9 +67,9 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
             int startIndex = startRow * numCols + startCol;
             int indexIncrease;
 
-            if (!wordUnSloved.ContainsKey(word.word))
+            if (!wordUnSolved.ContainsKey(word.word))
             {
-                wordUnSloved[word.word] = new List<int>();
+                wordUnSolved[word.word] = new List<int>();
             }
             if (word.dir == DirectionType.H)
             {
@@ -79,7 +83,7 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
             for (int i = 0; i < word.word.Length; i++)
             {
                 int index = startIndex + i * indexIncrease;
-                wordUnSloved[word.word].Add(index);
+                wordUnSolved[word.word].Add(index);
                 if (cellDic.ContainsKey(index)) continue;
 
                 if (cellList.Count == 0)
@@ -92,8 +96,12 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
             }
         }
 
+        //if (GameManager.Instance.currentLevel == DataManager.unlockedLevel)
+        //{
+        //    LoadLevelState();
+        //}
     }
-    
+
     private void SetCell(int index, char letter)
     {
         var cell = cellList[0];
@@ -107,7 +115,7 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
 
         //
         indexCellHidden.Add(index);
-        cell.GetComponent<GridCell>().SetLetter(letter.ToString());
+        cell.GetComponent<GridCell>().SetLetter(letter.ToString(), index);
         cell.SetActive(true);
     }
 
@@ -121,66 +129,86 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
 
     private void ScaleGridBoard()
     {
-        var defaultSize = Camera.main.orthographicSize;
-
         Canvas.ForceUpdateCanvases();
 
-        var offset = (topNeo.position + botNeo.position) / 2f;
+        var offset = (topAnchor.position + botAnchor.position) / 2f;
         gameObject.transform.position = new Vector3(offset.x, offset.y, 0f);
-
-        //int numColMin = Mathf.Max(4, levelData.numCol);
-        //int numRowMin = Mathf.Max(3, levelData.numRow);
 
         float sizeOfCell = 1.5f;
 
         var maxX = levelData.numCol * sizeOfCell / 2f;
         var maxY = levelData.numRow * sizeOfCell / 2f;
 
-        maxY += offset.y;
-
-        var top = maxY - topNeo.transform.position.y;
-        var right = maxX - rightNeo.transform.position.x;
+        var top = maxY - topAnchor.position.y + offset.y;
+        var right = maxX - rightAnchor.position.x + offset.x;
         var max = Mathf.Max(top, right);
 
-        var ratio = 0f;
+        var scaleOffsetV = (topAnchor.position.y - offset.y) / maxY;
+        var scaleOffsetH = (rightAnchor.position.x - offset.x) / maxX;
 
-        if (max == top)
-        {
-            ratio = topNeo.transform.position.y / (defaultSize * 2f) ;
-        }
-        else
-        {
-            ratio = rightNeo.transform.position.x / (defaultSize * Camera.main.aspect * 2f);
-        }
-        max /= ratio;
-        gameObject.transform.localScale = (Vector3.one * defaultSize) / (defaultSize + max);
+        float maxScaleOffset = 0.7f;
+        var scaleOffset = Mathf.Min(scaleOffsetV, scaleOffsetH, maxScaleOffset);
+
+        gameObject.transform.localScale = Vector3.one * scaleOffset;
     }
 
-    // --------------------- Sloved New Word ------------------
-    public void SlovedNewWord(Word word)
+    // --------------------- Solved New Word ------------------
+    public void SolvedNewWord(Word word)
     {
-        wordUnSloved.Remove(word.word);
+        wordUnSolved.Remove(word.word);
 
         int index = word.startRowIndex * levelData.numCol + word.startColIndex;
         int indexIncrease = (word.dir == DirectionType.H) ? 1 : levelData.numCol;
         for (int i = 0; i < word.word.Length; i++)
         {
-            cellDic[index].GetComponent<GridCell>()?.OnSloved();
+            cellDic[index].GetComponent<GridCell>()?.OnSolved();
 
+            indexCellVisible.Add(index);
             indexCellHidden.Remove(index);
             index += indexIncrease;
         }
     }
 
-    public void VisibleOneCell()
+    public void SlovedWordAgain(Word word)
+    {
+        int index = word.startRowIndex * levelData.numCol + word.startColIndex;
+        int indexIncrease;
+        Vector3 dirPunch;
+
+        if (word.dir == DirectionType.H)
+        {
+            indexIncrease = 1;
+            dirPunch = Vector3.right * 0.3f;
+        }
+        else
+        {
+            indexIncrease = levelData.numCol;
+            dirPunch = Vector3.down * 0.3f;
+        }
+
+        for (int i = 0; i < word.word.Length; i++)
+        {
+            cellDic[index].transform.DOPunchPosition(dirPunch, 0.6f, 10);
+            index += indexIncrease;
+        }
+    }
+
+    public void RandomIndexHidden()
     {
         int index = UnityEngine.Random.Range(0, indexCellHidden.Count);
-        int cellindex = indexCellHidden[index];
-        var cell = cellDic[cellindex];
-        cell.GetComponent<GridCell>()?.OnVisible();
-        indexCellHidden.Remove(cellindex);
+        int indexCell = indexCellHidden[index];
+        VisibleCellIndex(indexCell);
 
         CheckSlovedWord();
+    }
+
+    public void VisibleCellIndex(int indexCell)
+    {
+        var cell = cellDic[indexCell];
+        cell.GetComponent<GridCell>()?.OnVisible();
+
+        indexCellHidden.Remove(indexCell);
+        indexCellVisible.Add(indexCell);
     }
 
     public void VisibleFiveCell()
@@ -188,21 +216,25 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
         for(int i = 0; i < 5; i++)
         {
             if (indexCellHidden.Count <= 0) break;
-            VisibleOneCell();
+            RandomIndexHidden();
         }
     }
 
     public void DisplaySloved()
     {
+        int cellCount = 0;
         foreach (var k in cellDic)
         {
-            k.Value.GetComponent<GridCell>().OnSloved();
+            k.Value.GetComponent<GridCell>().OnSolved();
+            cellCount++;
         }
+        if(levelData != null)
+            levelData.brilliancePoint = cellCount;
     }
 
     public void CheckSlovedWord()
     {
-        Dictionary<string, List<int>> tmp = new Dictionary<string, List<int>>(wordUnSloved);
+        Dictionary<string, List<int>> tmp = new Dictionary<string, List<int>>(wordUnSolved);
         List<string> wordsToRemove = new List<string>();
         Dictionary<string, List<int>> indicesToRemove = new Dictionary<string, List<int>>();
 
@@ -227,7 +259,7 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
                 indicesToRemove[word.Key].AddRange(indices);
             }
 
-            if (wordUnSloved[word.Key].Count == indices.Count)
+            if (wordUnSolved[word.Key].Count == indices.Count)
             {
                 wordsToRemove.Add(word.Key);
             }
@@ -238,17 +270,53 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
         {
             foreach (var index in word.Value)
             {
-                wordUnSloved[word.Key].Remove(index);
+                wordUnSolved[word.Key].Remove(index);
             }
         }
 
         // Remove words
         foreach (var word in wordsToRemove)
         {
-            wordUnSloved.Remove(word);
-            SlovedNewWord(LevelManager.Instance.wordList[word]);
+            wordUnSolved.Remove(word);
+            SolvedNewWord(LevelManager.Instance.wordList[word]);
             LevelManager.Instance.NewWordSloved(word);
         }
     }
 
+
+    public void SaveLevelState()
+    {
+        if (GameManager.Instance.currentLevel == DataManager.unlockedLevel)
+        {
+            StateCurrentLevel stateData = new StateCurrentLevel();
+            stateData.levelIndex = GameManager.Instance.currentLevel;
+            stateData.indexVisible = indexCellVisible;
+
+            DataManager.Instance.SaveStateCurLevel(stateData);
+        }
+    }
+
+    public void LoadLevelState()
+    {
+        StateCurrentLevel stateData = DataManager.Instance.LoadStateCurLevel();
+        if (stateData != null && stateData.levelIndex == GameManager.Instance.currentLevel)
+        {
+            foreach (int cellIndex in stateData.indexVisible)
+            {
+                VisibleCellIndex(cellIndex);
+            }
+            CheckSlovedWord();
+        }
+    }
+
+    private void OnEnable()
+    {
+        GameEvent.visibleCellIndex += VisibleCellIndex;
+    }
+
+    private void OnDisable()
+    {
+        //SaveLevelState();
+        GameEvent.visibleCellIndex -= VisibleCellIndex;
+    }
 }

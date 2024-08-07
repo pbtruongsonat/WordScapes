@@ -4,14 +4,12 @@ using UnityEngine;
 
 public class InputHandle : MonoBehaviour
 {
-    public string word;
-    public TMPro.TextMeshPro inputWord;
     public List<GameObject> cellSelected;
 
     public List<InputCell> inputCellSelected;
 
-    public LineManager lineManager;
-    public SpriteRenderer bgRenderer;
+    public WordInput wordInput;
+    public LineController lineController;
 
     public List<Vector3> listPosLetters = new List<Vector3>();
 
@@ -27,24 +25,14 @@ public class InputHandle : MonoBehaviour
             {
                 DetectCell(cell.gameObject);
             }
-        } else 
+        }
+        else if (Input.GetMouseButtonUp(0))
         {
-            if (word != string.Empty)
+            if (wordInput.wordString != string.Empty)
             {
-                lineManager.ClearLine();
-                listPosLetters.Clear();
-                for(int i = 0; i < inputWord.textInfo.characterCount; i++)
-                {
-                    var charInfo = inputWord.textInfo.characterInfo[i];
-                    float posX = (charInfo.bottomLeft.x + charInfo.bottomRight.x) /2f;
-                    listPosLetters.Add(new Vector3(posX, inputWord.transform.position.y, 0f));
-                }
+                lineController.ClearLine();
 
-                LevelManager.Instance.CheckWord(word);
-               
-                word = string.Empty;
-                inputWord.text = word;
-                bgRenderer.gameObject.SetActive(false);
+                wordInput.FinishWord();
 
                 foreach (var inputCell in inputCellSelected)
                 {
@@ -65,11 +53,9 @@ public class InputHandle : MonoBehaviour
             inputCellSelected.Add(inputCell);
             cellSelected.Add(cell);
 
-            word += inputCell.letter;
-            inputWord.text = word;
-            SetBGInputWord();
+            wordInput.AddNewLetter(inputCell.letter);
 
-            lineManager.AddNewLine(cell.transform.position);
+            lineController.AddNewLine(cell.transform.position);
         }
         else if (cellSelected.Count > 1 && cellSelected[cellSelected.Count - 2] == cell)
         {
@@ -77,20 +63,11 @@ public class InputHandle : MonoBehaviour
             cellRemove.GetComponent<InputCell>().SelectedLetter(false);
             cellSelected.Remove(cellRemove);
 
-            word = word.Remove(word.Length - 1, 1);
-            inputWord.text = word;
-            SetBGInputWord();
+            wordInput.RemoveLastLetter();
 
-            lineManager.RemoveLine();
+            lineController.RemoveLine();
         }
     }
-
-    private void SetBGInputWord() {
-        float minWidth = 1.3f;
-        bgRenderer.size = new Vector2(Mathf.Max(inputWord.preferredWidth * 2f + 0.5f, minWidth), 1.16f);
-        bgRenderer.gameObject.SetActive(true);
-    }
-
 
      //--------------------------------------------------------------------
 

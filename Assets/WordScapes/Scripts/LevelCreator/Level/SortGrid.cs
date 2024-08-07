@@ -197,7 +197,6 @@ public class SortGrid : MonoBehaviour
         }
 
 
-
         Word w = new Word();
         w.word = word;
         w.dir = DirectionType.V;

@@ -11,12 +11,10 @@ public class UIPopupRankup : UIPopupBase
     public TextMeshProUGUI textBrillianceValue;
     public int value;
 
-    IEnumerator IECounter()
-    {
-        int numBrillianceReward = 5 + Random.Range(1, 10);
-        DataManager.brilliance += numBrillianceReward;
-        value = int.Parse(textBrillianceValue.text);
+    public UIPopupWin uiPopupWin;
 
+    IEnumerator IECounter(int numBrillianceReward)
+    {
         yield return new WaitForSeconds(0.66f);
         for(int i = 0; i < numBrillianceReward; i++)
         {
@@ -26,6 +24,8 @@ public class UIPopupRankup : UIPopupBase
         }
 
         yield return new WaitForSeconds(0.5f);
+
+        uiPopupWin.gameObject.SetActive(true);
         OnDisablePopup();
     }
 
@@ -33,13 +33,18 @@ public class UIPopupRankup : UIPopupBase
     {
         base.OnEnablePopup();
         congraImage.transform.localScale = Vector3.zero;
-        textBrillianceValue.text = DataManager.brilliance.ToString();
+        value = DataManager.brilliance;
+        textBrillianceValue.text = value.ToString();
 
         congraImage.DOFade(1, 0.15f);
         congraImage.transform.DOScale(Vector3.one, 0.15f).SetEase(Ease.OutBack);
         brillianceObj.transform.DOScale(1, 0.1f);
 
-        StartCoroutine(IECounter());
+        int numBrillianceReward = LevelManager.Instance.levelData.brilliancePoint;
+
+        DataManager.RankUp(numBrillianceReward);
+
+        StartCoroutine(IECounter(numBrillianceReward));
     }
 
     public override void OnDisablePopup()
@@ -48,10 +53,5 @@ public class UIPopupRankup : UIPopupBase
         congraImage.DOFade(0, 0.1f);
         brillianceObj.transform.DOScale(0, 0.1f);
         DOVirtual.DelayedCall(0.1f, () => { gameObject.SetActive(false); });
-    }
-
-    private void OnEnable()
-    {
-        OnEnablePopup();
     }
 }
