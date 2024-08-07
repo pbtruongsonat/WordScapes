@@ -44,6 +44,7 @@ public class DataManager : SingletonBase<DataManager>
         listLevelID = new List<int>();
         cateOfLevelID = new Dictionary<int,Tuple<ChildCategory, int>>();
 
+        LeaderBoardManager.Load();
         LoadNProcessGameData();
         LoadPlayerData();
 
@@ -117,6 +118,12 @@ public class DataManager : SingletonBase<DataManager>
     }
 
     #region ResourcesManager 
+    public static void RankUp(int increase)
+    {
+        brilliance += increase;
+        LeaderBoardManager.UpdateRankData();
+    }
+
     public static void EarnCoin(int amount)
     {
         coin += amount;

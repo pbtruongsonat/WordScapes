@@ -12,12 +12,11 @@ public class LeaderBoardController : MonoBehaviour, IEnhancedScrollerDelegate
     public RankData playerRank;
     public RankCellView playerRankCell;
 
-    public LeaderBoardManager leaderBoardManager;
 
     // Start is called before the first frame update
     void Start()
     {
-        leaderBoardManager = GetComponent<LeaderBoardManager>();
+        rankDatas = new List<RankData>();
         scroller.Delegate = this;
 
         LoadData();
@@ -26,33 +25,16 @@ public class LeaderBoardController : MonoBehaviour, IEnhancedScrollerDelegate
     
     private void LoadData()
     {
-        rankDatas = new List<RankData>();
-        rankDatas = leaderBoardManager.leaderBoardData.rankDatas;
+        rankDatas = LeaderBoardManager.saveLeaderBoard.rankDatas;
 
         //Player Data
-        playerRank = new RankData("You", DataManager.brilliance);
-        rankDatas.Add(playerRank);
+        int playerIndex = LeaderBoardManager.FindPlayerIndex();
 
-        rankDatas.Sort();
-        playerRankCell.SetData(playerRank, rankDatas.IndexOf(playerRank));
+        playerRank = rankDatas[playerIndex];
+
+        playerRankCell.SetData(playerRank, playerIndex);
 
         scroller.ReloadData();
-    }
-
-    private void ReloadData()
-    {
-        if (rankDatas.Count > 0)
-        {
-            int index = rankDatas.IndexOf(playerRank);
-
-            rankDatas[index].totalBrilliance = DataManager.brilliance;
-            rankDatas.Sort();
-
-            index = rankDatas.IndexOf(playerRank);
-            playerRankCell.SetData(rankDatas[index], index);
-
-            scroller.ReloadData();
-        }
     }
 
     public EnhancedScrollerCellView GetCellView(EnhancedScroller scroller, int dataIndex, int cellIndex)
@@ -78,6 +60,9 @@ public class LeaderBoardController : MonoBehaviour, IEnhancedScrollerDelegate
 
     private void OnEnable()
     {
-        ReloadData();
+        if (rankDatas != null)
+        {
+            LoadData();
+        }
     }
 }

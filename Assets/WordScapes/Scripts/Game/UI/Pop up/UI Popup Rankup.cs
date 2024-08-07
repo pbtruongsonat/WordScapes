@@ -13,12 +13,8 @@ public class UIPopupRankup : UIPopupBase
 
     public UIPopupWin uiPopupWin;
 
-    IEnumerator IECounter()
+    IEnumerator IECounter(int numBrillianceReward)
     {
-        int numBrillianceReward = LevelManager.Instance.levelData.brilliancePoint;
-
-        DataManager.brilliance += numBrillianceReward;
-
         yield return new WaitForSeconds(0.66f);
         for(int i = 0; i < numBrillianceReward; i++)
         {
@@ -44,7 +40,11 @@ public class UIPopupRankup : UIPopupBase
         congraImage.transform.DOScale(Vector3.one, 0.15f).SetEase(Ease.OutBack);
         brillianceObj.transform.DOScale(1, 0.1f);
 
-        StartCoroutine(IECounter());
+        int numBrillianceReward = LevelManager.Instance.levelData.brilliancePoint;
+
+        DataManager.RankUp(numBrillianceReward);
+
+        StartCoroutine(IECounter(numBrillianceReward));
     }
 
     public override void OnDisablePopup()
@@ -53,10 +53,5 @@ public class UIPopupRankup : UIPopupBase
         congraImage.DOFade(0, 0.1f);
         brillianceObj.transform.DOScale(0, 0.1f);
         DOVirtual.DelayedCall(0.1f, () => { gameObject.SetActive(false); });
-    }
-
-    private void OnEnable()
-    {
-        OnEnablePopup();
     }
 }
