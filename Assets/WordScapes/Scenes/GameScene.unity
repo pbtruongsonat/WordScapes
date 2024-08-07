@@ -2788,6 +2788,9 @@ MonoBehaviour:
   scroller: {fileID: 1210317616}
   meaningWordCellPrefab: {fileID: 8580908336161631936, guid: 16c0befc150e07749a75fec455457bff, type: 3}
   wordnikAPI: {fileID: 1217572335}
+  flickSnap: {fileID: 1210317618}
+  cellViewSize: 873
+  calculateStartCellBias: 3
 --- !u!1 &243985094
 GameObject:
   m_ObjectHideFlags: 0
@@ -12629,8 +12632,8 @@ GameObject:
   - component: {fileID: 1210317614}
   - component: {fileID: 1210317613}
   - component: {fileID: 1210317616}
-  - component: {fileID: 1210317617}
   - component: {fileID: 1210317618}
+  - component: {fileID: 1210317617}
   m_Layer: 5
   m_Name: Scroll View
   m_TagString: Untagged
@@ -12787,8 +12790,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scroller: {fileID: 1210317616}
-  snapTweenType: 8
-  snapTweenTime: 0.6
+  snapTweenType: 17
+  snapTweenTime: 0.5
 --- !u!1 &1217572334
 GameObject:
   m_ObjectHideFlags: 0

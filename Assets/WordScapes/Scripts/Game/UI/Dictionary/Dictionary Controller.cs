@@ -12,12 +12,16 @@ public class DictionaryController : MonoBehaviour, IEnhancedScrollerDelegate
     public MeaningWordCell meaningWordCellPrefab;
     public WordnikAPI wordnikAPI;
 
+    public FlickSnapScroller flickSnap;
+    public float cellViewSize = 873; 
+    public float calculateStartCellBias = 0f;
 
     void Start()
     {
-        scroller.Delegate = this;
-
         _datas = new List<MeaningWordData>();
+
+        scroller.Delegate = this;
+        scroller.CalculateStartCellBias = calculateStartCellBias;
 
         //LoadData();
     }
@@ -36,6 +40,8 @@ public class DictionaryController : MonoBehaviour, IEnhancedScrollerDelegate
     {
         _datas.Add(data);
 
+        flickSnap.MaxDataElements = _datas.Count;
+
         scroller.ReloadData();
     }
 
@@ -53,7 +59,7 @@ public class DictionaryController : MonoBehaviour, IEnhancedScrollerDelegate
 
     public float GetCellViewSize(EnhancedScroller scroller, int dataIndex)
     {
-        return 873;
+        return cellViewSize;
     }
 
     public int GetNumberOfCells(EnhancedScroller scroller)

@@ -1,6 +1,4 @@
 using EnhancedUI.EnhancedScroller;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -8,6 +6,7 @@ public class FlickSnapScroller : MonoBehaviour, IBeginDragHandler, IEndDragHandl
 {
     public EnhancedScroller scroller;
     public EnhancedScroller.TweenType snapTweenType;
+
     public float snapTweenTime;
     public int MaxDataElements { get; set; }
     private bool _isDragging = false;
@@ -36,16 +35,15 @@ public class FlickSnapScroller : MonoBehaviour, IBeginDragHandler, IEndDragHandl
             _isDragging = false;
 
             var delta = data.position - _dragStartPosition;
-
             var jumpToIndex = -1;
 
-            if (delta.y < 0)
-            {
-                jumpToIndex = _currentIndex - 1;
-            }
-            else if (delta.y > 0)
+            if (delta.x < 0)
             {
                 jumpToIndex = _currentIndex + 1;
+            }
+            else if (delta.x > 0)
+            {
+                jumpToIndex = _currentIndex - 1;
             }
 
             if (jumpToIndex != -1)
