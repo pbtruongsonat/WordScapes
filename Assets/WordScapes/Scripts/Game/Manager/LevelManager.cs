@@ -12,6 +12,7 @@ public class LevelManager : SingletonBase<LevelManager>
     public LetterManager letterBoard;
     public InputHandle inputHandle;
     public LineController lineController;
+    public DictionaryController dictionaryController;
 
     public ExtraWordData extraWordData;
     public List<string> extraWordList;
@@ -88,7 +89,7 @@ public class LevelManager : SingletonBase<LevelManager>
                 // Slove New Word
                 StartCoroutine(CreateMoveLetter());
                 NewWordSloved(wordstr);
-                
+                dictionaryController.AddNewData(wordstr);// test
             }
             else
             {
@@ -104,6 +105,7 @@ public class LevelManager : SingletonBase<LevelManager>
                 // Dont exist word in level, but word is correct => bonus
                 listBonusWord.Add(wordstr);
                 StartCoroutine(IEBonusWord(wordstr));
+                dictionaryController.AddNewData(wordstr);// test
             }
             else
             {
