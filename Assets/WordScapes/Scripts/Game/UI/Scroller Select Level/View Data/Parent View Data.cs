@@ -16,6 +16,7 @@ public class ParentViewData : ScrollViewData
     public int indexCateActive;
     public float collapsedSize;
     public float expandedSize;
+    public float curentSize;
 
     // Tween
     public EnhancedUI.EnhancedScroller.Tween.TweenType tweenType;
@@ -34,7 +35,14 @@ public class ParentViewData : ScrollViewData
     {
         get
         {
-            return expandedSize - collapsedSize;
+            if (indexCateActive == -1)
+            {
+                return curentSize - collapsedSize;
+            } 
+            else
+            {
+                return expandedSize - curentSize;
+            }
         }
     }
 

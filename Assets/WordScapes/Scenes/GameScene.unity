@@ -11319,7 +11319,7 @@ MonoBehaviour:
   parentPrefabs: {fileID: 5372849016820666749, guid: 55c9750d60c3a1a4c937c9d0fc4c02f3, type: 3}
   levelButtonPrefabs: {fileID: 8524689903522638322, guid: 4f18a483491352942ae1f79108361b93, type: 3}
   levelContainer: {fileID: 94244268}
-  scroller: {fileID: 1507146641}
+  scrollerController: {fileID: 1507146641}
 --- !u!222 &1200488814
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -15106,13 +15106,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49c72e499821c834da2641594465fc92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myScroller: {fileID: 1376493917}
+  scroller: {fileID: 1376493917}
   rectScroller: {fileID: 0}
   headerUIPrefab: {fileID: 8256883346358272897, guid: 8596c8ec6cf9baf4ea9c5ea4bd8fad5d, type: 3}
   parentUIPrefab: {fileID: 8445891255092848934, guid: 55c9750d60c3a1a4c937c9d0fc4c02f3, type: 3}
   footerUIPrefab: {fileID: 4677032385215463053, guid: df3b081ba34fd5744921ac62193740bf, type: 3}
   headerHeight: 132
   footerHeight: 150
+  tweenType: 4
+  tweenTime: 0.5
 --- !u!1 &1510812461
 GameObject:
   m_ObjectHideFlags: 0

@@ -111,15 +111,15 @@ public class UIParentCategory : UIBlockScroll
 
         if (parentData.indexCateActive == -1)
         {
-            layoutElement.minHeight = parentData.expandedSize;
+            layoutElement.minHeight = parentData.curentSize;
 
-            StartCoroutine(tween.TweenPosition(parentData.tweenType, parentData.tweenTimeCollapse, parentData.expandedSize, parentData.collapsedSize, TweenUpdated, TweenCompleted));
+            StartCoroutine(tween.TweenPosition(parentData.tweenType, parentData.tweenTimeCollapse, parentData.curentSize, parentData.collapsedSize, TweenUpdated, TweenCompleted));
         }
         else
         {
-            layoutElement.minHeight = parentData.collapsedSize;
+            layoutElement.minHeight = parentData.curentSize;
 
-            StartCoroutine(tween.TweenPosition(parentData.tweenType, parentData.tweenTimeExpand, parentData.collapsedSize, parentData.expandedSize, TweenUpdated, TweenCompleted));
+            StartCoroutine(tween.TweenPosition(parentData.tweenType, parentData.tweenTimeExpand, parentData.curentSize, parentData.expandedSize, TweenUpdated, TweenCompleted));
         }
     }
 
@@ -139,15 +139,28 @@ public class UIParentCategory : UIBlockScroll
     {
         if(parentData.indexCateActive != -1)
         {
+            parentData.curentSize = parentData.expandedSize;
             GameEvent.setTransformLevel?.Invoke(transform);
         }
+        else
+        {
+            parentData.curentSize = parentData.collapsedSize;
+        }
+
         if(endTween != null)
         {
             endTween(dataIndex, cellIndex);
         }
     }
 
-
+    private void OnEnable()
+    {
+        if (parentData != null && parentData.indexCateActive != -1)
+        {
+            GameEvent.setTransformLevel?.Invoke(transform);
+            listChildButton[parentData.indexCateActive].OnSelectChild(true);
+        }
+    }
 
     private void OnDisable()
     {

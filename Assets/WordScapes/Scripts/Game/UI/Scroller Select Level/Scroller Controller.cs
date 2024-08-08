@@ -1,15 +1,12 @@
 using EnhancedUI.EnhancedScroller;
-using JetBrains.Annotations;
-using System;
 using System.Collections.Generic;
-using Tayx.Graphy.Advanced;
 using UnityEngine;
 
 public class ScrollerController : MonoBehaviour, IEnhancedScrollerDelegate
 {
-    public List<ScrollViewData> data;
+    public List<ScrollViewData> datas;
 
-    public EnhancedScroller myScroller;
+    public EnhancedScroller scroller;
     public RectTransform rectScroller;
 
     public EnhancedScrollerCellView headerUIPrefab;
@@ -20,6 +17,10 @@ public class ScrollerController : MonoBehaviour, IEnhancedScrollerDelegate
     public float headerHeight;
     public float footerHeight;
 
+    [Header("Jump Tween")]
+    public EnhancedScroller.TweenType tweenType;
+    public float tweenTime;
+
     //
     private bool _lastPadderActive;
     private float _lastPadderSize;
@@ -29,21 +30,21 @@ public class ScrollerController : MonoBehaviour, IEnhancedScrollerDelegate
     {
         Application.targetFrameRate = 60;
 
-        rectScroller = myScroller.GetComponent<RectTransform>();
-        myScroller.Delegate = this;
+        rectScroller = scroller.GetComponent<RectTransform>();
+        scroller.Delegate = this;
 
-        myScroller.lookAheadAfter = 1000f;
-        myScroller.lookAheadBefore = 1000f;
+        scroller.lookAheadAfter = 1000f;
+        scroller.lookAheadBefore = 1000f;
 
         LoadData();
     }
 
     private void LoadData()
     {
-        data = new List<ScrollViewData>();
+        datas = new List<ScrollViewData>();
         int levelIdStart = 1;
 
-        data.Add(new HeaderViewData(headerHeight));
+        datas.Add(new HeaderViewData(headerHeight));
 
         foreach (var parent in GameManager.Instance.gameData.listParent)
         {
@@ -64,117 +65,158 @@ public class ScrollerController : MonoBehaviour, IEnhancedScrollerDelegate
             parentData.indexCateActive = -1;
             parentData.expandedSize = 472;
             parentData.collapsedSize = 472;
+            parentData.curentSize = 472;
 
             parentData.tweenType = Tween.TweenType.easeInOutSine;
             parentData.tweenTimeCollapse = 0.15f;
             parentData.tweenTimeExpand = 0.3f;
 
-            data.Add(parentData);
+            datas.Add(parentData);
         }
 
-        data.Add(new FooterViewData(footerHeight));
+        datas.Add(new FooterViewData(footerHeight));
 
-        myScroller.ReloadData();
+        scroller.ReloadData();
+
+        JumpToCurrentLevel();
     }
 
-    public int GetNumberOfCells(EnhancedScroller scroller)
+    private void JumpToCurrentLevel()
     {
-        return data.Count;
+        int curLevel = DataManager.unlockedLevel;
+        int numDatas = datas.Count;
+
+        for (int i = 0; i < numDatas; i++)
+        {
+            if (datas[i] is ParentViewData)
+            {
+                ParentViewData parentData = datas[i] as ParentViewData;
+
+                if (parentData.indexLevelStart <= curLevel && parentData.indexLevelEnd >= curLevel)
+                {
+                    JumpToDataIndex(i);
+                }
+            }
+        }
+    }
+
+    public void JumpToDataIndex(int dataIndex)
+    {
+        scroller.JumpToDataIndex(Mathf.Clamp(dataIndex, 0, datas.Count - 1), 0.5f, 0, true, tweenType, tweenTime);
     }
 
 
-    // ------ Action Tween -------
+    #region Tween ParentCategory
     public void InitializeTween(int dataIndex, int cellViewIndex)
     {
-        ParentViewData parentData = data[dataIndex] as ParentViewData;
+        ParentViewData parentData = datas[dataIndex] as ParentViewData;
 
         if (parentData == null) return;
 
 
 
-        var cellPosition = myScroller.GetScrollPositionForCellViewIndex(cellViewIndex, EnhancedScroller.CellViewPositionEnum.Before);
+        var cellPosition = scroller.GetScrollPositionForCellViewIndex(cellViewIndex, EnhancedScroller.CellViewPositionEnum.Before);
 
-        var tweenCellOffset = cellPosition - myScroller.ScrollPosition;
+        var tweenCellOffset = cellPosition - scroller.ScrollPosition;
 
-        myScroller.IgnoreLoopJump(true);
+        scroller.IgnoreLoopJump(true);
 
-        myScroller.ReloadData();
+        scroller.ReloadData();
 
-        cellPosition = myScroller.GetScrollPositionForCellViewIndex(cellViewIndex, EnhancedScroller.CellViewPositionEnum.Before);
+        cellPosition = scroller.GetScrollPositionForCellViewIndex(cellViewIndex, EnhancedScroller.CellViewPositionEnum.Before);
 
-        myScroller.SetScrollPositionImmediately(cellPosition - tweenCellOffset);
+        scroller.SetScrollPositionImmediately(cellPosition - tweenCellOffset);
 
-        myScroller.IgnoreLoopJump(false);
+        scroller.IgnoreLoopJump(false);
 
         // Set Last Padder
-        _lastPadderActive = myScroller.LastPadder.IsActive();
-        _lastPadderSize = myScroller.LastPadder.minHeight;
+        _lastPadderActive = scroller.LastPadder.IsActive();
+        _lastPadderSize = scroller.LastPadder.minHeight;
 
         if(parentData.indexCateActive == -1)
         {
-            myScroller.LastPadder.minHeight -= parentData.SizeDifference;
+            scroller.LastPadder.minHeight -= parentData.SizeDifference;
         }
         else
         {
-            myScroller.LastPadder.minHeight += parentData.SizeDifference;
+            scroller.LastPadder.minHeight += parentData.SizeDifference;
         }
 
-        myScroller.LastPadder.gameObject.SetActive(true);
+        scroller.LastPadder.gameObject.SetActive(true);
 
-        var uiParent = myScroller.GetCellViewAtDataIndex(dataIndex) as UIParentCategory;
+        var uiParent = scroller.GetCellViewAtDataIndex(dataIndex) as UIParentCategory;
+
         uiParent.BeginTween();
     }
 
 
     private void TweenUpdated(int dataIndex, int cellViewIndex, float newValue, float delta)
     {
-        myScroller.LastPadder.minHeight -= delta;
+        scroller.LastPadder.minHeight -= delta;
     }
 
 
     private void TweenEnd(int dataIndex, int cellViewIndex)
     {
-        myScroller.LastPadder.gameObject.SetActive(_lastPadderActive);
-        myScroller.LastPadder.minHeight = _lastPadderSize;
+        JumpToDataIndex(dataIndex);
+        scroller.LastPadder.gameObject.SetActive(_lastPadderActive);
+        scroller.LastPadder.minHeight = _lastPadderSize;
     }
+    #endregion
 
-
-
+    #region EnhancedSroller
     public float GetCellViewSize(EnhancedScroller scroller, int dataIndex)
     {
-        ParentViewData parentData = data[dataIndex] as ParentViewData;
+        ParentViewData parentData = datas[dataIndex] as ParentViewData;
 
         if (parentData != null)
         {
             return parentData.Size;
         }
+        else if (datas[dataIndex] is HeaderViewData) 
+        {
+            return headerHeight;
+        }
         else
         {
-            return data[dataIndex].cellSize;
+            return footerHeight;
         }
+    }
+
+    public int GetNumberOfCells(EnhancedScroller scroller)
+    {
+        return datas.Count;
     }
 
     public EnhancedScrollerCellView GetCellView(EnhancedScroller scroller, int dataIndex, int cellIndex)
     {
         UIBlockScroll blockView;
 
-        if (data[dataIndex] is ParentViewData)
+        if (datas[dataIndex] is ParentViewData)
         {
-            blockView = myScroller.GetCellView(parentUIPrefab) as UIParentCategory;
-            blockView.SetData(data[dataIndex], dataIndex, TweenUpdated, TweenEnd);
+            blockView = this.scroller.GetCellView(parentUIPrefab) as UIParentCategory;
+            blockView.SetData(datas[dataIndex], dataIndex, TweenUpdated, TweenEnd);
         }
-        else if (data[dataIndex] is HeaderViewData)
+        else if (datas[dataIndex] is HeaderViewData)
         {
-            blockView = myScroller.GetCellView(headerUIPrefab) as UIHeader;
-            blockView.SetData(data[dataIndex]);
+            blockView = this.scroller.GetCellView(headerUIPrefab) as UIHeader;
+            blockView.SetData(datas[dataIndex]);
         }
         else
         {
-            blockView = myScroller.GetCellView(footerUIPrefab) as UIFooter;
-            blockView.SetData(data[dataIndex]);
+            blockView = this.scroller.GetCellView(footerUIPrefab) as UIFooter;
+            blockView.SetData(datas[dataIndex]);
         }
 
         return blockView;
     }
+    #endregion
 
+    private void OnEnable()
+    {
+        if (datas != null)
+        {
+            JumpToCurrentLevel();
+        }
+    }
 }

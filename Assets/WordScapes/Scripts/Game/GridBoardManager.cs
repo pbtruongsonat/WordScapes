@@ -198,8 +198,6 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
         int index = UnityEngine.Random.Range(0, indexCellHidden.Count);
         int indexCell = indexCellHidden[index];
         VisibleCellIndex(indexCell);
-
-        CheckSlovedWord();
     }
 
     public void VisibleCellIndex(int indexCell)
@@ -209,6 +207,8 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
 
         indexCellHidden.Remove(indexCell);
         indexCellVisible.Add(indexCell);
+
+        CheckSlovedWord();
     }
 
     public void VisibleFiveCell()

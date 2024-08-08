@@ -28,7 +28,7 @@ public class SelectLevelController : MonoBehaviour
     public Dictionary<int, string> dicLettersOfLevel = new Dictionary<int, string>();
 
     [Header("Other Script")]
-    public ScrollerController scroller;
+    public ScrollerController scrollerController;
 
     public void Start()
     {
@@ -61,27 +61,27 @@ public class SelectLevelController : MonoBehaviour
     {
         levelContainer.gameObject.SetActive(false);
 
-        ParentViewData parentViewData = scroller.data[indexParent] as ParentViewData;
+        ParentViewData parentViewData = scrollerController.datas[indexParent] as ParentViewData;
         if (parentViewData == null) return;
 
         ChildCategory child = parentViewData.parent.listChild[indexChild];
 
         if (indexOldParent != -1 && indexOldParent != indexParent)
         {
-            var parentOldData = scroller.data[indexOldParent] as ParentViewData;
-            var uiOldParent = scroller.myScroller.GetCellViewAtDataIndex(indexOldParent) as UIParentCategory;
+            var parentOldData = scrollerController.datas[indexOldParent] as ParentViewData;
+            var uiOldParent = scrollerController.scroller.GetCellViewAtDataIndex(indexOldParent) as UIParentCategory;
 
             if (parentOldData != null && uiOldParent != null)
             {
                 parentOldData.indexCateActive = -1;
-                //StartCoroutine(ClosePanel(uiOldParent.dataIndex, uiOldParent.cellIndex));
-                scroller.InitializeTween(uiOldParent.dataIndex, uiOldParent.cellIndex);
+                scrollerController.InitializeTween(uiOldParent.dataIndex, uiOldParent.cellIndex);
             }
         }
 
         if (!active)
         {
             parentViewData.indexCateActive = -1;
+            levelContainer.gameObject.SetActive(false);
         } 
         else
         {
@@ -138,21 +138,23 @@ public class SelectLevelController : MonoBehaviour
             float expandedValue = numRowLevel * heightLevel + padding + (numRowLevel - 1) * spacingLevel + 8;
 
             parentViewData.expandedSize = parentViewData.collapsedSize + expandedValue;
+
         }
+
         if(indexParent != indexOldParent)
         {
-            DOVirtual.DelayedCall(0.15f, () => { scroller.InitializeTween(indexParent, indexCellParent); });
+            DOVirtual.DelayedCall(0.15f, () => { scrollerController.InitializeTween(indexParent, indexCellParent); });
             indexOldParent = indexParent;
         } 
         else
         {
-            scroller.InitializeTween(indexParent, indexCellParent);
+            scrollerController.InitializeTween(indexParent, indexCellParent);
         }
     }
 
     IEnumerator ClosePanel(int oldIndexData, int oldIndexCell)
     {
-        scroller.InitializeTween(oldIndexData, oldIndexCell);
+        scrollerController.InitializeTween(oldIndexData, oldIndexCell);
         yield return null;
     }
 
