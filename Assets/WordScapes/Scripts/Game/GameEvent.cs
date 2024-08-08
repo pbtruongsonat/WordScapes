@@ -37,4 +37,12 @@ public class GameEvent
 
     // ----------  Popup  ---------------
 
+
+    // ----------  Dictionary  ------------
+    public static Action displayDictionary;
+
+
+    // ---------- Bonus Word -------------
+    public static Action displayBonusWord;
+
 }

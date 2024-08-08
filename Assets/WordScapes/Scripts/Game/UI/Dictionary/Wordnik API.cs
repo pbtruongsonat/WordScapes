@@ -24,9 +24,13 @@ public class WordnikAPI : MonoBehaviour
     public WordnikStruct[] wordMeans;
     public DictionaryController dictionaryController;
 
+    public string[] elementTags = { "<xref>", "</xref>", "<em>", "</em>", "<strong>", "</strong>" };
+
     //data for Meaning Word Data
     string meanContent;
     string sourceDic;
+
+    
 
 
     public async void findMeanWord(string wordStr)
@@ -81,8 +85,10 @@ public class WordnikAPI : MonoBehaviour
                 meanContent += $"{i+1}. ({tmpDic[i].partOfSpeech}): {tmpDic[i].text}\n";
             }
 
-            meanContent = meanContent.Replace("<xref>", "");
-            meanContent = meanContent.Replace("</xref>", "");
+            foreach(string tag in elementTags)
+            {
+                meanContent = meanContent.Replace(tag, "");
+            }
 
             if(meanContent == "")
             {

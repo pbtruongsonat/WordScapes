@@ -13,6 +13,7 @@ public class LevelManager : SingletonBase<LevelManager>
     public InputHandle inputHandle;
     public LineController lineController;
     public DictionaryController dictionaryController;
+    public BonusWordController bonusWordController;
 
     public ExtraWordData extraWordData;
     public List<string> extraWordList;
@@ -106,6 +107,7 @@ public class LevelManager : SingletonBase<LevelManager>
                 listBonusWord.Add(wordstr);
                 StartCoroutine(IEBonusWord(wordstr));
                 dictionaryController.AddNewData(wordstr);// test
+                bonusWordController.AddNewData(wordstr);
             }
             else
             {

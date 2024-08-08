@@ -96,10 +96,10 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
             }
         }
 
-        //if (GameManager.Instance.currentLevel == DataManager.unlockedLevel)
-        //{
-        //    LoadLevelState();
-        //}
+        if (GameManager.Instance.currentLevel == DataManager.unlockedLevel)
+        {
+            LoadLevelState();
+        }
     }
 
     private void SetCell(int index, char letter)
@@ -316,7 +316,7 @@ public class GridBoardManager : SingletonBase<GridBoardManager>
 
     private void OnDisable()
     {
-        //SaveLevelState();
+        SaveLevelState();
         GameEvent.visibleCellIndex -= VisibleCellIndex;
     }
 }

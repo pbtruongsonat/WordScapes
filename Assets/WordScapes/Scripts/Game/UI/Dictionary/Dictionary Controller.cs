@@ -1,4 +1,5 @@
 using EnhancedUI.EnhancedScroller;
+using Ookii.Dialogs;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,14 +17,12 @@ public class DictionaryController : MonoBehaviour, IEnhancedScrollerDelegate
     public float cellViewSize = 873; 
     public float calculateStartCellBias = 0f;
 
+    private bool delegatedScroller;
+
     void Start()
     {
         _datas = new List<MeaningWordData>();
-
-        scroller.Delegate = this;
-        scroller.CalculateStartCellBias = calculateStartCellBias;
-
-        //LoadData();
+        delegatedScroller = false;  
     }
 
     public void AddNewData(string wordStr)
@@ -31,9 +30,6 @@ public class DictionaryController : MonoBehaviour, IEnhancedScrollerDelegate
         wordStr = wordStr.ToLower();
 
         wordnikAPI.findMeanWord(wordStr);
-        //_datas.Add(wordnikAPI.fin(wordStr));
-
-        //scroller.ReloadData();
     }
 
     public void AddElement(MeaningWordData data)
@@ -41,6 +37,15 @@ public class DictionaryController : MonoBehaviour, IEnhancedScrollerDelegate
         _datas.Add(data);
 
         flickSnap.MaxDataElements = _datas.Count;
+    }
+
+    private void ReloadDataScroller()
+    {
+        if (!delegatedScroller)
+        {
+            scroller.Delegate = this;
+            scroller.CalculateStartCellBias = calculateStartCellBias;
+        }
 
         scroller.ReloadData();
     }
@@ -68,4 +73,14 @@ public class DictionaryController : MonoBehaviour, IEnhancedScrollerDelegate
     }
 
     #endregion
+
+    private void OnEnable()
+    {
+        GameEvent.displayDictionary += ReloadDataScroller;
+    }
+
+    private void OnDisable()
+    {
+        GameEvent.displayDictionary -= ReloadDataScroller;
+    }
 }
