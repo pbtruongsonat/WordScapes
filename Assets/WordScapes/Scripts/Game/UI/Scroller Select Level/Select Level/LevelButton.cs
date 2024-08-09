@@ -4,6 +4,7 @@ using UnityEngine;
 public class LevelButton : ButtonBase
 {
     public GameObject textLetterPrefabs;
+    public GameObject currentCircle;
     public float radius;
 
     public int levelId;
@@ -40,6 +41,7 @@ public class LevelButton : ButtonBase
 
         textLevelId.text = levelId.ToString();
         lettersContainer.gameObject.SetActive(true);
+        currentCircle.SetActive(false);
 
         SetLetters();
 
@@ -50,6 +52,7 @@ public class LevelButton : ButtonBase
     public void SetCurrentLevel()
     {
         // Curent Level
+        currentCircle.SetActive(true);
     }
 
     private void SetLetters()

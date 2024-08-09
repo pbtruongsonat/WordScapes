@@ -119,6 +119,11 @@ public class UIParentCategory : UIBlockScroll
         {
             layoutElement.minHeight = parentData.curentSize;
 
+            if (layoutElement.minHeight == parentData.expandedSize)
+            {
+                GameEvent.setTransformLevel?.Invoke(transform);
+            }
+
             StartCoroutine(tween.TweenPosition(parentData.tweenType, parentData.tweenTimeExpand, parentData.curentSize, parentData.expandedSize, TweenUpdated, TweenCompleted));
         }
     }
@@ -147,7 +152,7 @@ public class UIParentCategory : UIBlockScroll
             parentData.curentSize = parentData.collapsedSize;
         }
 
-        if(endTween != null)
+        if (endTween != null)
         {
             endTween(dataIndex, cellIndex);
         }
@@ -157,7 +162,7 @@ public class UIParentCategory : UIBlockScroll
     {
         if (parentData != null && parentData.indexCateActive != -1)
         {
-            GameEvent.setTransformLevel?.Invoke(transform);
+            //GameEvent.setTransformLevel?.Invoke(transform);
             listChildButton[parentData.indexCateActive].OnSelectChild(true);
         }
     }

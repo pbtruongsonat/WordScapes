@@ -22,7 +22,7 @@ public class SelectLevelController : MonoBehaviour
 
     public Dictionary<ChildCategory, int> dicLevelIdStart = new Dictionary<ChildCategory, int>();
     public Dictionary<ChildCategory, Transform> dicChild = new Dictionary<ChildCategory, Transform>(); // Parent obj transform of child
-    
+
     public Dictionary<ParentCategory, Tuple<int, int>> rangeLevelParent = new Dictionary<ParentCategory, Tuple<int, int>>();
 
     public Dictionary<int, string> dicLettersOfLevel = new Dictionary<int, string>();
@@ -42,14 +42,10 @@ public class SelectLevelController : MonoBehaviour
         int levelIdStart = 1;
         foreach (var parent in GameManager.Instance.gameData.listParent)
         {
-            //var parentObj = Instantiate(parentPrefabs, contentScroll);
-
             int parentStart = levelIdStart;
 
             foreach (var child in parent.listChild)
             {
-                //dicChild.Add(child, parentObj.transform);
-
                 dicLevelIdStart.Add(child, levelIdStart);
 
                 levelIdStart += child.listLevelID.Count;
@@ -82,85 +78,92 @@ public class SelectLevelController : MonoBehaviour
         {
             parentViewData.indexCateActive = -1;
             levelContainer.gameObject.SetActive(false);
-        } 
+        }
         else
         {
             parentViewData.indexCateActive = indexChild;
 
-            int numLevels = child.listLevelID.Count;
-            int startIdLevel = dicLevelIdStart[child];
+            InitListLevel(child);
 
-            while (levelContainer.childCount < numLevels)
-            {
-                var levelBtn = Instantiate(levelButtonPrefabs, levelContainer);
-            }
-
-            for (int i = 0; i < levelContainer.childCount; i++)
-            {
-                levelContainer.GetChild(i).gameObject.SetActive(false);
-            }
-
-            for (int i = 0; i < numLevels; i++)
-            {
-                var levelId = startIdLevel + i;
-
-                // Add Letters for Levels
-                if (!dicLettersOfLevel.ContainsKey(levelId) && levelId <= DataManager.unlockedLevel)
-                {
-                    string path = $"Data/Level/{child.listLevelID[i]}";
-                    TextAsset fileLevel = Resources.Load<TextAsset>(path);
-                    if (fileLevel == null) continue;
-
-                    LevelData levelData = JsonConvert.DeserializeObject<LevelData>(fileLevel.text);
-
-                    dicLettersOfLevel.Add(levelId, levelData.letters);
-                }
-
-                var levelBtn = levelContainer.GetChild(i);
-                var levelBtnScript = levelBtn.GetComponent<LevelButton>();
-
-                if (levelId <= DataManager.unlockedLevel)
-                {
-                    levelBtnScript.SetLevel(levelId, dicLettersOfLevel[levelId]);
-                    if (levelId == DataManager.unlockedLevel)
-                    {
-                        levelBtnScript.SetCurrentLevel();
-                    }
-                } else
-                {
-                    levelBtnScript.SetLevel(levelId);
-                }
-
-                levelBtn.gameObject.SetActive(true);
-            }
-
-            float numRowLevel = Mathf.Ceil(numLevels / 4f);
+            float numRowLevel = Mathf.Ceil(child.listLevelID.Count / 4f);
             float expandedValue = numRowLevel * heightLevel + padding + (numRowLevel - 1) * spacingLevel + 8;
 
             parentViewData.expandedSize = parentViewData.collapsedSize + expandedValue;
-
         }
 
-        if(indexParent != indexOldParent)
+        if (indexParent != indexOldParent)
         {
-            DOVirtual.DelayedCall(0.15f, () => { scrollerController.InitializeTween(indexParent, indexCellParent); });
+            DOVirtual.DelayedCall(0.2f, () => { scrollerController.InitializeTween(indexParent, indexCellParent); });
             indexOldParent = indexParent;
-        } 
+        }
         else
         {
             scrollerController.InitializeTween(indexParent, indexCellParent);
         }
     }
 
-    IEnumerator ClosePanel(int oldIndexData, int oldIndexCell)
+
+    public void InitListLevel(ChildCategory child)
     {
-        scrollerController.InitializeTween(oldIndexData, oldIndexCell);
-        yield return null;
+        int numLevels = child.listLevelID.Count;
+        int startIdLevel = dicLevelIdStart[child];
+
+        ReloadLevelPool(numLevels);
+
+        for (int i = 0; i < numLevels; i++)
+        {
+            var levelId = startIdLevel + i;
+
+            // Add Letters for Levels
+            if (!dicLettersOfLevel.ContainsKey(levelId) && levelId <= DataManager.unlockedLevel)
+            {
+                string path = $"Data/Level/{child.listLevelID[i]}";
+                TextAsset fileLevel = Resources.Load<TextAsset>(path);
+                if (fileLevel == null) continue;
+
+                LevelData levelData = JsonConvert.DeserializeObject<LevelData>(fileLevel.text);
+
+                dicLettersOfLevel.Add(levelId, levelData.letters);
+            }
+
+            var levelBtn = levelContainer.GetChild(i);
+            var levelBtnScript = levelBtn.GetComponent<LevelButton>();
+
+            if (levelId <= DataManager.unlockedLevel)
+            {
+                levelBtnScript.SetLevel(levelId, dicLettersOfLevel[levelId]);
+                if (levelId == DataManager.unlockedLevel)
+                {
+                    levelBtnScript.SetCurrentLevel();
+                }
+            }
+            else
+            {
+                levelBtnScript.SetLevel(levelId);
+            }
+
+            levelBtn.gameObject.SetActive(true);
+        }
     }
+
+    private void ReloadLevelPool(int numLevels)
+    {
+        while (levelContainer.childCount < numLevels)
+        {
+            var levelBtn = Instantiate(levelButtonPrefabs, levelContainer);
+        }
+
+        for (int i = 0; i < levelContainer.childCount; i++)
+        {
+            levelContainer.GetChild(i).gameObject.SetActive(false);
+        }
+    }
+
 
     private void SetTransformLevel(Transform transformParent)
     {
         levelContainer.SetParent(transformParent);
+        levelContainer.transform.localScale = Vector3.one;
         levelContainer.gameObject.SetActive(true);
     }
 
@@ -174,6 +177,7 @@ public class SelectLevelController : MonoBehaviour
         GameEvent.setListLevel += SetLevelContainer;
         GameEvent.setTransformLevel += SetTransformLevel;
         GameEvent.setDisplayLevel += DisplayLevelContainer;
+        GameEvent.loadLevelinChild += InitListLevel;
     }
 
     private void OnDisable()
@@ -181,5 +185,6 @@ public class SelectLevelController : MonoBehaviour
         GameEvent.setListLevel -= SetLevelContainer;
         GameEvent.setTransformLevel -= SetTransformLevel;
         GameEvent.setDisplayLevel -= DisplayLevelContainer;
+        GameEvent.loadLevelinChild -= InitListLevel;
     }
 }

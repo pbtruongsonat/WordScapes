@@ -9,6 +9,7 @@ public class GameEvent
     // ----------- Select Level -------------
     public static Action<bool> changeChildSelect;
     public static Action<int, int, int, bool> setListLevel;
+    public static Action<ChildCategory> loadLevelinChild;
     public static Action<bool> setDisplayLevel;
     public static Action<Transform> setTransformLevel;
 

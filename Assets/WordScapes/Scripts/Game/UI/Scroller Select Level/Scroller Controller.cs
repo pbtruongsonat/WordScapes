@@ -1,4 +1,5 @@
 using EnhancedUI.EnhancedScroller;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -76,28 +77,59 @@ public class ScrollerController : MonoBehaviour, IEnhancedScrollerDelegate
 
         datas.Add(new FooterViewData(footerHeight));
 
+        OpenCurrentLevel();
         scroller.ReloadData();
 
-        JumpToCurrentLevel();
     }
+        int indexCurParent = -1;
+        int indexCurChild = -1;
 
-    private void JumpToCurrentLevel()
+
+    private void OpenCurrentLevel()
     {
         int curLevel = DataManager.unlockedLevel;
         int numDatas = datas.Count;
+        ParentViewData parentData;
 
         for (int i = 0; i < numDatas; i++)
         {
             if (datas[i] is ParentViewData)
             {
-                ParentViewData parentData = datas[i] as ParentViewData;
+                parentData = datas[i] as ParentViewData;
+
+                parentData.curentSize = parentData.collapsedSize;
 
                 if (parentData.indexLevelStart <= curLevel && parentData.indexLevelEnd >= curLevel)
                 {
+                    int numChild = parentData.parent.listChild.Count;
+                    for (int indexCate = 0; indexCate < numChild; indexCate++)
+                    {
+                        if (parentData.parent.listChild[indexCate].listLevelID.Contains(curLevel))
+                        {
+                            parentData.indexCateActive = indexCate;
+                            //GameEvent.loadLevelinChild?.Invoke(parentData.parent.listChild[indexCate]);
+                            indexCurParent = i;
+                            indexCurChild = indexCate;
+
+                            break;
+                        }
+                    }
                     JumpToDataIndex(i);
+                }
+                else
+                {
+                    parentData.indexCateActive = -1;
                 }
             }
         }
+
+        StartCoroutine(IESetListLevel());
+    }
+
+    IEnumerator IESetListLevel()
+    {
+        yield return new WaitForSeconds(0.01f);
+        GameEvent.setListLevel?.Invoke(indexCurParent, scroller.GetCellViewAtDataIndex(indexCurParent).cellIndex, indexCurChild, true);
     }
 
     public void JumpToDataIndex(int dataIndex)
@@ -158,7 +190,13 @@ public class ScrollerController : MonoBehaviour, IEnhancedScrollerDelegate
 
     private void TweenEnd(int dataIndex, int cellViewIndex)
     {
-        JumpToDataIndex(dataIndex);
+        ParentViewData parentData = datas[dataIndex] as ParentViewData;
+
+        if (parentData != null && parentData.indexCateActive != -1)
+        {
+            JumpToDataIndex(dataIndex);
+        }
+
         scroller.LastPadder.gameObject.SetActive(_lastPadderActive);
         scroller.LastPadder.minHeight = _lastPadderSize;
     }
@@ -212,11 +250,14 @@ public class ScrollerController : MonoBehaviour, IEnhancedScrollerDelegate
     }
     #endregion
 
+
+
     private void OnEnable()
     {
-        if (datas != null)
+        if (datas != null && datas.Count > 0)
         {
-            JumpToCurrentLevel();
+            OpenCurrentLevel();
+            scroller.ReloadData();
         }
     }
 }
