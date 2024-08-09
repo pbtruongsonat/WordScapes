@@ -4211,6 +4211,7 @@ GameObject:
   m_Component:
   - component: {fileID: 438413972}
   - component: {fileID: 438413975}
+  - component: {fileID: 438413976}
   - component: {fileID: 438413974}
   - component: {fileID: 438413973}
   m_Layer: 5
@@ -4322,6 +4323,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 438413971}
   m_CullTransparentMesh: 1
+--- !u!114 &438413976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 438413971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 626589a8b1645ba429737d0d7aabcb0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  button: {fileID: 438413973}
+  rectTransform: {fileID: 438413972}
+  dictionaryContainer: {fileID: 541875642}
 --- !u!1 &442179244
 GameObject:
   m_ObjectHideFlags: 0
@@ -20671,6 +20687,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wordString: 
   inputWord: {fileID: 1954440558}
+  wordPosition: {x: 0, y: 0, z: 0}
   bgRenderer: {fileID: 1975570695}
   listPosLetters: []
 --- !u!1 &1955045565

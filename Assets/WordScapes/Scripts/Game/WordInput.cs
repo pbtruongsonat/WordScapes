@@ -8,12 +8,14 @@ public class WordInput : MonoBehaviour
     public string wordString;
     public TextMeshPro inputWord;
 
+    public Vector3 wordPosition;
     public SpriteRenderer bgRenderer;
     public List<Vector3> listPosLetters = new List<Vector3>();
 
     private void Start()
     {
         ResetWord();
+        wordPosition = transform.localPosition;
     }
 
     public void AddNewLetter(string letter)
@@ -64,6 +66,7 @@ public class WordInput : MonoBehaviour
         wordString = string.Empty;
 
         DOVirtual.DelayedCall(0.3f, () => {
+            transform.localPosition = wordPosition;
             inputWord.text = wordString;
             if(wordString == string.Empty)
             {

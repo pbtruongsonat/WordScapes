@@ -29,6 +29,7 @@ public class LevelButton : ButtonBase
 
         textLevelId.text = levelId.ToString();
         lettersContainer.gameObject.SetActive(false);
+        currentCircle.gameObject.SetActive(false);
 
         button.interactable = false;
     }
